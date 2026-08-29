@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frontify Agency Partner Watch — Aug 22–28, 2026</title>
+<style>
+
+  :root{
+    --ink:#141419; --muted:#6b6b76; --line:#e7e7ec; --bg:#f6f6f4; --card:#ffffff;
+    --purple:#6b4de6; --purple-bg:#f2eefe;
+    --amber:#c77700; --amber-bg:#fff6e8;
+    --red:#d23b30; --red-bg:#fdecea;
+    --teal:#0a7d68; --teal-bg:#e7f6f2;
+    --accent:#141419;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:860px;margin:0 auto;padding:32px 20px 80px}
+  header.masthead{border-bottom:3px solid var(--ink);padding-bottom:18px;margin-bottom:8px}
+  header.masthead h1{font-size:30px;line-height:1.15;margin:0 0 6px;letter-spacing:-0.5px}
+  header.masthead .dates{font-size:15px;color:var(--muted);font-weight:500}
+  .snapshot{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 8px}
+  .snapshot .chip{background:var(--card);border:1px solid var(--line);border-radius:999px;
+    padding:5px 12px;font-size:12.5px;color:var(--muted)}
+  .snapshot .chip b{color:var(--ink)}
+  .intro{font-size:13.5px;color:var(--muted);margin:6px 0 26px;padding:12px 14px;
+    background:#fff;border:1px solid var(--line);border-radius:10px}
+  section.cat{margin:30px 0}
+  h2.cat-title{font-size:19px;margin:0 0 4px;padding-bottom:8px;border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:8px}
+  .count{font-size:12px;font-weight:600;color:var(--muted);background:var(--bg);
+    border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+  .cat-info{position:relative;display:inline-flex;align-items:center;justify-content:center;
+    width:16px;height:16px;border-radius:50%;background:var(--muted);color:#fff;font-size:11px;
+    cursor:help;font-style:normal;font-weight:700}
+  .cat-info::after{content:attr(data-tip);position:absolute;left:50%;top:140%;transform:translateX(-50%);
+    background:#141419;color:#fff;padding:9px 11px;border-radius:8px;font-size:12px;font-weight:400;
+    line-height:1.4;width:max-content;max-width:280px;opacity:0;visibility:hidden;transition:.15s;z-index:20;
+    box-shadow:0 6px 20px rgba(0,0,0,.18)}
+  .cat-info:hover::after{opacity:1;visibility:visible}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 18px 6px;
+    margin:14px 0;box-shadow:0 1px 2px rgba(20,20,25,.03)}
+  .card h3{font-size:17px;margin:0 0 8px;line-height:1.3}
+  .meta{font-size:12.5px;color:var(--muted);margin-bottom:10px;display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+  .meta .dot{opacity:.5}
+  .tag{font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;letter-spacing:.2px}
+  .tag--pipeline{background:var(--red);color:#fff}
+  .tag--client{background:var(--teal);color:#fff}
+  .card p.summary{font-size:14.5px;margin:0 0 12px}
+  .src{font-size:12.5px;margin:0 0 12px}
+  .src a{color:var(--purple);text-decoration:none;border-bottom:1px solid #d8ccfb}
+  .src a:hover{border-bottom-color:var(--purple)}
+  .connects{font-size:12.5px;color:var(--muted);margin:-4px 0 12px;padding-left:10px;border-left:2px solid var(--line)}
+  details.outreach{border-top:1px dashed var(--line);margin:0 -18px;padding:10px 18px 4px}
+  details.outreach>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--purple);
+    list-style:none;display:flex;align-items:center;gap:6px;padding:4px 0}
+  details.outreach>summary::-webkit-details-marker{display:none}
+  details.outreach>summary::before{content:"▸";font-size:11px;transition:.15s}
+  details.outreach[open]>summary::before{transform:rotate(90deg)}
+  .outreach-body{font-size:13.5px;padding:8px 0 12px}
+  .outreach-body h4{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);
+    margin:14px 0 5px}
+  .outreach-body ul{margin:4px 0 4px;padding-left:20px}
+  .outreach-body li{margin:3px 0}
+  .draft{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-top:6px;
+    font-size:13.5px;white-space:pre-wrap}
+  .draft .subj{font-weight:700;margin-bottom:6px;display:block}
+  details.flag,details.pipeline-flag{border:1px solid var(--red);border-left:4px solid var(--red);background:var(--red-bg);
+    border-radius:8px;margin:12px 0 4px;padding:8px 12px}
+  details.flag>summary,details.pipeline-flag>summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--red);list-style:none}
+  details.flag>summary::-webkit-details-marker,details.pipeline-flag>summary::-webkit-details-marker{display:none}
+  details.flag .flag-body,details.pipeline-flag .flag-body{font-size:13px;padding:8px 2px 2px}
+  .client-note{background:var(--teal-bg);border:1px solid #bfe6dc;border-radius:8px;padding:10px 12px;
+    font-size:13px;margin:2px 0 10px}
+  details.prospect,details.prospect-flag{border:1px solid var(--amber);border-left:4px solid var(--amber);background:var(--amber-bg);
+    border-radius:8px;margin:0 -18px;padding:10px 18px 4px}
+  details.prospect>summary,details.prospect-flag>summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--amber);list-style:none}
+  details.prospect>summary::-webkit-details-marker,details.prospect-flag>summary::-webkit-details-marker{display:none}
+  .radar-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0}
+  .radar-card .why{font-size:13px;color:var(--ink);background:var(--bg);border-radius:8px;padding:9px 11px;margin-top:8px}
+  .empty{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:18px;
+    color:var(--muted);font-size:13.5px;text-align:center}
+  .other-list{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 18px}
+  .other-item{padding:12px 0;border-bottom:1px solid var(--line)}
+  .other-item:last-child{border-bottom:none}
+  .other-item .oi-head{font-size:14px;font-weight:600;margin-bottom:3px}
+  .other-item .oi-meta{font-size:12px;color:var(--muted);margin-bottom:3px}
+  .other-item a{color:var(--purple);text-decoration:none}
+  .events-list{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 18px}
+  .event-item{padding:11px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+  .event-item:last-child{border-bottom:none}
+  .event-item a{color:var(--purple);text-decoration:none}
+  .event-item .ev-sep{color:var(--muted);opacity:.6;padding:0 4px}
+  .appendix{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;font-size:13px}
+  .appendix h2{border:none;font-size:16px;margin:0 0 10px;padding:0}
+  .appendix .grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+  .appendix .grid div{padding:3px 0;border-bottom:1px solid #f0f0f3;color:var(--muted)}
+  .appendix .grid b{color:var(--ink);font-weight:600}
+  footer{margin-top:40px;font-size:12px;color:var(--muted);text-align:center;border-top:1px solid var(--line);padding-top:16px}
+  @media(max-width:640px){.appendix .grid{grid-template-columns:1fr}}
+/* ===========================================================
+   Frontify Agency Partner Watch — report chrome
+   Inject verbatim at the END of the report's <style> block.
+   Do not hand-edit per run; edit this file so every report matches.
+   =========================================================== */
+
+  /* --- partner manager tabs --- */
+  .pm-tabbar{position:sticky;top:0;z-index:50;background:var(--bg);
+    margin:0 -20px 4px;padding:10px 20px 0;border-bottom:1px solid var(--line)}
+  .pm-tabbar .pm-label{font-size:11px;text-transform:uppercase;letter-spacing:.6px;
+    color:var(--muted);font-weight:700;margin-bottom:7px}
+  .pm-tabs{display:flex;flex-wrap:wrap;gap:6px}
+  .pm-tab{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);
+    font:inherit;font-size:13px;font-weight:600;padding:7px 14px;border-radius:999px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:7px;transition:.12s;line-height:1.2}
+  .pm-tab:hover{border-color:#c9c9d4}
+  .pm-tab .pm-n{font-size:11px;font-weight:700;color:var(--muted);background:var(--bg);
+    border-radius:999px;padding:1px 7px;min-width:20px;text-align:center}
+  .pm-tab[aria-selected="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .pm-tab[aria-selected="true"] .pm-n{background:rgba(255,255,255,.18);color:#fff}
+  .pm-tab[data-empty="1"]{opacity:.5}
+  .pm-subtabs{display:none;gap:4px;margin:9px 0 0;padding-bottom:9px}
+  body.pm-filtered .pm-subtabs{display:flex}
+  .pm-subtab{appearance:none;background:none;border:none;border-bottom:2px solid transparent;
+    font:inherit;font-size:13px;font-weight:600;color:var(--muted);padding:3px 2px 6px;margin-right:16px;cursor:pointer}
+  .pm-subtab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--purple)}
+  .pm-context{display:none;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--purple);
+    border-radius:10px;padding:11px 14px;font-size:13px;margin:14px 0 4px}
+  .pm-context .pm-market{color:var(--muted)}
+  body.pm-filtered .pm-context{display:block}
+  body.pm-outbound-on .snapshot{display:none}
+  .pm-outbound{display:none;margin-top:22px}
+  body.pm-outbound-on .pm-outbound{display:block}
+  body.pm-outbound-on section.cat{display:none !important}
+  .pm-none{display:none;background:var(--card);border:1px dashed var(--line);border-radius:12px;
+    padding:26px 18px;color:var(--muted);font-size:13.5px;text-align:center;margin:24px 0}
+  @media print{.pm-tabbar{display:none}}
+
+  /* --- outbound view --- */
+  .ob-nav{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 22px}
+  .ob-navlink{font-size:12.5px;font-weight:600;text-decoration:none;color:var(--ink);
+    background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 11px;
+    display:inline-flex;align-items:center;gap:6px}
+  .ob-navlink:hover{border-color:#c9c9d4}
+  .ob-navn{font-size:11px;color:var(--muted);font-weight:700}
+  .ob-group{margin:0 0 34px;scroll-margin-top:120px}
+  .ob-gtitle{font-size:15px;margin:0 0 12px;padding-bottom:7px;border-bottom:2px solid var(--ink);
+    display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+  .ob-gnote{font-size:12px;font-weight:400;color:var(--muted)}
+  .ob-partner{margin:0 0 16px}
+  .ob-pname{font-size:13px;font-weight:700;letter-spacing:.2px;text-transform:uppercase;
+    color:var(--muted);margin:18px 0 8px;display:flex;align-items:center;gap:7px}
+  .ob-pn{background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:0 7px;
+    font-size:11px;color:var(--muted)}
+  .ob-item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 10px}
+  .ob-title{font-size:14.5px;font-weight:650;line-height:1.35;display:block}
+  .ob-meta{font-size:11.5px;color:var(--muted);margin:5px 0 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .ob-lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700;margin-bottom:3px}
+  .ob-contacts ul{margin:2px 0 10px;padding-left:18px;font-size:13px}
+  .ob-contacts li{margin:2px 0}
+  .ob-alert{font-size:12.5px;border-radius:8px;padding:8px 11px;margin:0 0 10px}
+  .ob-alert--client{background:var(--teal-bg);border:1px solid #bfe6dc}
+  .ob-alert--pipeline{background:var(--red-bg);border:1px solid #f5c4bf}
+  .ob-draft-row{display:flex;align-items:flex-start;gap:8px}
+  .ob-draft{flex:1;min-width:0;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 11px}
+  .ob-draft>summary{cursor:pointer;list-style:none;font-size:12.5px;font-weight:600;color:var(--purple);
+    display:flex;align-items:center;gap:6px}
+  .ob-draft>summary::-webkit-details-marker{display:none}
+  .ob-draft>summary::before{content:"▸";font-size:10px;transition:.15s}
+  .ob-draft[open]>summary::before{transform:rotate(90deg)}
+  .ob-draft-body .draft{background:transparent;border:none;padding:8px 0 0;margin:0;font-size:13px}
+  .ob-copy{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);
+    font:inherit;font-size:11.5px;font-weight:600;padding:7px 11px;border-radius:8px;cursor:pointer;white-space:nowrap}
+  .ob-copy:hover{border-color:#c9c9d4}
+  .ob-copy.is-done{background:var(--teal);border-color:var(--teal);color:#fff}
+  .ob-src{font-size:11.5px;color:var(--muted);margin-top:9px}
+  .ob-src a{color:var(--purple);text-decoration:none}
+  .ob-also{background:var(--bg);border-radius:8px;padding:9px 12px;margin:0 0 10px}
+  .ob-also ul{margin:2px 0 0;padding-left:18px;font-size:12.5px;color:var(--muted)}
+  .ob-also li{margin:3px 0}
+  .ob-also b{color:var(--ink);font-weight:600}
+  .ob-also a{color:var(--purple);text-decoration:none}
+  .ob-event{background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:11px 14px;margin:0 0 8px;font-size:13px}
+  .ob-event a{color:var(--purple);text-decoration:none}
+  .ob-event .ev-sep{color:var(--muted);opacity:.6;padding:0 4px}
+  .ob-points{list-style:none;margin:0;padding:0}
+  .ob-points li{background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:11px 14px;margin:0 0 8px;font-size:13px}
+  .ob-points b{display:block;font-weight:650;margin-bottom:4px}
+  .ob-why{display:block;font-size:12.5px;color:var(--muted)}
+  .ob-why b{display:inline;color:var(--ink)}
+  .ob-srclink{font-size:11.5px;color:var(--purple);text-decoration:none}
+  .pm-empty-note{background:var(--card);border:1px dashed var(--line);border-radius:12px;
+    padding:26px;text-align:center;color:var(--muted);font-size:13.5px}
+
+  /* ============================================================
+     FRONTIFY BRAND THEME
+     Pulled live from the Frontify MCP — Brand Portal 2026.
+     Colors: Base + Marker purple palettes (brand essentials).
+     Type:   Cranny (display, headlines only, snug leading)
+             ABC Diatype (workhorse body, >=120% leading, neutral tracking)
+     Note:   Error red / Success green are product-only per the guideline,
+             so flags here use Marker purple and Base black instead.
+     ============================================================ */
+  @font-face{font-family:"Cranny";
+    src:url("https://brand.frontify.com/api/brand-essentials-font-file/rwPW3r84BHwXA1owaCEz") format("opentype");
+    font-weight:300;font-style:normal;font-display:swap}
+  @font-face{font-family:"ABC Diatype";
+    src:url("https://brand.frontify.com/api/brand-essentials-font-file/bRz2actmHrah2fHf1YrE") format("opentype");
+    font-weight:400;font-style:normal;font-display:swap}
+
+  :root{
+    /* Base palette */
+    --ink:#111110;          /* Base black   */
+    --muted:#676763;        /* Base 70  — 4.97:1 on Base white, AA */
+    --line:#E1E1DB;         /* Base 25  */
+    --bg:#F0F0EB;           /* Base white  */
+    --card:#FFFFFF;         /* Base 00  */
+    --accent:#111110;
+    /* Marker purple — used sparingly, for key elements only */
+    --purple:#880AAB;       /* MP 70 — accent TEXT, 6.86:1 on Base white, AA */
+    --purple-fill:#B60AE3;  /* Marker purple — fills and rules only (4.44:1, large/graphic) */
+    --purple-bg:#FAE8FF;    /* MP 15 */
+    /* Pipeline flag — Marker purple, not Error red (product-only) */
+    --red:#B60AE3;
+    --red-bg:#FAE8FF;
+    /* Existing client — Base black, not Success green (product-only) */
+    --teal:#111110;
+    --teal-bg:#F8F8F5;      /* Base 05 */
+    /* Prospect flag — quiet neutral so it can't be mistaken for a pipeline flag */
+    --amber:#575753;        /* Base 75 */
+    --amber-bg:#F8F8F5;
+  }
+
+  body{font-family:"ABC Diatype",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+    letter-spacing:normal;line-height:1.5}
+
+  /* Cranny: headlines only, snug leading, neutral tracking */
+  header.masthead h1,
+  h2.cat-title,
+  .ob-gtitle,
+  .appendix h2{
+    font-family:"Cranny","Times New Roman",Times,serif;
+    font-weight:300;line-height:1.12;letter-spacing:0}
+  header.masthead h1{font-size:34px}
+  h2.cat-title{font-size:22px}
+  .ob-gtitle{font-size:19px}
+  .appendix h2{font-size:19px}
+
+  .card h3,.radar-card h3,.ob-title{letter-spacing:0}
+
+  /* accent text stays MP 70; the vivid Marker purple is reserved for fills */
+  .src a,.other-item a,.event-item a,.ob-src a,.ob-also a,.ob-srclink,
+  details.outreach>summary,.ob-draft>summary{color:var(--purple)}
+  .src a{border-bottom-color:#ECA1FE}
+  .pm-context{border-left-color:var(--purple-fill)}
+  .pm-subtab[aria-selected="true"]{border-bottom-color:var(--purple-fill)}
+  .ob-gtitle{border-bottom-color:var(--ink)}
+
+  /* flags re-skinned to brand */
+  .tag--pipeline{background:var(--purple-fill);color:#fff}
+  .tag--client{background:var(--ink);color:#fff}
+  .client-note{background:var(--teal-bg);border:1px solid var(--line);border-left:3px solid var(--ink)}
+  .ob-alert--client{background:var(--teal-bg);border:1px solid var(--line);border-left:3px solid var(--ink)}
+  .ob-alert--pipeline{background:var(--red-bg);border:1px solid #ECA1FE;border-left:3px solid var(--purple-fill)}
+  details.flag,details.pipeline-flag{border:1px solid #ECA1FE;border-left:4px solid var(--purple-fill);background:var(--red-bg)}
+  details.flag>summary,details.pipeline-flag>summary{color:var(--purple)}
+  details.prospect,details.prospect-flag{border:1px solid var(--line);border-left:4px solid var(--amber);background:var(--amber-bg)}
+  details.prospect>summary,details.prospect-flag>summary{color:var(--amber)}
+
+  /* --- wider canvas + 3-up story grid --- */
+  .wrap{max-width:1240px}
+  section.cat{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch;
+    scroll-margin-top:118px}
+  section.cat>h2.cat-title,
+  section.cat>.empty,
+  section.cat>.other-list,
+  section.cat>.events-list,
+  section.cat>.appendix{grid-column:1 / -1}
+  section.cat>h2.cat-title{margin-bottom:0}
+  .card,.radar-card{margin:0;display:flex;flex-direction:column}
+  .card p.summary,.radar-card p.summary{flex:0 1 auto}
+  .card .src,.radar-card .src{margin-top:auto}
+  .card .connects{margin-top:8px}
+  .card details.outreach,.card details.prospect-flag{margin-top:0}
+  .radar-card .why{margin-top:10px}
+  @media(max-width:1040px){section.cat{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:700px){section.cat{grid-template-columns:1fr}}
+
+  /* outbound view keeps a readable measure */
+  .pm-outbound{max-width:840px}
+
+  /* --- snapshot chips as jump links --- */
+  .snapshot .chip{cursor:pointer;transition:.12s;border-color:var(--line)}
+  .snapshot .chip:hover{border-color:var(--ink);background:var(--card)}
+  .snapshot .chip:focus-visible{outline:2px solid var(--purple-fill);outline-offset:2px}
+  .snapshot .chip[data-nojump="1"]{cursor:default;opacity:.45}
+  .snapshot .chip[data-nojump="1"]:hover{border-color:var(--line)}
+
+  /* --- flag colours: green = existing client, red = active prospect --- */
+  :root{
+    --teal:#168500;          /* Success green 60 — white on it = 4.78:1, AA */
+    --teal-bg:#ECF5EB;
+    --teal-line:#A5EB99;     /* Success green 30 */
+    --teal-ink:#032C10;      /* Success green 90 */
+    --red:#DE2417;           /* Error red 60 — white on it = 4.80:1, AA */
+    --red-bg:#FCEDED;
+    --red-line:#F9B1AE;      /* Error red 30 */
+    --red-ink:#460A00;       /* Error red 90 */
+  }
+  .tag--client{background:var(--teal);color:#fff}
+  .tag--pipeline{background:var(--red);color:#fff}
+  .client-note{background:var(--teal-bg);border:1px solid var(--teal-line);border-left:3px solid var(--teal)}
+  .ob-alert--client{background:var(--teal-bg);border:1px solid var(--teal-line);border-left:3px solid var(--teal)}
+  .ob-alert--pipeline{background:var(--red-bg);border:1px solid var(--red-line);border-left:3px solid var(--red)}
+  details.flag,details.pipeline-flag{border:1px solid var(--red-line);border-left:4px solid var(--red);background:var(--red-bg)}
+  details.flag>summary,details.pipeline-flag>summary{color:var(--red-ink)}
+
+  /* hidden outreach payload for Other Activity + Events (Outbound view only) */
+  .ob-extra{display:none}
+  .ob-item .ob-event{background:transparent;border:none;padding:0;margin:0 0 10px;font-size:13.5px;line-height:1.45}
+
+  /* --- Target Agency flag (agencies we want to partner with, not partners yet) --- */
+  .tag--target{background:var(--purple-fill);color:#fff}
+  details.target-flag{border:1px solid #ECA1FE;border-left:4px solid var(--purple-fill);
+    background:var(--purple-bg);border-radius:8px;margin:12px 0 4px;padding:8px 12px}
+  details.target-flag>summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--purple);list-style:none}
+  details.target-flag>summary::-webkit-details-marker{display:none}
+  details.target-flag .flag-body{font-size:13px;padding:8px 2px 2px}
+  .ob-alert--target{background:var(--purple-bg);border:1px solid #ECA1FE;border-left:3px solid var(--purple-fill)}
+
+  /* --- Other Activity: the outreach accordion sits inside a list row, not a card --- */
+  .other-item details.outreach{margin:10px 0 2px;padding:8px 0 0;border-top:1px dashed var(--line)}
+  .other-item details.outreach>summary{font-size:12.5px}
+  .other-item .outreach-body{font-size:13px;padding:6px 0 8px}
+  .other-item details.target-flag{margin:10px 0 2px}
+  .target-note{background:var(--purple-bg);border:1px solid #ECA1FE;border-left:3px solid var(--purple-fill);
+    border-radius:8px;padding:9px 11px;font-size:13px;margin:2px 0 10px}
+  .other-item details.target-flag{display:none}
+
+  /* --- Other Activity as compact cards, four to a row --- */
+  #sec-other-activity{grid-template-columns:repeat(4,1fr)}
+  #sec-other-activity>.other-item{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 15px;margin:0;display:flex;flex-direction:column;font-size:13px;line-height:1.45;
+    box-shadow:0 1px 2px rgba(20,20,25,.03)}
+  #sec-other-activity>.other-item:last-child{border-bottom:1px solid var(--line)}
+  #sec-other-activity .oi-head{font-size:13.5px;font-weight:650;line-height:1.35;margin-bottom:5px}
+  #sec-other-activity .oi-meta{font-size:11.5px;margin-bottom:8px;display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+  #sec-other-activity .tag{font-size:10px;padding:1px 7px}
+  #sec-other-activity .target-note,#sec-other-activity .client-note{font-size:12px;padding:8px 10px}
+  #sec-other-activity details.outreach{margin-top:auto}
+  #sec-other-activity .outreach-body{font-size:12.5px}
+  #sec-other-activity .draft{font-size:12.5px}
+  @media(max-width:1240px){#sec-other-activity{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:1040px){#sec-other-activity{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:700px){#sec-other-activity{grid-template-columns:1fr}}
+
+  /* --- Related-to-target: weaker marker, does not route to Coordinate first --- */
+  .tag--target-rel{background:transparent;color:var(--purple);border:1px solid #ECA1FE;font-weight:600}
+  .tag--risk{background:transparent;color:var(--muted);border:1px solid var(--line);font-weight:600}
+  .rel-note{background:transparent;border:1px dashed #ECA1FE;border-radius:8px;padding:8px 11px;
+    font-size:12.5px;color:var(--muted);margin:2px 0 10px}
+  .rel-note b{color:var(--ink)}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <h1>Frontify Agency Partner Watch — Aug 22–28, 2026</h1>
+    <div class="dates">Weekly intelligence on Frontify's strategic agency partners · Window: 22 – 28 August 2026</div>
+  </header>
+
+  <nav class="pm-tabbar" aria-label="Filter by partner manager">
+    <div class="pm-label">View</div>
+    <div class="pm-tabs" role="tablist">
+      <button class="pm-tab" role="tab" data-pm="all" aria-selected="true">Full report <span class="pm-n"></span></button>
+      <button class="pm-tab" role="tab" data-pm="dach" aria-selected="false">DACH <span class="pm-n"></span></button>
+      <button class="pm-tab" role="tab" data-pm="nordics" aria-selected="false">Nordics <span class="pm-n"></span></button>
+      <button class="pm-tab" role="tab" data-pm="uki" aria-selected="false">UK &amp; Ireland <span class="pm-n"></span></button>
+      <button class="pm-tab" role="tab" data-pm="amer" aria-selected="false">Americas <span class="pm-n"></span></button>
+      <button class="pm-tab" role="tab" data-pm="global" aria-selected="false">Global <span class="pm-n"></span></button>
+      <button class="pm-tab" role="tab" data-pm="row" aria-selected="false">ROW <span class="pm-n"></span></button>
+    </div>
+    <div class="pm-subtabs" role="tablist">
+      <button class="pm-subtab" data-sub="stories" aria-selected="true">Stories</button>
+      <button class="pm-subtab" data-sub="outbound" aria-selected="false">Outbound</button>
+    </div>
+  </nav>
+  <div class="pm-context"><div class="pm-context-row" data-pm="dach" hidden><b>DACH</b> <span class="pm-market">· Germany · Austria · Switzerland</span><br><span class="pm-summary"></span></div><div class="pm-context-row" data-pm="nordics" hidden><b>Nordics</b> <span class="pm-market">· Sweden · Denmark · Norway · Finland</span><br><span class="pm-summary"></span></div><div class="pm-context-row" data-pm="uki" hidden><b>UK &amp; Ireland</b> <span class="pm-market">· United Kingdom · Ireland</span><br><span class="pm-summary"></span></div><div class="pm-context-row" data-pm="amer" hidden><b>Americas</b> <span class="pm-market">· US · Canada · LATAM</span><br><span class="pm-summary"></span></div><div class="pm-context-row" data-pm="global" hidden><b>Global</b> <span class="pm-market">· Network-wide stories with no market named in the source</span><br><span class="pm-summary"></span></div><div class="pm-context-row" data-pm="row" hidden><b>ROW</b> <span class="pm-market">· APAC · Middle East · Africa · Benelux</span><br><span class="pm-summary"></span></div></div>
+  <div class="pm-outbound"></div>
+  <div class="pm-none">Nothing in this week's report is assigned to this portfolio.</div>
+
+  <div class="snapshot">
+    <span class="chip"><b>4</b> AI & Brand Intelligence</span>
+    <span class="chip"><b>11</b> Brand & Identity Work</span>
+    <span class="chip"><b>1</b> New Business</span>
+    <span class="chip"><b>0</b> Pitches</span>
+    <span class="chip"><b>3</b> People & Hires</span>
+    <span class="chip"><b>4</b> Launches & Capabilities</span>
+    <span class="chip"><b>0</b> Competitor Watch</span>
+    <span class="chip"><b>6</b> Industry Radar</span>
+    <span class="chip"><b>19</b> Other Activity</span>
+    <span class="chip"><b>6</b> Events</span>
+    <span class="chip"><b>2</b> Pipeline Flag</span>
+    <span class="chip"><b>1</b> Existing Client Flags</span>
+    <span class="chip"><b>12</b> Target Agencies</span>
+  </div>
+
+  <section class="cat" id="sec-ai-brand-intelligence">
+    <h2 class="cat-title">AI & Brand Intelligence
+      <span class="cat-info" data-tip="Partner activity around AI brand compliance, machine-readable brand guidelines, LLM-ready design systems, and AI-in-brand workflows.">ⓘ</span>
+      <span class="count">4</span>
+    </h2>
+<div class="card" data-owner="global" data-partners="global:Ogilvy">
+<h3>Fanta stops licensing horror IP and builds four proprietary characters instead, with Ogilvy leading</h3>
+<div class="meta"><b>Ogilvy</b><span class="dot">·</span>27 Aug 2026 · Campaign Germany</div>
+<p class="summary">Coca-Cola has stopped licensing Beetlejuice, Chucky and M3gan and built four proprietary Fanta monsters, each with its own identity, backstory, powers and narrative role. WPP Open X led by Ogilvy developed it over eighteen months. The rollout covers 50 markets, packaging, five collectible cans and creator kits.</p>
+<p class="src">Source: <a href="https://campaigngermany.de/news/beitrag/4018-horror-als-plattform-fanta-baut-sich-ein-eigenes-halloween-universum.html" target="_blank">Campaign Germany — Horror als Plattform</a> <span style="color:#676763">(German)</span></p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Ibrahim Khan — Global Vice President Marketing, Fanta</li><li>R.J. Torbert — Director Licensing and Brand Enforcement, Fun World (partner on the Ghost Face edition)</li></ul><h4>Frontify use cases</h4><ul><li><b>Brand portal and guidelines</b> — four characters with defined personalities, powers and narrative roles, handed to influencers as bios and scripts, is a brand system being operated by people outside the building. That is the distribution problem guidelines exist to solve.</li><li><b>AI brand</b> — the film was made by an AI studio against an eighteen-month brand build. The interesting half is what stopped the AI drifting off-character.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: The creator kits, not the monsters</span>Hi [Ogilvy team] — the part of the Fanta Haunted Universe I keep coming back to isn't the characters, it's the creator kits. Handing influencers character bios and scripts is a bet that a brand system can survive being operated by people who never see your guidelines. Most brands won't make that bet because they have no way to check what comes back. Eighteen months of build suggests you solved it somehow. How much of the consistency is the brief, and how much is review?<br><br>[Your name]</div></div></details>
+</div>
+<div class="card" data-owner="dach" data-partners="dach:Jung von Matt">
+<h3>Jung von Matt makes Magnific its standard generative-AI platform across 30-plus units</h3>
+<div class="meta"><b>Jung von Matt</b><span class="dot">·</span>22 Aug 2026 · LinkedIn (announced by Magnific)</div>
+<p class="summary">Magnific announced Jung von Matt has adopted it as the group standard for generative AI in creation and production — not a pilot in one office but across 30-plus specialised units. Magnific says JvM first settled how its teams should work with AI, then chose a platform to run it.</p>
+<p class="src">Source: <a href="https://www.linkedin.com/feed/update/urn:li:activity:7496868801846775808/" target="_blank">Magnific — Jung von Matt group standard</a></p>
+<p class="connects">Connects to: JvM has not posted its own confirmation. The announcement is vendor-side only.</p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>No Jung von Matt individual named in the announcement</li><li>JvM senior names active this week: Dörte Spengler-Ahrens — Non-Executive Creative Chairwoman; David Leinweber — ECD, JvM Hamburg; Jan Harbeck — Partner and Managing Creative Director, JvM SPREE</li></ul><h4>Frontify use cases</h4><ul><li><b>AI brand</b> — one framework for legal and compliance across 30-plus units is the governance half of the problem. What the model reads about each client brand is the other half, and it usually still lives in a PDF.</li><li><b>Brand guidelines</b> — machine-readable guidelines are what let a generative platform produce something on-brand for a specific client rather than merely on-brief.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Deciding the model before the platform</span>Hi [JvM team] — Magnific's announcement says you settled how your teams should work with AI first and only then picked the platform. That order is rare enough to be worth saying out loud; most groups buy the tool and derive the policy afterwards. The question it raises for me is what the platform reads about each client's brand when it generates. Credit transparency and one compliance framework solve the agency side, but the client side is usually still a PDF. Is that in scope for the rollout?<br><br>[Your name]</div></div></details>
+</div>
+<div class="card" data-owner="dach" data-partners="dach:Farner">
+<h3>Farner builds a platform-agnostic "AI Operating System" and will present the governance model publicly</h3>
+<div class="meta"><b>Farner</b><span class="dot">·</span>26 Aug 2026 · Swico</div>
+<p class="summary">Farner concluded AI transformation does not come from one tool: a controlled platform eases entry but is not enough for research, creation, coding and agentic workflows, while adding tools brings fragmentation, cost and inconsistent governance. Its answer is a platform-agnostic AI Operating System, presented in Zurich on 22 September.</p>
+<p class="src">Source: <a href="https://www.swico.ch/de/kalender-events/detail/lat-ki-in-action-unverfalschte-einblicke-in-die-ki-praxis-von-agenturen" target="_blank">Swico — LAT KI in Action</a> <span style="color:#676763">(German)</span></p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Patman — Lead AI, Team Farner</li><li>Philipp Skrabal — Chief Creative Officer, Farner</li><li>Michel Grunder — Chief Executive Officer, Farner</li></ul><h4>Frontify use cases</h4><ul><li><b>AI brand</b> — the abstract names access to client and company knowledge as the risk that multiplies with every added tool. That is a brand-context problem before it is a security one.</li><li><b>MCP integration</b> — a platform-agnostic layer is exactly where a machine-readable brand surface would sit: one place the tools read the client's brand from, whichever tool is in use this month.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Raising the ceiling without losing the floor</span>Hi [Farner team] — "raising the ceiling for power users without losing the floor on security and governance" is the clearest statement of the problem I've read from an agency this year. The bit I'd push on is knowledge: once you're platform-agnostic, every tool needs to read the same account of what a client's brand actually is, and most of that still lives in documents built for humans. We work on exactly that layer at Frontify. Will the Swico talk cover the client-knowledge side, or is it scoped to the agency's own stack?<br><br>[Your name]</div></div></details>
+</div>
+<div class="card" data-owner="global" data-partners="global:Valtech">
+<h3>Valtech is a launch partner for Google Cloud's Gemini Enterprise industry solutions</h3>
+<div class="meta"><b>Valtech</b><span class="dot">·</span>25 Aug 2026 · Google Cloud<span class="dot">·</span><span class="tag tag--pipeline">Active Prospect</span></div>
+<p class="summary">Valtech is a launch partner for Google Cloud's purpose-built Gemini Enterprise industry solutions in Legal and Financial Services, with a repository of solution accelerators intended to cut production deployment from months to weeks. Named financial-services workflows carry an emphasis on verifiable data, auditability and enterprise controls.</p>
+<p class="src">Source: <a href="https://www.googlecloudpresscorner.com/2026-08-25-Valtech-accelerates-Enterprise-AI-Transformation-with-Google-Clouds-Gemini-Enterprise" target="_blank">Google Cloud Press Corner — Valtech and Gemini Enterprise</a></p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>John Cunningham — Chief Technology Officer, Valtech</li><li>Peter Ivanov — Managing Director Mobility, Valtech (amplified the launch on 27 Aug)</li><li>Satish Thomas — Vice President, Google Cloud (client side)</li></ul><h4>Frontify use cases</h4><ul><li><b>AI brand</b> — "verifiable data, auditability and enterprise controls" is the same requirement set brand governance has, applied to financial workflows. The brand equivalent is what a model is allowed to say about the brand.</li><li><b>MCP integration</b> — accelerators that cut deployment to weeks need a brand layer that is equally quick to point an agent at.</li></ul><details class="pipeline-flag"><summary>⚠️ Pipeline Flag</summary><div class="flag-body"><b>Google is on the active prospect list.</b> This story places a Frontify partner agency inside a Google Cloud launch programme. Coordinate with the Google opportunity owner before approaching Valtech on anything that touches the Google relationship — a partner-manager conversation referencing Gemini Enterprise could cut across a live thread.</div></details><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Auditability, applied to brand</span>Hi John — the framing that stood out in the Gemini Enterprise announcement is the emphasis on verifiable data and auditability in the financial-services workflows. That is the same requirement brand governance has and almost never gets: what is the model allowed to say, and can you show why it said it. Your accelerators cut deployment to weeks, which only works if every layer is equally ready — and brand is usually the one that isn't. Is a brand-context layer something clients are asking you to solve, or does it stay out of scope?<br><br>[Your name]</div></div></details>
+</div>
+  </section>
+
+  <section class="cat" id="sec-brand-identity-work">
+    <h2 class="cat-title">Brand &amp; Identity Work
+      <span class="cat-info" data-tip="New identities, rebrands, visual systems, logo work, and brand guidelines projects delivered by partners.">ⓘ</span>
+      <span class="count">11</span>
+    </h2>
+<div class="card" data-owner="nordics" data-partners="nordics:Kurppa Hosk">
+<h3>Kurppa Hosk builds Scania an Experience Hub to govern its new experience vision</h3>
+<div class="meta"><b>Kurppa Hosk</b><span class="dot">·</span>28 Aug 2026 · Kurppa Hosk<span class="dot">·</span><span class="tag tag--target">Target Agency</span></div>
+<p class="summary">Kurppa Hosk defined an Experience Vision, "Performance Engineered", with representatives from Scania's brand, digital and product design functions to secure organisation-wide buy-in. It rolled out through a purpose-built Scania Experience Hub equipping employees with inspiration, insights and practical guidelines, and drove a refresh of the visual identity.</p>
+<p class="src">Source: <a href="https://www.kurppahosk.com/work/scania/scania-brand-experience" target="_blank">Kurppa Hosk — Scania brand experience</a> · <a href="https://www.linkedin.com/feed/update/urn:li:activity:7498994152982974464/" target="_blank">announcement</a></p>
+<p class="connects">Connects to: the Scania brand transformation case published in June. This is the second Scania brand-governance artefact Kurppa Hosk has published in ten weeks.</p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Thomas Kurppa — Executive Creative Director, Kurppa Hosk</li><li>Jonas Pålsson — business enquiries, Kurppa Hosk</li><li>Jillian Mascarenhas — Strategy Director, Kurppa Hosk (profiled by Communication Arts this week)</li></ul><h4>Frontify use cases</h4><ul><li><b>Brand portal</b> — an employee-facing hub delivering inspiration, insights and practical guidelines so experiences stay aligned is, almost line for line, what a brand portal is for. They have built one; the question is what it costs to keep current.</li><li><b>Brand guidelines</b> — a vision agreed across brand, digital and product design only holds if the guidelines behind it are one source rather than three.</li></ul><details class="target-flag"><summary>Target Agency</summary><div class="flag-body"><b>Kurppa Hosk is not a Frontify partner</b> — and it does not appear on the CRM target list either. It is carried in the weekly search deliberately (Watch status). Worth adding to the CRM as a target: it produced two qualifying stories this week, including an employee-facing brand governance hub for Scania.</div></details><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: The hub after launch</span>Hi Thomas — the Experience Hub is the part of the Scania work I'd want to hear more about. Getting brand, digital and product design into one vision is hard enough; giving employees somewhere to go that keeps them aligned afterwards is the half that usually decays. You're now extending it to talent and external audiences, which multiplies the maintenance. Building that hub is one project. Keeping it current as the identity refresh rolls through is a different one, and it's the bit we spend our time on at Frontify. How is it being maintained?<br><br>[Your name]</div></div></details>
+</div>
+<div class="card" data-owner="nordics" data-partners="nordics:Stockholm Design Lab">
+<h3>Stockholm Design Lab gives Berwaldhallen a new identity built on a clear sender hierarchy</h3>
+<div class="meta"><b>Stockholm Design Lab</b><span class="dot">·</span>28 Aug 2026 · Resumé</div>
+<p class="summary">Berwaldhallen launched a new brand platform and identity after nearly two years of work, grounded in research with over 4,000 participants showing its link to Sveriges Radio needed to be far clearer. The platform pulls the concert hall, its two ensembles and Sveriges Radio closer together, phased from September.</p>
+<p class="src">Source: <a href="https://www.resume.se/kommunikation/varumarke/berwaldhallen-vassar-varumarket-se-nya-utseendet-har/" target="_blank">Resumé — Berwaldhallen vässar varumärket</a> <span style="color:#676763">(Swedish, partly walled)</span></p>
+<p class="connects">Connects to: surfaced only through the Swedish-language pass. Stockholm Design Lab's own LinkedIn feed has been silent for 52 days.</p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Nina Granath — Creative Director, Stockholm Design Lab</li><li>Caroline Foerster — Brand Strategist; Per Carlsson — Senior Designer; Elsa Kusoffsky — Account Manager</li><li>Client side: Karin Sävström — Head of Marketing &amp; Sales, Berwaldhallen (project lead)</li></ul><h4>Frontify use cases</h4><ul><li><b>Brand guidelines</b> — "en tydlig avsändarhierarki" (a clear sender hierarchy) across a parent broadcaster and two named ensembles is brand architecture that has to be legible to everyone publishing under it.</li><li><b>Brand portal</b> — a phased rollout from September across a concert hall, an orchestra, a choir and a national broadcaster is a multi-team distribution problem.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: The sender hierarchy</span>Hi Nina — the detail I keep returning to in the Berwaldhallen work is the sender hierarchy. Getting a concert hall, a symphony orchestra, a radio choir and a national broadcaster into a legible order is the hard part, and the research finding that the Sveriges Radio link needed to be clearer makes it the point of the whole platform rather than a tidy-up. A framework that is simple but flexible for content is also the kind that drifts fastest once it meets four sets of hands. With rollout phased from September, how are you holding it together?<br><br>[Your name]</div></div></details>
+</div>
+<div class="card" data-owner="global" data-partners="global:Dragon Rouge">
+<h3>Dragon Rouge won Foodera on a competitive pitch and kept five acquired manufacturers as product brands</h3>
+<div class="meta"><b>Dragon Rouge</b><span class="dot">·</span>27 Aug 2026 · Design Week</div>
+<p class="summary">Design Week reveals Dragon Rouge won Foodera Technologies' strategy, naming, identity and brand architecture after a competitive pitch in February. Kiremko, Idaho Steel, Reyco Systems, Tummers Group and Van der Giessen are retained as product brands under a new master corporate brand, preserving customer recognition across territories.</p>
+<p class="src">Source: <a href="https://www.designweek.co.uk/dragon-rouge-creates-new-brand-identity-for-food-processing-giant-foodera-technologies/" target="_blank">Design Week — Foodera Technologies identity</a></p>
+<p class="connects">Connects to: the Foodera identity featured on 5 August. The competitive pitch, the architecture and the rollout scope are the new facts.</p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Becky King — Executive Creative Director, Dragon Rouge</li><li>Gerardo Chiaia — Chief Executive Officer, Foodera Technologies (client side)</li></ul><h4>Frontify use cases</h4><ul><li><b>Brand guidelines</b> — a master brand over five retained product brands, rolling out across all operations, customer communications and manufacturing touchpoints, is brand architecture that has to survive contact with five sales forces.</li><li><b>DAM</b> — workwear, mobile interfaces, packaging and technical documentation across five merged businesses is an asset-distribution problem before it is a design one.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Five product brands, one rollout</span>Hi Becky — the Foodera architecture is the interesting decision: keeping Kiremko, Idaho Steel, Reyco, Tummers and Van der Giessen as product brands rather than absorbing them protects the recognition each one earned, but it also means five sales forces now working inside one system. That is where architecture usually starts to bend — not at launch, but eighteen months in when a regional team needs something the system didn't anticipate. The rollout runs through the year across operations, customer comms and manufacturing. How are you keeping the five aligned as it lands?<br><br>[Your name]</div></div></details>
+</div>
+<div class="card" data-owner="uki" data-partners="uki:Landor">
+<h3>Landor redesigns Häagen-Dazs stick packaging across France and the UK</h3>
+<div class="meta"><b>Landor</b><span class="dot">·</span>27 Aug 2026 · Transform</div>
+<p class="summary">Landor created new packaging for the Häagen-Dazs ice cream stick range in France and the UK, built around the product's creamy texture, ingredient generosity and Belgian chocolate coating. A richer burgundy palette, premium typography, vertical stripes and a distinctive silhouette are used to build recognition and shelf standout.</p>
+<p class="src">Source: <a href="https://www.transformmagazine.net/articles/2026/haeagen-dazs-packaging-redesign-evokes-richness-and-intensity/" target="_blank">Transform — Häagen-Dazs packaging redesign</a></p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>No Landor individuals named in the source</li><li>Landor senior names active this week: Ryan Frost — Global Executive Creative Director; Trish Folan — General Manager, Australia and New Zealand</li></ul><h4>Frontify use cases</h4><ul><li><b>DAM</b> — a packaging system running across two markets and a full SKU range is a print-asset problem: every variant, every language, every retailer spec, all needing to be the current one.</li><li><b>Templates</b> — shelf standout depends on the system being applied consistently by whoever produces the next line extension.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Two markets, one shelf system</span>Hi [Landor team] — the Häagen-Dazs stick work is a nice piece of restraint: burgundy, vertical stripes and a silhouette doing the recognition work rather than a redesign for its own sake. What I'd want to know is what happens at the next line extension. A packaging system that spans France and the UK has to hold across two retail environments and every future SKU, and that tends to be where the original intent gets diluted — usually by someone working from an out-of-date file. Is the system documented for the client's own teams, or does everything come back through you?<br><br>[Your name]</div></div></details>
+</div>
+<div class="card" data-owner="nordics" data-partners="nordics:Kontrapunkt">
+<h3>Kontrapunkt built the digital experience for QuNorth, the Nordic quantum venture</h3>
+<div class="meta"><b>Kontrapunkt</b><span class="dot">·</span>25 Aug 2026 · LinkedIn</div>
+<p class="summary">Creative developer Daniel Mierzwinski disclosed he worked with Kontrapunkt on qunorth.com, translating quantum computing into a clear digital experience with an animation language built on custom video assets. QuNorth is a 50/50 venture of the Novo Nordisk Foundation and EIFO with roughly €80m to run a quantum computer.</p>
+<p class="src">Source: <a href="https://www.linkedin.com/feed/update/urn:li:activity:7497927811286970368/" target="_blank">Daniel Mierzwinski — QuNorth build</a></p>
+<p class="connects">Connects to: the Novo Nordisk Foundation 3D portfolio overview featured on 21 Aug. This is a second live engagement inside the Foundation's orbit. Kontrapunkt has not yet published a QuNorth case of its own.</p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Francisco Barbosa, Jacob Lindblad, Nanna Knudsen — Kontrapunkt team named in the post</li><li>Philip Linnemann — Chief Executive Officer and Partner, Kontrapunkt</li><li>Client side: Stephanie Kinch and Viktor Grønne — QuNorth</li></ul><h4>Frontify use cases</h4><ul><li><b>Brand portal</b> — two engagements inside the Novo Nordisk Foundation orbit in as many months suggests a family of related identities that will need to sit together.</li><li><b>DAM</b> — an animation language built on custom video assets is a maintenance commitment: every future page needs the same motion vocabulary and the same source files.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Two in the Foundation's orbit</span>Hi Philip — QuNorth landing so soon after the Novo Nordisk Foundation overview is a good run, and the two are more related than they look: a foundation's portfolio and a venture it half-owns will end up needing to sit together visually whether or not anyone briefed that. The custom animation language is the part that interests me most, because motion is the hardest thing to hand over — it either lives in the source files or it dies at the next agency. How are you handling that with the QuNorth team?<br><br>[Your name]</div></div></details>
+</div>
+<div class="card" data-owner="nordics" data-partners="nordics:Bold Scandinavia">
+<h3>Bold Scandinavia publishes its visual language for the Stevns Klint Experience</h3>
+<div class="meta"><b>Bold Scandinavia</b><span class="dot">·</span>27 Aug 2026 · LinkedIn</div>
+<p class="summary">Bold's Copenhagen studio published the case study for its visual language for the Stevns Klint Experience, the visitor destination at the UNESCO-listed Danish cliff whose dark stratum marks the Cretaceous–Paleogene boundary. The brief was to make the site's geological history present and relevant to the present day.</p>
+<p class="src">Source: <a href="https://www.linkedin.com/feed/update/urn:li:activity:7498749775429746688/" target="_blank">Bold Scandinavia — Stevns Klint Experience</a></p>
+<p class="connects">Connects to: the identity work itself may predate the window — only the case-study publication is in window.</p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>No individuals named in the source</li><li>Bold Stockholm has made four hires in three weeks: Isabelle Rudström-Österlund, Izabel Östgren, Lova Rehle</li></ul><h4>Frontify use cases</h4><ul><li><b>Brand guidelines</b> — a visitor destination identity is operated by people who are not designers: signage teams, exhibition builders, local partners.</li><li><b>Templates</b> — seasonal programming at a visitor site means constant new material against a fixed system.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: 66 million years, made present</span>Hi [Bold team] — the Stevns Klint brief is a lovely problem: a stratum that marks the end of the Cretaceous is not short of gravity, but gravity alone doesn't make people visit. Translating that into something present-tense without flattening it is the hard part. What I'd be curious about is the handover — visitor destinations are run by exhibition teams, signage contractors and local partners rather than designers, and the identity has to survive all of them. How much of it did you codify for the client's own people?<br><br>[Your name]</div></div></details>
+</div>
+<div class="card" data-owner="amer" data-partners="amer:Siegel + Gale">
+<h3>Siegel+Gale shortlisted in four Transform Awards North America categories for two new clients</h3>
+<div class="meta"><b>Siegel + Gale</b><span class="dot">·</span>26 Aug 2026 · LinkedIn</div>
+<p class="summary">Siegel+Gale announced a four-category shortlisting at the 2026 Transform Awards North America covering two client programmes. Cotality is recognised for new brand development and positioning; Dauch for its visual identity across automotive, engineering and manufacturing. Winners are announced at the October ceremony.</p>
+<p class="src">Source: <a href="https://www.linkedin.com/feed/update/urn:li:activity:7498377700122705920/" target="_blank">Siegel+Gale — Transform Awards NA shortlist</a></p>
+<p class="connects">Connects to: first time either the Cotality brand build or the Dauch identity has surfaced in this report. Both are new named engagements.</p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>No individuals named in the source</li><li>Jason Cieslak — Global President, Siegel + Gale</li><li>Katie Conway — Managing Director, West Coast</li></ul><h4>Frontify use cases</h4><ul><li><b>Brand guidelines</b> — a new brand development and positioning programme is the moment the guidelines get written, and the moment they are most likely to be written as a PDF.</li><li><b>Brand portal</b> — an identity spanning automotive, engineering and manufacturing has to work for engineers and distributors, not just marketers.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Cotality and Dauch</span>Hi [Siegel+Gale team] — congratulations on the four Transform shortlistings. Cotality and Dauch are both new to me, and the pairing is interesting: a ground-up brand development on one side and a visual identity that has to hold across automotive, engineering and manufacturing on the other. The second is the harder governance problem — engineers and distributors apply a brand very differently from marketers, and usually with less patience for a document. How are those systems being handed over once the work lands?<br><br>[Your name]</div></div></details>
+</div>
+<div class="card" data-owner="row" data-partners="row:M+C Saatchi">
+<h3>M+C Saatchi held the brand and design vision for BTC Markets, delivered as a tokenised design system</h3>
+<div class="meta"><b>M+C Saatchi</b><span class="dot">·</span>27 Aug 2026 · LinkedIn</div>
+<p class="summary">Bone Digital's Simon Hipgrave disclosed that M+C Saatchi Group owned the brand and design vision for the rebuilt BTC Markets site. The build is a tokenised design system — component workspace, theme-extension helpers, CSS-variable design tokens and Sanity-driven structured content — extending the identity rather than replacing the component library.</p>
+<p class="src">Source: <a href="https://www.linkedin.com/feed/update/urn:li:activity:7498562252137066496/" target="_blank">Simon Hipgrave — BTC Markets build</a></p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Simon Hipgrave — Co-founder and Managing Director, Bone Digital (build partner)</li><li>Rachael Lucas — Head of Marketing and Communications, BTC Markets (client side, confirmed the engagement)</li><li>No M+C Saatchi individual named in the post</li></ul><h4>Frontify use cases</h4><ul><li><b>Design system</b> — CSS-variable design tokens are a brand expressed in a form machines can read. That is the same move as machine-readable guidelines, arriving from the engineering side.</li><li><b>Brand guidelines</b> — a token layer only stays true if it and the human-facing guidelines are the same source. When they drift, the site and the deck stop matching.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Tokens and the guidelines behind them</span>Hi [M+C Saatchi team] — the BTC Markets build is a good example of something I think is under-discussed: design tokens are a brand written so a machine can read it. Bone Digital's write-up describes CSS-variable tokens and theme-extension helpers extending your identity rather than replacing the component library, which is the right call. The risk is the token layer and the human-facing guidelines drifting apart — six months later the site and the brand book disagree and nobody can say which is right. How are you keeping the two in step?<br><br>[Your name]</div></div></details>
+</div>
+<div class="card" data-owner="dach" data-partners="dach:Peter Schmidt Group">
+<h3>Peter Schmidt Group wins a Red Dot for Delta Cafés signature-range packaging</h3>
+<div class="meta"><b>Peter Schmidt Group</b><span class="dot">·</span>26 Aug 2026 · LinkedIn</div>
+<p class="summary">Peter Schmidt Group announced a Red Dot Design Award for the packaging system it created for Portuguese coffee brand Delta Cafés' signature range, built on delicate botanical illustrations of coffee plants wrapping the pack and framed around the origins of the bean.</p>
+<p class="src">Source: <a href="https://www.linkedin.com/feed/update/urn:li:activity:7498298138517032960/" target="_blank">Peter Schmidt Group — Red Dot for Delta Cafés</a></p>
+<p class="connects">Connects to: the agency's best-ever Red Dot result at ten awards, noted on 21 Aug. This is a separately announced win and the first time the Delta Cafés relationship has appeared here.</p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Felix Damerius and Sven Rieckmann — Executive Creative Directors, Peter Schmidt Group</li><li>Norbert Möller — Executive Creative Director, Peter Schmidt Group</li><li>Dominik Arenz — Creative Director (promoted 18 Aug)</li></ul><h4>Frontify use cases</h4><ul><li><b>Templates</b> — a signature range built on illustration wrapping the pack has to extend to new origins and new formats without losing the drawing.</li><li><b>DAM</b> — botanical illustration is expensive artwork. Where it lives, and which version is current, decides whether the next pack looks like this one.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: The illustrations, and what happens next</span>Hi [Peter Schmidt Group team] — congratulations on the Delta Cafés Red Dot. Wrapping the pack in botanical illustration and letting the origin story carry the range is a braver route than another minimalist redesign, and it clearly landed. It also creates a specific problem: that artwork is now the brand, and every future origin, format and market has to extend it without redrawing it badly. Illustration-led systems tend to hold or fall on where the source files live. How is Delta handling that side?<br><br>[Your name]</div></div></details>
+</div>
+<div class="card" data-owner="row" data-partners="row:AKQA">
+<h3>AKQA and Havas Middle East take Home Centre's "Home Schools You" into a second year across seven markets</h3>
+<div class="meta"><b>AKQA</b><span class="dot">·</span>25 Aug 2026 · Campaign Middle East</div>
+<p class="summary">Landmark Group's Home Centre extended its back-to-school platform into a second year with a 45-day campaign running to 30 August across radio, social, out-of-home, in-mall screens, influencer, CRM and in-store. AKQA led the concept and Havas Middle East handled social content; AI-generated hero films and collection imagery feature.</p>
+<p class="src">Source: <a href="https://campaignme.com/home-centre-builds-on-home-schools-you-for-a-second-year-as-children-lead-the-charge/" target="_blank">Campaign Middle East — Home Schools You</a></p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>No AKQA or Havas ME individuals named in the source</li><li>AKQA regional leadership: Tara McKenty — Chief Creative Officer ANZ; Tim Devine — Global Chief Invention Officer</li></ul><h4>Frontify use cases</h4><ul><li><b>Campaign toolkit</b> — one platform across seven markets, eight channels and 45 days is a distribution problem: every market needs the right asset in the right language on the right day.</li><li><b>AI brand</b> — AI-generated hero films and collection imagery inside a brand platform is exactly where output needs checking against the brand, not just the brief.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Seven markets, forty-five days</span>Hi [AKQA team] — a second year for Home Schools You says the platform works, and the shape of it is what interests me: seven markets, eight channels, 45 days, with AI-generated hero films and collection imagery in the mix. That combination is where brand consistency usually gets tested hardest — not in the concept, but in the two hundredth asset produced under deadline for a market you're not sitting in. How is the AI-generated material being checked against the brand rather than just the brief?<br><br>[Your name]</div></div></details>
+</div>
+<div class="card" data-owner="nordics" data-partners="nordics:Kurppa Hosk">
+<h3>Kurppa Hosk redesigns ATG's Harry Boy character, premiering in the ninth year of the campaign</h3>
+<div class="meta"><b>Kurppa Hosk</b><span class="dot">·</span>28 Aug 2026 · Resumé<span class="dot">·</span><span class="tag tag--target">Target Agency</span></div>
+<p class="summary">ATG, Sweden's state-licensed horse-racing betting operator, premiered two new Harry Boy films continuing the nine-year-old "Harry? / Harry!" concept by Åkestam Holst. The films also mark the on-air debut of a redesigned Harry Boy character, redesigned by Kurppa Hosk — an identity-asset workstream rather than campaign work.</p>
+<p class="src">Source: <a href="https://www.resume.se/marknadsforing/kampanj/mc-knuttar-och-romantik-nar-redesignade-harry-boy-har-premiar/" target="_blank">Resumé — Harry Boy premiär</a> <span style="color:#676763">(Swedish)</span></p>
+<p class="connects">Connects to: surfaced only through the Swedish-language pass; the English pass returned nothing.</p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>No Kurppa Hosk individual named in the article</li><li>Thomas Kurppa — Executive Creative Director, Kurppa Hosk</li><li>Article credits Bart Timmer — director, Bacon; Åkestam Holst on the films</li></ul><h4>Frontify use cases</h4><ul><li><b>Brand guidelines</b> — a brand character carried across nine years and two agencies is a distinctive asset with rules that have to be written down or they walk out with people.</li><li><b>DAM</b> — a redesigned character appears everywhere at once: film, betting slips, app, retail. Version control is the whole job.</li></ul><details class="target-flag"><summary>Target Agency</summary><div class="flag-body"><b>Kurppa Hosk is not a Frontify partner</b> — and it does not appear on the CRM target list either. It is carried in the weekly search deliberately (Watch status). Worth adding to the CRM as a target: it produced two qualifying stories this week, including an employee-facing brand governance hub for Scania.</div></details><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Redesigning a nine-year-old character</span>Hi [Kurppa Hosk team] — redesigning Harry Boy nine years into a campaign somebody else built is a genuinely delicate brief: change too little and there is no point, too much and you throw away the recognition ATG has spent a decade buying. The interesting part is that the character now has to work across film, app, betting slips and retail simultaneously, with Åkestam Holst making the films. Where does the definitive version live so both agencies are drawing the same character in a year's time?<br><br>[Your name]</div></div></details>
+</div>
+  </section>
+
+  <section class="cat" id="sec-new-business">
+    <h2 class="cat-title">New Business
+      <span class="cat-info" data-tip="Confirmed client wins by partner agencies.">ⓘ</span>
+      <span class="count">1</span>
+    </h2>
+<div class="card" data-owner="uki" data-partners="uki:Havas">
+<h3>Havas Market UK takes Superdrug owner AS Watson's UK media account from Mindshare</h3>
+<div class="meta"><b>Havas</b><span class="dot">·</span>27 Aug 2026 · Campaign UK<span class="dot">·</span><span class="tag tag--target">Target Agency</span></div>
+<p class="summary">AS Watson, owner of Superdrug, appointed Havas Market UK as its UK media planning and buying agency. WPP Media's Mindshare had held the account since 2014, making this a twelve-year incumbency displaced.</p>
+<p class="src">Source: <a href="https://www.campaignlive.co.uk/article/pitch-update-pepsico-mr-kipling-coca-cola-superdrug-moshi-monsters-east-midlands-railway/1968538" target="_blank">Campaign UK — Pitch Update</a></p>
+<p class="connects">Connects to: Havas's Peroni Nastro Azzurro global win and the Hermes Arzneimittel media expansion, both featured 21 Aug. Three account wins in three weeks.</p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>No Havas individuals named in the Pitch Update</li><li>Havas senior names on file: Mark Whelan — Chairman and Chief Creative Officer, Havas</li></ul><h4>Frontify use cases</h4><ul><li><b>Brand portal</b> — a retail brand moving media after twelve years usually reviews everything else within eighteen months.</li><li><b>Campaign toolkit</b> — Superdrug's volume of retail campaign output is a production and asset problem as much as a media one.</li></ul><details class="target-flag"><summary>Target Agency</summary><div class="flag-body"><b>Havas is a target agency, not a Frontify partner</b> — with one exception: <b>Havas Middle East is the partner entity</b>, though it was removed from the weekly workflow in August as dormant. Seven Havas rows sit on the CRM target list. Owners: <b>Nicolas Hürner</b> (DE, Germany, DACH), <b>Russell Ellis</b> (London, Havas People), <b>Chantal Isarin</b> (Paris), <b>Marvick Fernandes</b> (Chicago). Frame as first contact unless the story is specifically Havas Middle East.</div></details><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Twelve years is a long incumbency</span>Hi [Havas team] — three wins in three weeks is a run worth noting: Peroni, Hermes Arzneimittel and now AS Watson. Displacing a twelve-year Mindshare incumbency at Superdrug is the hardest of the three. What usually follows a media move of that age is a broader review — once one long-standing relationship changes, the others get looked at. Retail brands at Superdrug's output volume tend to find the bottleneck is asset production rather than planning. Is the remit media only, or is there scope beyond it?<br><br>[Your name]</div></div></details>
+</div>
+  </section>
+
+  <section class="cat" id="sec-pitches">
+    <h2 class="cat-title">Pitches
+      <span class="cat-info" data-tip="Pitch activity — won, lost, shortlisted, or in progress — for clients with 1,000+ employees.">ⓘ</span>
+      <span class="count">0</span>
+    </h2>
+    <div class="empty">Nothing qualifying this week.</div>
+  </section>
+
+  <section class="cat" id="sec-people-hires">
+    <h2 class="cat-title">People &amp; Hires
+      <span class="cat-info" data-tip="Senior hires at partner agencies relevant to Frontify conversations: brand systems, design ops, DAM, brand tech, AI + brand, or senior creative/strategic leadership.">ⓘ</span>
+      <span class="count">3</span>
+    </h2>
+<div class="card" data-owner="amer" data-partners="amer:Omnicom Production">
+<h3>Omnicom Production hires Tasha Royzina from Publicis to build an AI-enabled content operation</h3>
+<div class="meta"><b>Omnicom Production</b><span class="dot">·</span>25 Aug 2026 · Little Black Book<span class="dot">·</span><span class="tag tag--target">Target Agency</span></div>
+<p class="summary">Omnicom Production hired Natasha Royzina from Publicis as global head of content operations, reporting to Dan Ricciardi. Her remit spans business affairs, rights, talent, compliance, versioning and delivery. CEO Sergio Lopez frames content operations as what ensures content can be produced, cleared, adapted, distributed and measured.</p>
+<p class="src">Source: <a href="https://lbbonline.com/news/Omnicom-Production-Tasha-Royzina-Global-Head-of-Content-Operations" target="_blank">LBB — Royzina appointment</a> · <a href="https://www.campaignlive.com/article/movers-shakers-chilis-home-agency-jinx/1968558" target="_blank">Campaign US</a></p>
+<p class="connects">Connects to: the design-systems freelance brief and two Mumbai DAM roles, both noted 21 Aug. A third signal in a month that Omnicom Production is building this capability rather than buying it in.</p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Natasha "Tasha" Royzina — Global Head of Content Operations, Omnicom Production</li><li>Dan Ricciardi — Global Chief Business Officer, Omnicom Production</li><li>Sergio Lopez — Chief Executive Officer, Omnicom Production</li></ul><h4>Frontify use cases</h4><ul><li><b>DAM</b> — rights, versioning and delivery in one remit is the DAM brief stated in operational language.</li><li><b>AI brand</b> — "produced, cleared, adapted, distributed and measured" is a governance chain. Responsible AI adoption depends on every link being inspectable.</li></ul><details class="target-flag"><summary>Target Agency</summary><div class="flag-body"><b>Omnicom Production is a target agency, not a Frontify partner.</b> It appears in the CRM target export as a whole-agency row, no office qualifier. CRM owner: <b>Russell Ellis</b>. It stays in the weekly search at partner depth — but frame any approach as a first contact, not account management.</div></details><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Cleared, adapted, distributed, measured</span>Hi Tasha — congratulations on the move. Sergio's framing of the remit — content that can be produced, cleared, adapted, distributed and measured — is the most precise description of the problem I've seen an agency put in a press release, and it's notable that responsible AI adoption is treated as downstream of it rather than a separate initiative. That chain is only as good as its weakest link, and rights and versioning are usually where it breaks under volume. It's the work we do at Frontify, so I'm biased, but I'd be interested in where you think the pressure lands first.<br><br>[Your name]</div></div></details>
+</div>
+<div class="card" data-owner="nordics" data-partners="nordics:Forsman &amp; Bodenfors">
+<h3>Forsman &amp; Bodenfors loses its Head of Creative after 21 years as Sophia Lindholm goes independent</h3>
+<div class="meta"><b>Forsman &amp; Bodenfors</b><span class="dot">·</span>26 Aug 2026 · LinkedIn<span class="dot">·</span><span class="tag tag--target">Target Agency</span></div>
+<p class="summary">Sophia Lindholm announced she has left Forsman &amp; Bodenfors after 21 years, having been Head of Creative, and has started her own company after relocating to Spain. She describes the timing as a deliberate reset rather than a move to a named agency, with projects lined up for the autumn.</p>
+<p class="src">Source: <a href="https://www.linkedin.com/feed/update/urn:li:activity:7498382003201871872/" target="_blank">Sophia Lindholm — departure post</a></p>
+<p class="connects">Connects to: this is the second senior exit inside five weeks, following CEO James Jenkins's departure on 28 July with no successor named. The agency page has been silent since 14 August.</p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Sophia Lindholm — former Head of Creative, Forsman &amp; Bodenfors</li></ul><details class="target-flag"><summary>Target Agency</summary><div class="flag-body"><b>Forsman &amp; Bodenfors is a target agency, not a Frontify partner.</b> Five offices are on the CRM target list — Gothenburg (HQ), Stockholm, London, Dublin and Singapore. CRM owners: <b>Rikard Norrbin</b> (Gothenburg, Stockholm, Singapore) and <b>Russell Ellis</b> (London, Dublin). It stays in the weekly search at partner depth because the relationship is worth the effort — but frame any approach as a first contact, not as partner account management.</div></details><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: 21 years, and a deliberate reset</span>Hi Sophia — 21 years at one agency and then a clean break to build your own thing is a decision worth respecting, particularly framed as a reset rather than a move. I work on the partnerships side at Frontify, so my interest is straightforward: independent studios hit the brand-system question much earlier than they expect, usually on the second or third client rather than the first. If that becomes useful to you as the autumn projects land, I'd be glad to be a sounding board. Either way, good luck with the launch.<br><br>[Your name]</div></div></details>
+</div>
+<div class="card" data-owner="amer" data-partners="amer:Sid Lee">
+<h3>Sid Lee's new head of strategy role is confirmed as newly created and agency-wide</h3>
+<div class="meta"><b>Sid Lee</b><span class="dot">·</span>27 Aug 2026 · Strategy</div>
+<p class="summary">Strategy reports Joannie Denault as Sid Lee's VP and head of strategy in Montreal, and confirms the role is newly created and oversees strategy across all accounts rather than a single portfolio. The move ties to CSO Shereen Ladha and indicates a build-out of the strategy function beneath her.</p>
+<p class="src">Source: <a href="https://strategyonline.ca/2026/08/27/agency-moves-sid-lee-ogilvy/" target="_blank">Strategy — agency moves</a> <span style="color:#676763">(body subscriber-walled)</span></p>
+<p class="connects">Connects to: the appointment was logged on 7 August with its scope unstated. That the role did not previously exist, and is agency-wide, are the new facts.</p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Joannie Denault — Vice-President and Head of Strategy, Sid Lee Montreal</li><li>Shereen Ladha — Chief Strategy Officer, Sid Lee (promoted June 2026)</li><li>Matt Fraracci — Sid Lee, named to the Strategy AOY Digital Jury this week</li></ul><h4>Frontify use cases</h4><ul><li><b>Brand guidelines</b> — a strategy function being built out across all accounts is the function that decides what a brand is before anyone designs it.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: A role that didn't exist before</span>Hi Joannie — congratulations. The detail Strategy adds that the earlier coverage didn't is that the role is newly created and spans every account rather than a portfolio, which is a different job entirely — you're setting how strategy works, not just doing it. Building that under Shereen while the agency sits on two Agency of the Year shortlists is good timing and a lot at once. What I'd be curious about is how you keep a single strategic through-line legible across accounts that don't talk to each other. Happy to compare notes if useful.<br><br>[Your name]</div></div></details>
+</div>
+  </section>
+
+  <section class="cat" id="sec-launches-capabilities">
+    <h2 class="cat-title">Launches &amp; Capabilities
+      <span class="cat-info" data-tip="New agency products, tools, service lines, or partnerships announced by partners.">ⓘ</span>
+      <span class="count">4</span>
+    </h2>
+<div class="card" data-owner="dach" data-partners="dach:Mutabor">
+<h3>Mutabor launches its own type foundry, arguing custom fonts now pay for themselves</h3>
+<div class="meta"><b>Mutabor</b><span class="dot">·</span>25 Aug 2026 · Campaign Germany</div>
+<p class="summary">Mutabor launched the Mutabor Type Foundry, taking custom corporate typefaces from first idea to a fully kerned, digitally optimised family, and releasing fonts it licenses itself. The commercial argument is licensing economics: catalogue licences bill continuously and scale with users, traffic and applications; a house typeface is a one-off cost.</p>
+<p class="src">Source: <a href="https://campaigngermany.de/news/beitrag/3991-nach-mad-kommt-mtf-warum-mutabor-auch-noch-eine-eigene-type-foundry-gruendet.html" target="_blank">Campaign Germany — Mutabor Type Foundry</a> <span style="color:#676763">(German)</span></p>
+<p class="connects">Connects to: MTF is Mutabor's second new unit of 2026 after the advertising unit MAd. Reference clients named include the DFL, Bahlsen, OTTO, mobile.de and VfL Wolfsburg.</p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Heinrich Paravicini — Co-founder and Chief Creative Officer, Mutabor</li><li>Johannes Plass — Co-founder and Chief Executive Officer, Mutabor</li><li>Amelie Pamp — Managing Director, MAd unit</li></ul><h4>Frontify use cases</h4><ul><li><b>Brand guidelines</b> — Paravicini's claim that typography has become the most important asset in branding is a claim about governance as much as design. A custom typeface only holds if everyone gets the right cut.</li><li><b>DAM</b> — font files are the most-copied and least-governed brand asset there is. Owning the typeface concentrates the licensing risk in one place.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Typography as the most important asset</span>Hi Heinrich — "Typografie wird seit circa 2 Jahren zum wichtigsten Asset im Branding" is a strong claim and I think you're right, though probably for a reason beyond the licensing maths. A custom face is the one brand element that cannot be approximated: colours get eyeballed and logos get stretched, but the wrong font is instantly visible. Which makes distribution the whole game — the right cut reaching every agency, printer and internal team. Where does that usually break down for the clients you're building faces for?<br><br>[Your name]</div></div></details>
+</div>
+<div class="card" data-owner="row" data-partners="row:AKQA">
+<h3>AKQA builds Westfield a game world inside the app, spanning 42 centres</h3>
+<div class="meta"><b>AKQA</b><span class="dot">·</span>27 Aug 2026 · AdNews</div>
+<p class="summary">Scentre Group launched World of Wins inside the Westfield app: a search-and-find game with new themed levels daily to 16 September, instant rewards, in-centre prize draws and an A$10,000 grand prize, across all 42 Westfield centres in Australia and New Zealand — and open to third-party brand partners.</p>
+<p class="src">Source: <a href="https://www.adnews.com.au/news/westfield-world-of-wins-via-akqa-australia" target="_blank">AdNews — Westfield World of Wins</a></p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Tara McKenty — Chief Creative Officer ANZ, AKQA</li><li>Sarah McGregor — Executive Creative Director; David Clarke — Executive Experience Design Director</li><li>Justine Leong — Managing Director ANZ, AKQA</li></ul><h4>Frontify use cases</h4><ul><li><b>Design system</b> — McKenty describes designing an entire system unique to Westfield, from detailed worlds to thousands of characters plus the UX and tech behind it. That is a design system with a content pipeline attached.</li><li><b>DAM</b> — new themed levels revealed daily for three weeks across 42 centres is a production line, and production lines need asset governance.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Thousands of characters, daily levels</span>Hi Tara — "an entire system unique to Westfield, from the detailed worlds to the thousands of characters" is the line that made me want to ask about the machinery rather than the game. Daily new levels for three weeks across 42 centres is a content pipeline, and the fact that Scentre now wants to open it to third-party brand partners means other people's brands will start arriving inside your system. That is the hard version of the problem: keeping it coherent when the assets aren't yours. How are you setting that up?<br><br>[Your name]</div></div></details>
+</div>
+<div class="card" data-owner="global" data-partners="global:Valtech">
+<h3>Valtech and Bayer will detail consolidating 65-plus corporate sites onto a single DXP</h3>
+<div class="meta"><b>Valtech</b><span class="dot">·</span>27 Aug 2026 · Valtech</div>
+<p class="summary">Valtech's DMEXCO masterclass with Bayer covers reshaping Bayer's global digital presence across more than 65 corporate websites, an intranet and 60-plus languages by moving to a single DXP with AI-enabled cloud infrastructure. A second session with Sitecore is framed around keeping AI-generated content distinctive, consistent and on-brand.</p>
+<p class="src">Source: <a href="https://www.valtech.com/events/dmexco-2026/" target="_blank">Valtech — DMEXCO 2026</a></p>
+<p class="connects">Connects to: Valtech's AI-visibility push and "The Agentic Age" report, both featured 21 Aug.</p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>David Toma — VP Strategy and Consulting, Valtech</li><li>Axel Hermes — Director Strategy, Valtech</li><li>John Cunningham — Chief Technology Officer, Valtech</li></ul><h4>Frontify use cases</h4><ul><li><b>Brand portal</b> — 65 sites, an intranet and 60 languages consolidating onto one platform is the largest brand-consistency problem in this week's report.</li><li><b>AI brand</b> — Valtech's own session title names the problem: keeping AI-generated content distinctive, consistent and on-brand. That requires the brand to exist in a form the generator can read.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: 65 sites, 60 languages, one system</span>Hi David — the Bayer masterclass is the thing I'd most like to hear this DMEXCO. Consolidating 65-plus corporate sites and 60-plus languages onto one DXP is a governance project wearing a replatforming costume, and the second session — keeping AI-generated content distinctive, consistent and on-brand — is the same problem one layer up. Both come down to whether the brand exists somewhere a system can read, rather than in a PDF. That's the layer we build at Frontify. Will you be at the stand on the 23rd?<br><br>[Your name]</div></div></details>
+</div>
+<div class="card" data-owner="nordics" data-partners="nordics:Uncommon">
+<h3>Uncommon Stockholm builds Clash Royale a film from real rage-quit clips, badged "0% AI"</h3>
+<div class="meta"><b>Uncommon</b><span class="dot">·</span>28 Aug 2026 · Campaign UK</div>
+<p class="summary">Uncommon's Stockholm studio launched "Turn Rage Into Victory" for Supercell's Clash Royale, a 72-second film built entirely from real rage-quit clips with players' outbursts dubbed onto game characters. A UGC mechanic sends ten finalist clips to a community vote, with the winner made permanent in-game as the first rage emote.</p>
+<p class="src">Source: <a href="https://www.campaignlive.co.uk/article/clash-royale-%E2%80%9Cturn-rage-victory%E2%80%9D-uncommon-stockholm/1968620" target="_blank">Campaign UK — Clash Royale</a></p>
+<p class="connects">Connects to: Uncommon states the film is "0% AI, 100% human made", positioning craft against generative production.</p>
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>No individuals named in the Campaign credit block</li><li>Nils Leonard — Co-founder, Uncommon; Natalie Graeme — Co-founder; Lola Neves — Head of Planning</li><li>Andrew Hunter — Executive Creative Director, Uncommon New York</li></ul><h4>Frontify use cases</h4><ul><li><b>Brand guidelines</b> — a winning clip becoming a permanent in-game emote turns user content into a brand asset, which needs the same governance as anything else.</li><li><b>AI brand</b> — the "0% AI" badge is a provenance claim. Provenance is about to become a labelling requirement rather than a boast.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: 0% AI as a claim you have to stand behind</span>Hi [Uncommon team] — badging the Clash Royale film "0% AI, 100% human made" is a good line and, I suspect, an increasingly consequential one. Provenance claims are drifting from positioning towards something closer to a label, and once that happens the question becomes how you evidence it rather than how you phrase it. The other thing that caught me is the winning rage clip becoming a permanent in-game emote — user content promoted to brand asset, which needs governing like any other. How are you handling that side with Supercell?<br><br>[Your name]</div></div></details>
+</div>
+  </section>
+
+  <section class="cat" id="sec-competitor-watch">
+    <h2 class="cat-title">Competitor Watch
+      <span class="cat-info" data-tip="Partner activity involving Frontify competitors — adoption, integration work, recommendation, or public endorsement.">ⓘ</span>
+      <span class="count">0</span>
+    </h2>
+    <div class="empty">Verified empty, not unsearched. All ten competitor feeds were retrieved — 337 posts, 37 of them in window — and an automated scan of all 35 partner names plus "Frontify" across every in-window post returned zero matches. Orange Logic posted nothing at all in the period. Competitor product movement with no partner involved is carried in Industry Radar below.</div>
+  </section>
+
+  <section class="cat" id="sec-industry-radar">
+    <h2 class="cat-title">Industry Radar
+      <span class="cat-info" data-tip="Significant industry developments in brand guidelines, machine-readable brand standards, and AI brand compliance — no partner agency required.">ⓘ</span>
+      <span class="count">6</span>
+    </h2>
+<div class="radar-card" data-owner="all">
+<h3 style="font-size:17px;margin:0 0 8px;line-height:1.3">Canva puts Brand Kits inside Google Search, so AI-generated designs inherit a brand automatically</h3>
+<div class="meta">25 Aug 2026 · Campaign Middle East<span class="dot">·</span><span class="tag tag--pipeline">Active Prospect</span></div>
+<p class="summary">Canva launched a connector for AI Mode in Google Search, powered by Gemini, letting users generate designs from a prompt and open them in Canva to edit. Referencing a Canva Brand Kit makes generated designs match the business's colours, fonts and identity; Enterprise teams get brand-template autofill from conversation context.</p>
+<p class="src">Source: <a href="https://campaignme.com/canva-expands-design-creation-inside-google-search/" target="_blank">Campaign Middle East — Canva expands design creation inside Google search</a></p>
+<div class="why"><b>Why it matters for Frontify:</b> this is machine-readable brand identity being enforced on generative output inside a general-purpose search surface — not inside a design tool a brand team controls. The Brand Kit is doing exactly the job LLM-MD and the MCP surface are being built to do, and it now reaches anyone typing into Google. Note also that <b>Google is on the active prospect list</b>.</div>
+</div>
+<div class="radar-card" data-owner="all">
+<h3 style="font-size:17px;margin:0 0 8px;line-height:1.3">Sameness.co ships a queryable brand assistant and publishes a head-to-head page naming Frontify</h3>
+<div class="meta">26 Aug 2026 · Sameness.co</div>
+<p class="summary">Sameness.co shipped The Brand Assistant, which turns guidelines into a system that answers only from published blocks, states where the brand is silent and surfaces rule conflicts rather than picking a side, plus Brand Import, which ingests links, PDFs and Markdown to draft documentation. Closed beta opened 11 August.</p>
+<p class="src">Source: <a href="https://www.sameness.co/changelog" target="_blank">Sameness.co — changelog</a> · <a href="https://www.sameness.co/compare/frontify" target="_blank">Frontify vs Sameness comparison page</a></p>
+<div class="why"><b>Why it matters for Frontify:</b> flagged as an emerging competitor last week on the strength of an incidental mention. It has since published a dedicated comparison page that engages Brand Assistant and MCP support by name, and positions itself as "The Brand Context Layer. Structured for AI. Beautiful for humans." The refusal to invent — answering only from published blocks and naming conflicts — is a sharper governance claim than most. <b>Recommend adding it to the competitor list.</b></div>
+</div>
+<div class="radar-card" data-owner="all">
+<h3 style="font-size:17px;margin:0 0 8px;line-height:1.3">MarketScale launches Brand Brain, a persistent brand memory that feeds AI content generation</h3>
+<div class="meta">28 Aug 2026 · MarketScale</div>
+<p class="summary">MarketScale added Brand Brain, which stores a company's brand, products, claims, approved work and every correction its team has made, then feeds that context into the platform's AI production and approval workflow. The site demonstrates it by running one prompt twice on the same model, generic and Brand Brain-informed.</p>
+<p class="src">Source: <a href="https://www.marketscale.com/brand-brain" target="_blank">MarketScale — Brand Brain</a> <span style="color:#676763">(dateline from the site's own launch banner; no press release or third-party coverage yet)</span></p>
+<div class="why"><b>Why it matters for Frontify:</b> the same "brand context an AI can read" thesis behind Brand Graph and LLM-MD, arriving from a content-operations vendor rather than a DAM. The detail worth noting is that corrections are stored as first-class context — decisions stay decided. That is a governance idea, not a storage one.</div>
+</div>
+<div class="radar-card" data-owner="all">
+<h3 style="font-size:17px;margin:0 0 8px;line-height:1.3">Canto ships Product Hub MCP, pushing product content straight into the AI tools teams already use</h3>
+<div class="meta">27 Aug 2026 · Canto</div>
+<p class="summary">Canto launched Product Hub MCP, which delivers product content directly into the AI tools teams already work in, with "no manual exports, copy-pasting, or jumping between systems". It is a direct structural analogue to an MCP surface over a content repository.</p>
+<p class="src">Source: <a href="https://www.linkedin.com/company/canto/posts/?feedView=all" target="_blank">Canto — Product Hub MCP</a></p>
+<div class="why"><b>Why it matters for Frontify:</b> a direct DAM competitor shipping an MCP integration in the same window Frontify's own MCP comes out of beta. The category is converging on the same answer — assets and context reaching the assistant rather than the assistant reaching into the DAM.</div>
+</div>
+<div class="radar-card" data-owner="all">
+<h3 style="font-size:17px;margin:0 0 8px;line-height:1.3">Aprimo makes "Agentic DAM" its headline positioning going into DMEXCO</h3>
+<div class="meta">27 Aug 2026 · Aprimo</div>
+<p class="summary">Aprimo has moved its headline positioning to "Agentic DAM" for DMEXCO 2026 in Cologne, and ran a separate webinar with AVP on visual search, rights management and accountability in DAM. It replaces the EU AI Act transparency framing the company led with earlier in the year.</p>
+<p class="src">Source: <a href="https://www.linkedin.com/company/aprimomarketing/posts/?feedView=all" target="_blank">Aprimo — DMEXCO positioning</a></p>
+<div class="why"><b>Why it matters for Frontify:</b> a positioning shift worth tracking. Aprimo spent the first half of the year on EU AI Act transparency and has swapped it for agentic language. Frontify and Valtech will both be at the same DMEXCO.</div>
+</div>
+<div class="radar-card" data-owner="row">
+<h3 style="font-size:17px;margin:0 0 8px;line-height:1.3">An ex-Interbrand chief executive puts a number on brand-architecture drift at Australia's big banks</h3>
+<div class="meta">Strategic Brand Partners · 27 Aug 2026 · Little Black Book</div>
+<p class="summary">Nathan Birch, formerly Interbrand's ANZ and New Zealand chief executive, released "Architecture by Accident" through his consultancy Strategic Brand Partners. It applies a Brand Efficiency Frontier and a Brand Valency Model to the 18 customer-facing brands of Australia's Big Four banks, putting the annual return gap at $280m–$420m per bank.</p>
+<p class="src">Source: <a href="https://lbbonline.com/news/nathan-birch-stategic-brand-partners-architecture-by-accident" target="_blank">LBB — Architecture by Accident</a></p>
+<div class="why"><b>Why it matters for Frontify:</b> portfolio architecture quantified in money is the argument brand teams struggle to make to a CFO, and it is the argument that gets a brand-management platform funded. Worth knowing that a former Interbrand country chief executive is making it independently. <b>Strategic Brand Partners is not on the CRM target list — a candidate to add.</b></div>
+</div>
+  </section>
+
+  <section class="cat" id="sec-other-activity">
+    <h2 class="cat-title">Other Activity
+      <span class="cat-info" data-tip="Qualifying but lower-priority items that didn&#x27;t make the featured story cut this week.">ⓘ</span>
+      <span class="count">19</span>
+    </h2>
+<div class="other-item" data-owner="global" data-partners="global:Accenture">
+<div class="oi-head">PepsiCo runs a global review for a partner to build an AI marketing platform</div>
+<div class="oi-meta">Accenture · Publicis Sapient · 27 Aug 2026 · <a href="https://www.campaignlive.co.uk/article/pitch-update-pepsico-mr-kipling-coca-cola-superdrug-moshi-monsters-east-midlands-railway/1968538" target="_blank">Campaign UK Pitch Update</a> · <span class="tag tag--target">Target Agency</span></div>
+PepsiCo is running a global review to find a partner to build an AI marketing platform. Accenture, Deloitte, Omnicom and Publicis Sapient are understood to be pitching. No Frontify partner agency is involved.
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><div class="target-note">Two of the four agencies pitching are on the target list. <b>Accenture</b> — CRM owner <b>Nicolas Hürner</b> — and <b>Publicis Sapient HQ (United States)</b> — CRM owner <b>Marvick Fernandes</b>. A global AI marketing platform build for PepsiCo is the kind of mandate where brand context becomes a stated requirement rather than an assumption, which makes it a legitimate reason to open a conversation with either regardless of who wins.</div><h4>Named contacts</h4><ul><li>No individuals named in the source</li><li>Coordinate with the CRM owners before contact: Nicolas Hürner (Accenture), Marvick Fernandes (Publicis Sapient)</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Whoever wins PepsiCo has the same problem</span>Hi [Accenture team] — I saw Accenture is among the agencies pitching PepsiCo's global AI marketing platform review. Whoever wins it inherits the same underlying problem: an AI platform can only produce on-brand work if the brand exists somewhere a machine can actually read, and at PepsiCo's portfolio scale that is not a document, it is an interface. We build that layer at Frontify and work with a number of agency groups on exactly this seam. Worth a conversation regardless of how the review lands?<br><br>[Your name]</div></div></details>
+</div>
+<div class="other-item" data-owner="uki" data-partners="uki:Monks">
+<div class="oi-head">Monks and Pearlfisher both make senior London strategy hires</div>
+<div class="oi-meta">Monks · Pearlfisher · 27 Aug 2026 · <a href="https://www.campaignlive.co.uk/article/movers-shakers-dentsu-monks-wpp-media-park/1968395" target="_blank">Campaign UK</a> · <span class="tag tag--target">Target Agency</span></div>
+Monks hired Darren Savage as group strategy director to build out its EMEA practice, reporting to Simon John. Pearlfisher appointed Natalie Prout executive strategy director in London. Neither agency is a Frontify partner.
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><div class="target-note">Both agencies are on the target list. <b>Monks (Amsterdam)</b> — CRM owner <b>Rikard Norrbin</b> — and <b>Pearlfisher HQ (United Kingdom)</b> — CRM owner <b>Russell Ellis</b>. A newly created strategy role is the cleanest moment to make first contact: the person is building a practice and is unusually open to conversations about how other agencies solve the same problems.</div><h4>Named contacts</h4><ul><li>Darren Savage — Group Strategy Director, Monks (new)</li><li>Natalie Prout — Executive Strategy Director, Pearlfisher London (new)</li><li>Coordinate with the CRM owners: Rikard Norrbin (Monks), Russell Ellis (Pearlfisher)</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Building a practice from scratch</span>Hi Darren — congratulations on the Monks role. Building an EMEA strategy practice from a newly created seat is the good version of a hard job: you get to decide how it works rather than inherit it. One thing that tends to surface early when a strategy function scales across markets is that every team ends up re-deriving what a client's brand actually is, because it lives in decks rather than anywhere queryable. That is the problem we work on at Frontify. Not a pitch — I'd just be interested in how you're planning to set it up.<br><br>[Your name]</div></div></details>
+</div>
+<div class="other-item" data-owner="uki" data-partners="uki:Design Bridge and Partners">
+<div class="oi-head">Design Bridge loses the Carlsberg global client relationship lead after 15 years</div>
+<div class="oi-meta">Design Bridge and Partners · 27 Aug 2026 · LinkedIn <span style="color:#676763">(URL unresolvable)</span></div>
+Jamie Pearce left after fifteen years, stating he led the Carlsberg Group global client relationship and delivered two global Tuborg redesigns. He names four DB&amp;P colleagues, indicating who now holds the relationship.
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Jamie Pearce — Senior Client Director, Branding &amp; Design (departing)</li><li>Jemma Akister, Chloe Hibbert, Tom Gilbert, Thomas Holliday — Design Bridge and Partners</li><li>Client side: Ana Rodic, Peter Barwick, Benjamin Højer Hoffmann — Carlsberg Group</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Fifteen years of Carlsberg, changing hands</span>Hi [Design Bridge team] — Jamie Pearce leaving after fifteen years, having led the Carlsberg global relationship and two Tuborg redesigns, is a lot of accumulated knowledge moving. Handovers of that size usually go fine on the client relationship and badly on the detail: which decisions were made, what was tried and rejected, why the system is shaped the way it is. That history rarely lives anywhere except in one person's head. How are you holding it as the relationship transfers?<br><br>[Your name]</div></div></details>
+</div>
+<div class="other-item" data-owner="dach" data-partners="dach:Gate B">
+<div class="oi-head">Gate B breaks a fifteen-day silence with a job ad, and the Orange Logic follow-up still has not shipped</div>
+<div class="oi-meta">Gate B · 28 Aug 2026 · <a href="https://www.linkedin.com/company/gateb/posts/?feedView=all" target="_blank">LinkedIn</a></div>
+gateB's first post since 13 August is a Hamburg recruitment ad. The pre-announced "AI Ready Content Supply Chain" follow-up with Orange Logic remains unpublished on both sides, two weeks on.
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>No gateB individual named in the post</li><li>gateB is both a Frontify partner and a competitor — treat any approach accordingly</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: The Hamburg bench</span>Hi [gateB team] — I noticed the Technical Solution Consultant opening in Hamburg. Hiring into delivery rather than sales is usually a sign the pipeline is real, so that reads as a good week rather than a quiet one. I was also watching for the AI Ready Content Supply Chain piece you and Orange Logic pre-announced — it has not landed on either side yet. If that has moved or changed shape, I would genuinely like to hear where it went; the content-supply-chain framing is one of the more useful ones in the category.<br><br>[Your name]</div></div></details>
+</div>
+<div class="other-item" data-owner="dach" data-partners="dach:Havas">
+<div class="oi-head">Asahi's Tyskie moves its German account to Adam &amp; Eve Berlin</div>
+<div class="oi-meta">Campaign Germany · 28 Aug 2026 · <a href="https://campaigngermany.de/news/beitrag/4022-pitch-update-more-nutrition-huk-coburg-dryll-amp-mehr.html" target="_blank">Pitch-Update</a> · <span class="tag tag--client">Existing Frontify Client</span> · <span class="tag tag--target">Target Agency</span></div>
+Campaign Germany records Tyskie, an Asahi Europe brand, moving its German account to Adam &amp; Eve Berlin within HeimatTBWA. No partner agency involved — but Asahi Europe is a Frontify customer.
+<details class="outreach"><summary>Context — no approach recommended</summary><div class="outreach-body"><div class="target-note">Two target agencies in this item. <b>adam&amp;eveDDB UK</b> — CRM owner <b>Russell Ellis</b> — took the account; <b>HeimatTBWA (Düsseldorf)</b> — CRM owner <b>Chantal Isarin</b> — is the parent group. Neither is a Frontify partner. An Asahi brand moving between two target agencies is a natural reason to open a conversation with either, and Asahi Europe is already a Frontify customer.</div><div class="client-note"><b>Asahi Europe is an existing Frontify customer</b> and the subject of a live partner story — Havas won Peroni globally on 18 August with consolidation as the stated rationale. A separate German brand moving to a different group in the same month is worth flagging to the account team before any Havas conversation that leans on the consolidation narrative.</div><h4>Named contacts</h4><ul><li>No partner-side contact — this is account intelligence, not an outreach target</li><li>Coordinate with the Frontify account team for Asahi Europe</li></ul></div></details>
+</div>
+<div class="other-item" data-owner="nordics" data-partners="nordics:Stockholm Design Lab">
+<div class="oi-head">Stockholm Design Lab's Sigma identity wins Utmärkt Svensk Form 2026</div>
+<div class="oi-meta">Stockholm Design Lab · 27 Aug 2026 · <a href="https://www.resume.se/marknadsforing/design/prisregn-for-sdl-vinner-utmarkt-svensk-form/" target="_blank">Resumé</a></div>
+Svensk Form's most prestigious award went to SDL's Sigma work, one of thirteen recipients. Entries cannot be submitted — the jury selects independently. Distinct from the D&amp;AD Yellow Pencil logged in May.
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Sakari Paananen — Creative Director, Stockholm Design Lab</li><li>Nina Granath — Creative Director, Stockholm Design Lab</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: An award you cannot enter</span>Hi Sakari — congratulations on Utmärkt Svensk Form. The detail that makes it worth more than most awards is that you cannot enter it — the jury picks, which means somebody went looking for the Sigma work rather than being handed it. Your line about the relationship being the foundation of everything is the honest version of why three-year engagements produce this and three-month ones don't. With the engagement still running, what does year four look like — more system, or more application?<br><br>[Your name]</div></div></details>
+</div>
+<div class="other-item" data-owner="nordics" data-partners="nordics:BBDO Nordics">
+<div class="oi-head">Riksbyggen's micro-homes go global, and the creative credits surface for the first time</div>
+<div class="oi-meta">BBDO Nordics · 26–28 Aug 2026 · <a href="https://www.linkedin.com/company/bbdonordics/" target="_blank">LinkedIn</a></div>
+The three micro-homes reached Dezeen, Fast Company and IBTimes inside the window, and took LBB's Work of the Week. Full credits surfaced: ECDs Markus Bjurman and Malin Wikerberg, art director Anton Bolin.
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Markus Bjurman — Executive Creative Director, BBDO Nordics</li><li>Malin Wikerberg — Executive Creative Director, BBDO Nordics</li><li>Anton Bolin — Art Director, BBDO Nordics</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: From Swedish trade to Dezeen in a week</span>Hi Markus — the Riksbyggen homes travelling from Swedish trade press to Dezeen, Fast Company and IBTimes inside a week is a good problem to have, and a specific one: the work is now being reproduced by people who have never seen the brand book. The Square Metre Index is the part I would protect — a proprietary measure only stays proprietary if it is presented consistently everywhere it appears. Is the index documented as a brand asset in its own right, or does it live inside the campaign?<br><br>[Your name]</div></div></details>
+</div>
+<div class="other-item" data-owner="nordics" data-partners="nordics:Kontrapunkt">
+<div class="oi-head">Kontrapunkt's Novo Nordisk Foundation build is its largest 3D asset library to date</div>
+<div class="oi-meta">Kontrapunkt · 25 Aug 2026 · <a href="https://www.linkedin.com/feed/update/urn:li:activity:7497932750025412608/" target="_blank">LinkedIn</a></div>
+Chief executive Philip Linnemann reposted the Foundation portfolio overview with a new detail on scale, calling it "definitely the largest 3D asset library we have developed so far".
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Philip Linnemann — Chief Executive Officer and Partner, Kontrapunkt</li><li>Halle Jarvi — Strategist, Kontrapunkt</li><li>Andreas Fisker Nielsen — Strategy Director, Kontrapunkt</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: The largest 3D library you have built</span>Hi Philip — "definitely the largest 3D asset library we have developed so far" is the line I would have led with. A navigable 3D system is impressive; the library underneath it is the thing the Foundation now owns and has to keep. 3D assets are the worst-behaved things in any brand system — huge files, version ambiguity, and a rendering pipeline only two people understand. With QuNorth now running alongside it in the same orbit, that library is going to get asked to do more. How is it being handed over?<br><br>[Your name]</div></div></details>
+</div>
+<div class="other-item" data-owner="nordics" data-partners="nordics:Nord">
+<div class="oi-head">Nord picks up six Rambukken shortlists and revisits the SKF Faroe Islands work at Eurobest</div>
+<div class="oi-meta">Nord · 27–28 Aug 2026 · <a href="https://www.linkedin.com/feed/update/urn:li:activity:7499097562726010880/" target="_blank">LinkedIn</a></div>
+Nord is shortlisted in six Rambukken categories for McDonald's Danmark and Hjemmeværnet. Eurobest separately interviewed SKF's Per Nilsson and Nord's Carl Laurén on the Faroe Islands Space Program.
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Carl Laurén — Art Director, Nord DDB</li><li>Client side: Per Nilsson — Head of Group Communications and Brand, SKF Group</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: B2B that behaves like B2C</span>Hi Carl — the Eurobest conversation with Per Nilsson was a good listen, mostly because the Faroe Islands work is one of the few B2B campaigns that did not need the excuse of being B2B. What interests me on the brand side is what happens at SKF afterwards: a campaign that distinctive raises expectations across every other touchpoint the group owns, and industrial brands usually have hundreds. Was there a system conversation that came out of it, or did it stay a campaign?<br><br>[Your name]</div></div></details>
+</div>
+<div class="other-item" data-owner="amer" data-partners="amer:Omnicom Production">
+<div class="oi-head">Omnicom Production convenes seven brands in Manhattan on content relevance</div>
+<div class="oi-meta">Omnicom Production · 27 Aug 2026 · <a href="https://www.linkedin.com/feed/update/urn:li:activity:7498789601998819328/" target="_blank">LinkedIn</a> · <span class="tag tag--target">Target Agency</span></div>
+Omnicom Production, OCX and Omnicom Media convened leaders from Wells Fargo, Bayer, HelloFresh, the NBA, IBM, Fanatics and Cigna on content relevance. No partner-side individuals named — but a useful client map.
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><div class="target-note"><b>Omnicom Production is a target agency, not a Frontify partner.</b> It appears in the CRM target export as a whole-agency row, no office qualifier. CRM owner: <b>Russell Ellis</b>. It stays in the weekly search at partner depth — but frame any approach as a first contact, not account management.</div><h4>Named contacts</h4><ul><li>No partner-side individual named in the post</li><li>Dan Ricciardi — Global Chief Business Officer, Omnicom Production</li><li>Note: <b>Bayer</b> also appears in Valtech's DMEXCO masterclass this week</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Same room, same problem</span>Hi [Omnicom Production team] — the Manhattan dinner guest list is a striking set: Wells Fargo, Bayer, HelloFresh, the NBA, IBM, Fanatics and Cigna all have the same underlying problem, which is producing enough relevant content without the brand coming apart at volume. Worth noting that Bayer is publicly describing the same problem from the platform side this month, consolidating 65-plus corporate sites onto one system. Relevance at that scale is a governance question as much as a creative one. Was that the direction the room went?<br><br>[Your name]</div></div></details>
+</div>
+<div class="other-item" data-owner="amer" data-partners="amer:Havas">
+<div class="oi-head">Havas Health renews for fifteen years and expands its New York headquarters to 254,000 sq ft</div>
+<div class="oi-meta">Havas · 27 Aug 2026 · <a href="https://commercialobserver.com/2026/08/havas-health-lease-expansion-200-madison-avenue/" target="_blank">Commercial Observer</a> · <span class="tag tag--target">Target Agency</span></div>
+Havas Health renewed 189,461 sq ft at 200 Madison Avenue on a fifteen-year deal and added 64,657 more, taking the New York headquarters to five floors.
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><div class="target-note"><b>Havas is a target agency, not a Frontify partner</b> — with one exception: <b>Havas Middle East is the partner entity</b>, though it was removed from the weekly workflow in August as dormant. Seven Havas rows sit on the CRM target list. Owners: <b>Nicolas Hürner</b> (DE, Germany, DACH), <b>Russell Ellis</b> (London, Havas People), <b>Chantal Isarin</b> (Paris), <b>Marvick Fernandes</b> (Chicago). Frame as first contact unless the story is specifically Havas Middle East.</div><h4>Named contacts</h4><ul><li>No Havas Health individuals named in the source</li><li>Note: Felix Mulderrig, AI Enablement Lead at Havas Lynx, announced his departure this month after training close to 1,000 people across the network</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Fifteen years is a commitment</span>Hi [Havas Health team] — a fifteen-year renewal plus 64,000 additional square feet is about as clear a statement of intent as a network can make, particularly in health. What caught my eye alongside it is Felix Mulderrig leaving Havas Lynx after training close to a thousand people across the network. Growing the footprint while the person who built the enablement programme moves on is a familiar shape — capability that lived in someone rather than in a system. Is that programme being rebuilt, or absorbed?<br><br>[Your name]</div></div></details>
+</div>
+<div class="other-item" data-owner="row" data-partners="row:Pentagram">
+<div class="oi-head">Doha Design District publishes its own bilingual case study on the Pentagram partnership</div>
+<div class="oi-meta">Pentagram · 26 Aug 2026 · <a href="https://www.linkedin.com/feed/update/urn:li:activity:7498308550184759296/" target="_blank">LinkedIn</a> · <span class="tag tag--target">Target Agency</span></div>
+Client-side amplification of the Sada and Mada work, with two new facts: Doha Design District published a full bilingual case study, and Msheireb Properties chief executive Ali Al Kuwari is quoted.
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><div class="target-note"><b>Pentagram is a target agency, not a Frontify partner.</b> Two offices on the CRM target list — Pentagram HQ (London), owner <b>Russell Ellis</b>, and Pentagram (Austin), owner <b>Marvick Fernandes</b>. It stays in the weekly search at partner depth; frame any approach as a first contact.</div><h4>Named contacts</h4><ul><li>Angus Hyland — Partner, Pentagram London</li><li>Client side: Engineer Ali Al Kuwari — Chief Executive Officer, Msheireb Properties</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: A bilingual case study, client-side</span>Hi [Pentagram team] — it is unusual and rather good that Doha Design District published its own bilingual case study on Sada and Mada rather than leaving the telling to you. That says the client owns the thinking, which is the healthiest outcome a naming and identity project can have. It also raises the operational question: both marks derive from the parent District symbol, so the family now has to be applied by exhibition teams, event partners and tenants across two languages. Where does that family live for them?<br><br>[Your name]</div></div></details>
+</div>
+<div class="other-item" data-owner="global" data-partners="global:Landor">
+<div class="oi-head">Landor's global ECD reads the Instagram wordmark refresh as identity built to be used</div>
+<div class="oi-meta">Landor · 24 Aug 2026 · <a href="https://www.linkedin.com/feed/update/urn:li:activity:7497631316537106433/" target="_blank">LinkedIn</a></div>
+Ryan Frost argues the refresh is a shift "from an identity designed to represent a platform to an identity designed to be used", and asks whether it amounts to blanding.
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Ryan Frost — Global Executive Creative Director, Landor</li><li>Trish Folan — General Manager, Australia and New Zealand, Landor</li><li>Heather Mulvaney — Global Head of Talent Acquisition, WPP Brand &amp; Design</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Designed to be used</span>Hi Ryan — "from an identity designed to represent a platform to an identity designed to be used" is the most useful sentence written about that refresh, and it generalises well beyond Instagram. Identities are increasingly assembled by people and systems that were never in the room, which changes what a mark has to survive. The blanding question is the right worry, though I would put it slightly differently: the risk is not that the mark gets simpler, it is that nothing downstream records why. Where do you think that intent should live?<br><br>[Your name]</div></div></details>
+</div>
+<div class="other-item" data-owner="global" data-partners="global:Interbrand">
+<div class="oi-head">Interbrand's global page goes fully silent for the first time in the ledger</div>
+<div class="oi-meta">Interbrand · 18–28 Aug 2026 · <a href="https://www.linkedin.com/company/interbrand/posts/?feedView=all" target="_blank">LinkedIn</a></div>
+Interbrand published nothing on its global page in the window — the first fully silent week recorded here — after a high-cadence six-part AI-era series. Its newsroom URL now redirects to the homepage.
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>No individual named this week</li><li>Interbrand contacts on file from prior runs: the Japan team behind the six-part AI-era series</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: After the six-part run</span>Hi [Interbrand team] — I had been following the six-part AI-era series closely, particularly instalment four on quantifying brand through Role of Brand, and noticed the cadence stopped this week with instalments five and six still due. No criticism intended — a high-tempo publishing run is expensive to sustain. I am interested in where the series lands, because the ROB argument is the one that connects brand to a number a CFO recognises. Are five and six still coming, and is the Clootrack workflow part of where it ends up?<br><br>[Your name]</div></div></details>
+</div>
+<div class="other-item" data-owner="nordics" data-partners="nordics:Forsman &amp;amp; Bodenfors">
+<div class="oi-head">A Swedish civil-defence startup discloses Forsman &amp; Bodenfors on its brand and app</div>
+<div class="oi-meta">Forsman &amp; Bodenfors · 24 Aug 2026 · LinkedIn <span style="color:#676763">(client-side post)</span> · <span class="tag tag--target">Target Agency</span></div>
+Vival's founder writes that the company "brought in Forsman and Bodenfors to shape the brand and the app" for its Resilience Hub, describing a material palette, colour system and status projection mechanism.
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><div class="target-note"><b>Forsman &amp; Bodenfors is a target agency, not a Frontify partner.</b> Five offices are on the CRM target list — Gothenburg (HQ), Stockholm, London, Dublin and Singapore. CRM owners: <b>Rikard Norrbin</b> (Gothenburg, Stockholm, Singapore) and <b>Russell Ellis</b> (London, Dublin). It stays in the weekly search at partner depth because the relationship is worth the effort — but frame any approach as a first contact, not as partner account management.</div><h4>Named contacts</h4><ul><li>Client side: Daniel Metcalfe — Founder and Chief Executive Officer, Vival Corporation</li><li>No Forsman &amp; Bodenfors individual named in the post</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Brand and app together, from the start</span>Hi [Forsman &amp; Bodenfors team] — Vival's founder disclosed your work on the brand and the app for their Resilience Hub, and the framing he used is the interesting part: a material palette, a colour system and a status projection mechanism described as one thing rather than a brand and then an interface. Getting that integration right at startup scale is much easier than retrofitting it at series C. Given the two senior changes at the agency this month, I would be glad to know who is picking up conversations like this one.<br><br>[Your name]</div></div></details>
+</div>
+<div class="other-item" data-owner="amer" data-partners="amer:Critical Mass">
+<div class="oi-head">Critical Mass's Steve Savic joins the Webby Awards academy as an executive member</div>
+<div class="oi-meta">Critical Mass · 25 Aug 2026 · <a href="https://www.linkedin.com/feed/update/urn:li:activity:7498039131651043328/" target="_blank">LinkedIn</a></div>
+Critical Mass announced Steve Savic has been selected an executive member of IADAS, the body behind the Webby Awards, where he will take part in final nominee selection each year.
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Steve Savic — Critical Mass (title not stated in the source)</li><li>Joshua Brain Jaffe — Creative Technology Director, Critical Mass (Campaign 40 Over 40 honoree)</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Judging what good looks like</span>Hi Steve — congratulations on the IADAS executive membership. Sitting on final nominee selection is a different vantage point from making the work: you end up seeing the whole field's assumptions at once, year after year. I would be curious what you notice from that seat about how digital brand work is changing — specifically whether the entries that stand out are the ones with a system behind them or the ones that got a single execution exactly right. Happy to compare notes if it is an interesting question for you.<br><br>[Your name]</div></div></details>
+</div>
+<div class="other-item" data-owner="amer" data-partners="amer:Lippincott">
+<div class="oi-head">Lippincott publishes the full NanoH2O repositioning case study</div>
+<div class="oi-meta">Lippincott · 26 Aug 2026 · <a href="https://www.linkedin.com/feed/update/urn:li:activity:7498364034358956032/" target="_blank">LinkedIn</a></div>
+Lippincott set out the repositioning of NanoH2O — re-emerging under its original name from LG Chem — from membrane manufacturer to global water solutions partner. The rebrand itself was captured 11 August.
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>No individuals named in the case study</li><li>Lippincott contacts on file: the team behind the Allegacy repositioning</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Re-emerging under an old name</span>Hi [Lippincott team] — the NanoH2O case is a specific kind of hard: a business coming back out of LG Chem under its original name has to be simultaneously familiar and new, and the scientific credibility you protected is exactly the thing a repositioning usually costs. Moving from membrane manufacturer to global water solutions partner also widens the audience considerably — more markets, more channels, more people applying the brand. How much of the system did you build for their own teams to run?<br><br>[Your name]</div></div></details>
+</div>
+<div class="other-item" data-owner="dach" data-partners="dach:Mutabor">
+<div class="oi-head">Mutabor recruits typographers into the new foundry and marks a twenty-year design director tenure</div>
+<div class="oi-meta">Mutabor · 25–26 Aug 2026 · <a href="https://www.linkedin.com/feed/update/urn:li:activity:7498005799043227649/" target="_blank">LinkedIn</a></div>
+The Type Foundry announcement carries an open hiring call, confirming MTF is a staffed unit rather than a repositioning. Design director Antje Adamovsky separately marked twenty years at Mutabor.
+<details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Antje Adamovsky — Design Director, Mutabor (twenty years)</li><li>Heinrich Paravicini — Co-founder and Chief Creative Officer, Mutabor</li><li>Amelie Pamp — Managing Director, MAd unit</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Staffing a foundry</span>Hi [Mutabor team] — hiring typographers into MTF rather than routing everything through the external network is the detail that makes the foundry announcement credible. It also creates a delivery question I would be interested in: a custom typeface is only worth the investment if every agency, printer and internal team ends up with the right cut, and font distribution is one of the leakiest parts of any brand system. Congratulations to Antje on twenty years, incidentally — that is a rare tenure. How are you planning to handle delivery for MTF clients?<br><br>[Your name]</div></div></details>
+</div>
+<div class="other-item" data-owner="dach" data-partners="dach:Havas" data-risk="1">
+<div class="oi-head">The Guardian names Havas Media Germany in US foreign-agent filings over an AI-chatbot seeding campaign</div>
+<div class="oi-meta">Havas · 26 Aug 2026 · <a href="https://www.theguardian.com/world/2026/aug/26/fake-thinktank-israel-ai-propaganda" target="_blank">The Guardian</a> · <span class="tag tag--risk">Risk context</span></div>
+The Guardian reports Havas Media Germany GmbH as the named intermediary in US foreign-agent filings covering $24.9m paid to two American firms. Risk context only — no approach should be built on this.
+</div>
+  </section>
+
+  <section class="cat" id="sec-events-attendance">
+    <h2 class="cat-title">Events &amp; Attendance
+      <span class="cat-info" data-tip="Named partner-side individuals confirmed as attending, speaking at, or judging an event in the next 60 days or the past 7 days.">ⓘ</span>
+      <span class="count">6</span>
+    </h2>
+    <div class="events-list">
+      <div class="event-item" data-owner="amer" data-partners="amer:Ogilvy">Reid Litman (Consulting Director)<span class="ev-sep">·</span><b>Ogilvy</b><span class="ev-sep">·</span>#OgilvyOn Live — "How Brands Can Address Gen Z's Real Constraints", with Simon Gawn (Ideally) and Eugene Healey (Studio EH). 304 registered<span class="ev-sep">·</span>1 Sep 2026, 16:30 ET<span class="ev-sep">·</span><a href="https://www.linkedin.com/feed/update/urn:li:activity:7497698924095270912/" target="_blank">Source</a></div>
+      <div class="event-item" data-owner="dach" data-partners="dach:Peter Schmidt Group">Felix Damerius &amp; Sven Rieckmann (Executive Creative Directors, curators)<span class="ev-sep">·</span><b>Peter Schmidt Group</b><span class="ev-sep">·</span>Future Playgrounds 2026, "Own Your Aura", Design Zentrum Hamburg — sixth speaker Vincent de Malherbe (Can Touch This Studio / Playtronica) confirmed his 11 September slot this week<span class="ev-sep">·</span>10–11 Sep 2026<span class="ev-sep">·</span><a href="https://www.linkedin.com/feed/update/urn:li:activity:7498298138517032960/" target="_blank">Source</a></div>
+      <div class="event-item" data-owner="dach" data-partners="dach:Farner">Patman (Lead AI)<span class="ev-sep">·</span><b>Farner</b><span class="ev-sep">·</span>Swico Late Afternoon Talk, "KI in Action — Unverfälschte Einblicke in die KI-Praxis von Agenturen" — Farner presents its platform-agnostic AI Operating System. Free, four agency sessions<span class="ev-sep">·</span>22 Sep 2026, 15:30–20:00, talk at 17:35<span class="ev-sep">·</span>pink tree Halle 87, Zürich Oerlikon<span class="ev-sep">·</span><a href="https://www.swico.ch/de/kalender-events/detail/lat-ki-in-action-unverfalschte-einblicke-in-die-ki-praxis-von-agenturen" target="_blank">Source</a></div>
+      <div class="event-item" data-owner="dach" data-partners="dach:Valtech">David Toma (VP Strategy &amp; Consulting), Axel Hermes (Director Strategy), Nils Abel, Alexander Woelke-Oredein, Lukas Lekszton<span class="ev-sep">·</span><b>Valtech</b><span class="ev-sep">·</span>DMEXCO 2026, Hall 6.1 stand B029 — masterclass with <b>Bayer</b> on consolidating 65+ corporate sites and 60+ languages onto a single DXP (23 Sep, 16:00, stage MC6A), plus a Sitecore session on keeping AI content on-brand (23 Sep, 15:15)<span class="ev-sep">·</span>23–24 Sep 2026<span class="ev-sep">·</span>Koelnmesse, Cologne<span class="ev-sep">·</span><a href="https://www.valtech.com/events/dmexco-2026/" target="_blank">Source</a></div>
+      <div class="event-item" data-owner="row" data-partners="row:Design Bridge and Partners">Emma Follett (Co-Chief Creative Officer)<span class="ev-sep">·</span><b>Design Bridge and Partners</b><span class="ev-sep">·</span>Golden Drum 2026 — talk on the relationship between Head, Heart and Hands, and why exceptional craft still matters for cultural impact<span class="ev-sep">·</span>13 Oct 2026 (festival 12–13 Oct)<span class="ev-sep">·</span>Portorož, Slovenia<span class="ev-sep">·</span><a href="https://www.media-marketing.com/en/news/golden-drum-extends-entry-deadline-and-reveals-new-programme-names/" target="_blank">Source</a></div>
+      <div class="event-item" data-owner="nordics" data-partners="nordics:Stockholm Design Lab">Sakari Paananen (Creative Director)<span class="ev-sep">·</span><b>Stockholm Design Lab</b><span class="ev-sep">·</span>Utmärkt Svensk Form 2026 — <b>held</b>. SDL's Sigma identity was one of thirteen recipients, presented by H.R.H. Prince Carl Philip. Entries cannot be submitted; the jury selects independently. <b>⚠️ Caveat:</b> Paananen is quoted on the win but no source confirms he attended in person<span class="ev-sep">·</span>27 Aug 2026<span class="ev-sep">·</span>SARA Kulturhus, Skellefteå<span class="ev-sep">·</span><a href="https://www.resume.se/marknadsforing/design/prisregn-for-sdl-vinner-utmarkt-svensk-form/" target="_blank">Source</a></div>
+    </div>
+  </section>
+
+  <section class="cat" id="sec-appendix">
+    <div class="appendix">
+      <h2>Coverage Appendix — 35 partner pages searched</h2>
+      <p style="color:#676763;margin:0 0 12px">Every partner received a Google News search (with a local-language pass where applicable), a LinkedIn company-feed read via the Voyager endpoint and a LinkedIn mentions search. Campaign UK, US and Germany were covered by once-per-run section browses. <b>The coverage floor was crossed on all 35 partners at count=25 and every prior watermark was verified present — no partner is logged PARTIAL.</b> Campaign Asia was browsed after sign-in and returned no partner hits in window. Campaign Canada remains blocked on quota and is declared in the run notes.</p>
+      <div class="grid">
+        <div data-owner="global"><b>Ogilvy</b> — Fanta Haunted Universe; Westfield PR; GALO alumni launch</div>
+        <div data-owner="uki"><b>Design Bridge and Partners</b> — Pearce departs, Carlsberg relationship moves; Golden Drum</div>
+        <div data-owner="global"><b>Dragon Rouge</b> — Foodera competitive pitch and architecture revealed</div>
+        <div data-owner="row"><b>AKQA</b> — Westfield World of Wins; Home Centre year two</div>
+        <div data-owner="global"><b>JKR</b> — Silent on all four nets; watermark unchanged since 18 Aug</div>
+        <div data-owner="uki"><b>Landor</b> — Häagen-Dazs sticks FR/UK; Frost on the Instagram wordmark</div>
+        <div data-owner="amer"><b>Critical Mass</b> — Savic joins IADAS; Campaign Canada blocked, Strategy empty</div>
+        <div data-owner="amer"><b>Omnicom Production</b> — Royzina hire; Manhattan client dinner</div>
+        <div data-owner="nordics"><b>Bold Scandinavia</b> — Stevns Klint case; Lova Rehle, fourth Stockholm hire</div>
+        <div data-owner="amer"><b>Lippincott</b> — NanoH2O case study; CMO Outlook out of window</div>
+        <div data-owner="uki"><b>Mother</b> — Monthly Cut 017 at Shoreditch; Mother LA design interview</div>
+        <div data-owner="amer"><b>Mother Design</b> — Feed silent since 30 Jul; watermark unchanged</div>
+        <div data-owner="uki"><b>Pentagram</b> — Doha Design District publishes its own Sada/Mada case</div>
+        <div data-owner="global"><b>Interbrand</b> — Global page silent since 18 Aug; Mumbai strategy hire</div>
+        <div data-owner="amer"><b>Siegel + Gale</b> — Four Transform Awards NA shortlists — Cotality, Dauch</div>
+        <div data-owner="row"><b>M+C Saatchi</b> — BTC Markets tokenised design system; Coca-Cola PL launch</div>
+        <div data-owner="amer"><b>Sid Lee</b> — Denault role confirmed newly created and agency-wide</div>
+        <div data-owner="global"><b>R/GA</b> — Nothing in window; FutureVision paused since 18 Aug</div>
+        <div data-owner="global"><b>VIM Group</b> — 38 days silent; Bynder Connect sponsor roster</div>
+        <div data-owner="dach"><b>Mutabor</b> — Mutabor Type Foundry launched; Adamovsky 20 years</div>
+        <div data-owner="dach"><b>Peter Schmidt Group</b> — Red Dot for Delta Cafés; Future Playgrounds speaker six</div>
+        <div data-owner="dach"><b>Farner</b> — AI Operating System; Axpo Wasserwärts year two</div>
+        <div data-owner="dach"><b>Sherpa Design</b> — Only post since the 13 Aug rebrand is a running club</div>
+        <div data-owner="dach"><b>Jung von Matt</b> — Magnific group standard; BVG city-of-love campaign</div>
+        <div data-owner="dach"><b>Gate B</b> — First post since 13 Aug is a job ad; Orange Logic still unshipped</div>
+        <div data-owner="uki"><b>Saffron Brand Consultants</b> — Nothing qualifying; second consecutive silent run</div>
+        <div data-owner="nordics"><b>Uncommon</b> — Clash Royale 0% AI; Spotify pickup in Fast Company</div>
+        <div data-owner="nordics"><b>BBDO Nordics</b> — Riksbyggen goes global; full credits surfaced</div>
+        <div data-owner="nordics"><b>Kurppa Hosk</b> — Scania Experience Hub; ATG Harry Boy redesign</div>
+        <div data-owner="nordics"><b>Stockholm Design Lab</b> — Berwaldhallen identity; Utmärkt Svensk Form for Sigma</div>
+        <div data-owner="nordics"><b>Nord</b> — Rambukken six shortlists; SKF Eurobest interview</div>
+        <div data-owner="nordics"><b>Forsman &amp; Bodenfors</b> — Lindholm exits after 21 years; Vival discloses engagement</div>
+        <div data-owner="nordics"><b>Kontrapunkt</b> — QuNorth build; largest 3D asset library to date</div>
+        <div data-owner="dach"><b>Havas</b> — Guardian FARA investigation; AS Watson win; Havas Health lease</div>
+        <div data-owner="global"><b>Valtech</b> — Gemini Enterprise launch partner; Bayer DXP at DMEXCO</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Frontify Agency Partner Watch · Generated 28 August 2026 · 35 partners, 4 Campaign editions, 10 competitor pages, 8 topic sweeps
+  </footer>
+
+</div>
+
+<script>
+/* Frontify Agency Partner Watch — report chrome. Inject verbatim before </body>. */
+(function () {
+  var body = document.body;
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.pm-tab'));
+  var subtabs = Array.prototype.slice.call(document.querySelectorAll('.pm-subtab'));
+  var items = Array.prototype.slice.call(document.querySelectorAll('[data-owner]'));
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.cat'));
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.snapshot .chip'));
+  var noneMsg = document.querySelector('.pm-none');
+  var ctxRows = Array.prototype.slice.call(document.querySelectorAll('.pm-context-row'));
+  var current = 'all', currentSub = 'stories';
+
+  function owners(el) { return (el.getAttribute('data-owner') || '').split(/\s+/); }
+  function matches(el, pm) {
+    if (pm === 'all') return true;
+    var o = owners(el);
+    return o.indexOf(pm) > -1 || o.indexOf('all') > -1;
+  }
+  function countFor(pm) {
+    var n = 0;
+    for (var i = 0; i < items.length; i++) {
+      var el = items[i];
+      if (el.closest('.appendix')) continue;
+      if (owners(el).indexOf('all') > -1 && pm !== 'all') continue;
+      if (matches(el, pm)) n++;
+    }
+    return n;
+  }
+  function sectionTitle(sec) {
+    var h2 = sec.querySelector('h2');
+    if (!h2) return '';
+    return h2.childNodes[0] ? h2.childNodes[0].nodeValue.trim() : h2.textContent.trim();
+  }
+  /* ---------- outbound view ---------- */
+  function txt(el){ return el ? el.textContent.replace(/\s+/g,' ').trim() : ''; }
+  function secTitle(el){ var s = el.closest('section.cat'); return s ? sectionTitle(s) : ''; }
+  function partnersFor(el, pm){
+    var raw = el.getAttribute('data-partners');
+    if (!raw) return ['—'];
+    var pairs = raw.split('|').map(function(x){ var i = x.indexOf(':'); return [x.slice(0,i), x.slice(i+1)]; });
+    var mine = pairs.filter(function(p){ return p[0] === pm; }).map(function(p){ return p[1]; });
+    return mine.length ? mine : pairs.map(function(p){ return p[1]; });
+  }
+  function isNoise(el){
+    var head = el.querySelector('.oi-head');
+    return !!head && /^(nothing to report|smaller items)/i.test(txt(head));
+  }
+  function flagsOf(el){
+    var f = [];
+    if (el.querySelector('.tag--pipeline') || el.querySelector('details.pipeline-flag')) f.push('pipeline');
+    if (el.querySelector('.tag--client') || el.querySelector('.client-note')) f.push('client');
+    if (el.querySelector('.tag--target') || el.querySelector('details.target-flag') || el.querySelector('.target-note')) f.push('target');
+    return f;
+  }
+  function ownedBy(el, pm){ return owners(el).indexOf(pm) > -1; }
+
+  function h(tagName, cls, content){
+    var e = document.createElement(tagName);
+    if (cls) e.className = cls;
+    if (content !== undefined) e.innerHTML = content;
+    return e;
+  }
+  function copyBtn(getText){
+    var b = h('button','ob-copy','Copy draft');
+    b.addEventListener('click', function(ev){
+      ev.preventDefault(); ev.stopPropagation();
+      var t = getText();
+      var done = function(){ b.textContent='Copied'; b.classList.add('is-done');
+        setTimeout(function(){ b.textContent='Copy draft'; b.classList.remove('is-done'); },1400); };
+      if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(t).then(done, function(){ legacy(t,done); }); }
+      else legacy(t, done);
+    });
+    return b;
+  }
+  function legacy(t, done){
+    var ta = document.createElement('textarea');
+    ta.value = t; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); done(); } catch(e) {}
+    document.body.removeChild(ta);
+  }
+
+  function outreachParts(card){
+    var out = { contacts:null, draft:null, note:null, pipeline:null, target:null, related:null, subj:'' };
+    var extra = card.querySelector('.ob-extra');
+    if (extra) {
+      var xc = extra.querySelector('.ob-x-contacts');
+      if (xc) out.contacts = xc.cloneNode(true);
+      var xn = extra.querySelector('.ob-x-note');
+      if (xn) out.note = txt(xn);
+      var xt = extra.querySelector('.ob-x-target');
+      if (xt) out.target = txt(xt);
+      var xd = extra.querySelector('.draft');
+      if (xd) {
+        out.draft = xd.cloneNode(true);
+        var xs = out.draft.querySelector('.subj');
+        if (xs) { out.subj = txt(xs); xs.remove(); }
+      }
+      return out;
+    }
+    var body = card.querySelector('.outreach-body') || card.querySelector('details.prospect-flag .outreach-body');
+    if (!body) return out;
+    var kids = Array.prototype.slice.call(body.children);
+    for (var i=0;i<kids.length;i++){
+      var k = kids[i];
+      if (k.tagName === 'H4' && /contact|who they are/i.test(txt(k))) {
+        var ul = kids[i+1];
+        if (ul && ul.tagName === 'UL') out.contacts = ul.cloneNode(true);
+      }
+    }
+    var d = body.querySelector('.draft');
+    if (d) {
+      out.draft = d.cloneNode(true);
+      var s = out.draft.querySelector('.subj');
+      if (s) { out.subj = txt(s); s.remove(); }
+    }
+    var cn = card.querySelector('.client-note');
+    if (cn) out.note = txt(cn);
+    var pf = card.querySelector('details.pipeline-flag .flag-body, details.pipeline-flag .outreach-body');
+    if (pf) out.pipeline = txt(pf);
+    var tf = card.querySelector('details.target-flag .flag-body, details.target-flag .outreach-body, .target-note');
+    if (tf) out.target = txt(tf);
+    var rn = card.querySelector('.rel-note');
+    if (rn) out.related = txt(rn);
+    return out;
+  }
+
+  function itemBlock(card, opts){
+    opts = opts || {};
+    var wrap = h('div','ob-item');
+    var head = h('div','ob-head');
+    var titleEl = card.querySelector('h3') || card.querySelector('.oi-head');
+    if (opts.eventLine) {
+      var ev = h('div','ob-event');
+      ev.innerHTML = eventLineHTML(card);
+      wrap.appendChild(ev);
+    } else {
+      head.appendChild(h('span','ob-title', titleEl ? titleEl.innerHTML : ''));
+      wrap.appendChild(head);
+      var metaBits = [];
+      var meta = card.querySelector('.meta') || card.querySelector('.oi-meta');
+      if (meta) {
+        metaBits.push(txt(meta).replace(/·\s*(Existing Frontify Client|Active Prospect)/g,'')
+          .replace(/\s*·\s*/g,' · ').replace(/\s·\s$/,'').trim());
+      }
+      if (opts.cat) metaBits.push(opts.cat);
+      var mrow = h('div','ob-meta', metaBits.join('  ·  '));
+      (card.querySelectorAll('.meta .tag, .oi-meta .tag')).forEach(function(tg){ mrow.appendChild(tg.cloneNode(true)); });
+      wrap.appendChild(mrow);
+    }
+
+    var p = outreachParts(card);
+    if (p.note) wrap.appendChild(h('div','ob-alert ob-alert--client', '<b>Coordinate with the account team.</b> ' + p.note));
+    if (p.pipeline) wrap.appendChild(h('div','ob-alert ob-alert--pipeline', '<b>Live opportunity.</b> ' + p.pipeline));
+    if (p.target) wrap.appendChild(h('div','ob-alert ob-alert--target', '<b>Target agency.</b> ' + p.target));
+    if (p.related) wrap.appendChild(h('div','rel-note', p.related));
+
+    if (p.contacts) {
+      var c = h('div','ob-contacts');
+      c.appendChild(h('div','ob-lbl','Who to contact'));
+      c.appendChild(p.contacts);
+      wrap.appendChild(c);
+    }
+    if (p.draft) {
+      var det = h('details','ob-draft');
+      var sum = h('summary','');
+      sum.appendChild(h('span','ob-draft-lbl', p.subj || 'Suggested draft'));
+      det.appendChild(sum);
+      var box = h('div','ob-draft-body');
+      box.appendChild(p.draft);
+      det.appendChild(box);
+      var row = h('div','ob-draft-row');
+      row.appendChild(det);
+      row.appendChild(copyBtn(function(){ return p.draft.textContent.trim(); }));
+      wrap.appendChild(row);
+    }
+    var src = card.querySelector('.src');
+    if (src) {
+      var s2 = h('div','ob-src'); s2.innerHTML = src.innerHTML; wrap.appendChild(s2);
+    } else if (!opts.eventLine) {
+      var link = card.querySelector('.oi-meta a');
+      if (link) {
+        var s3 = h('div','ob-src'); s3.innerHTML = 'Source: <a href="' + link.href + '" target="_blank">' + link.textContent + '</a>';
+        wrap.appendChild(s3);
+      }
+    }
+    return wrap;
+  }
+
+  function eventLineHTML(el){
+    var c = el.cloneNode(true);
+    var x = c.querySelector('.ob-extra');
+    if (x) x.remove();
+    return c.innerHTML;
+  }
+
+  function group(title, note){
+    var g = h('section','ob-group');
+    g.appendChild(h('h3','ob-gtitle', title + (note ? ' <span class="ob-gnote">' + note + '</span>' : '')));
+    return g;
+  }
+
+  function buildOutbound(pm){
+    var root = document.querySelector('.pm-outbound');
+    if (!root) return;
+    root.innerHTML = '';
+    /* Outbound carries only what a partner manager can act on:
+       partner stories, Other Activity, and prospect agencies.
+       Events, Competitor Watch and market-context items are Stories-view only.
+       Risk-intelligence items (data-risk) are excluded outright: they are a heads-up
+       before a conversation, never a piece of work, and must never surface as one. */
+    var EXCLUDED_SECTIONS = ['Competitor Watch'];
+    var mine = items.filter(function(el){
+      if (!ownedBy(el, pm) || el.closest('.appendix')) return false;
+      if (el.classList.contains('event-item')) return false;
+      if (el.hasAttribute('data-risk')) return false;
+      if (EXCLUDED_SECTIONS.indexOf(secTitle(el)) > -1) return false;
+      return true;
+    });
+
+    var stories = [], others = [], prospects = [];
+    mine.forEach(function(el){
+      if (el.classList.contains('other-item')) { if (!isNoise(el)) others.push(el); }
+      else if (el.querySelector('details.prospect-flag')) prospects.push(el);
+      else if (el.classList.contains('radar-card')) { /* market context — Stories view only */ }
+      else stories.push(el);
+    });
+
+    if (!mine.length) {
+      root.appendChild(h('div','pm-empty-note','Nothing in this week’s report is assigned to this portfolio.'));
+      return;
+    }
+
+    var actionable = stories.concat(others);
+    var flagged = actionable.filter(function(c){ return flagsOf(c).length; });
+    var plain   = actionable.filter(function(c){ return !flagsOf(c).length; });
+
+    var nav = h('div','ob-nav');
+    var navItems = [];
+
+    if (flagged.length) {
+      var g0 = group('Coordinate first', flagged.length + ' item' + (flagged.length>1?'s':'') + ' touching a live opportunity, an existing customer or a target agency');
+      g0.id = 'ob-flagged'; navItems.push(['Coordinate first','ob-flagged',flagged.length]);
+      flagged.forEach(function(c){ g0.appendChild(itemBlock(c, {cat: secTitle(c)})); });
+      root.appendChild(g0);
+    }
+
+    if (plain.length) {
+      var byPartner = {};
+      function bucket(n){ return (byPartner[n] = byPartner[n] || []); }
+      plain.forEach(function(c){ partnersFor(c, pm).forEach(function(n){ bucket(n).push(c); }); });
+      var names = Object.keys(byPartner).sort(function(a,b){
+        return (byPartner[b].length - byPartner[a].length) || a.localeCompare(b);
+      });
+      var g1 = group('Outreach by partner', names.length + ' agencies with something to open on');
+      g1.id = 'ob-partners'; navItems.push(['Outreach','ob-partners', plain.length]);
+      names.forEach(function(n){
+        var blk = h('div','ob-partner');
+        blk.appendChild(h('div','ob-pname', n + ' <span class="ob-pn">' + byPartner[n].length + '</span>'));
+        byPartner[n].forEach(function(c){ blk.appendChild(itemBlock(c, {cat: secTitle(c)})); });
+        g1.appendChild(blk);
+      });
+      root.appendChild(g1);
+    }
+
+    if (prospects.length) {
+      var g2 = group('Prospect agencies', 'not on the partner list — first contact');
+      g2.id = 'ob-prospects'; navItems.push(['Prospects','ob-prospects',prospects.length]);
+      prospects.forEach(function(c){ g2.appendChild(itemBlock(c, {cat:'Industry Radar'})); });
+      root.appendChild(g2);
+    }
+
+    navItems.forEach(function(n){
+      var a = document.createElement('a');
+      a.className = 'ob-navlink'; a.href = '#' + n[1];
+      a.innerHTML = n[0] + ' <span class="ob-navn">' + n[2] + '</span>';
+      nav.appendChild(a);
+    });
+    if (navItems.length > 1) root.insertBefore(nav, root.firstChild);
+  }
+
+  function apply(pm, sub) {
+    current = pm; currentSub = sub || 'stories';
+    body.classList.toggle('pm-filtered', pm !== 'all');
+    body.classList.toggle('pm-outbound-on', pm !== 'all' && currentSub === 'outbound');
+    tabs.forEach(function (t) { t.setAttribute('aria-selected', String(t.dataset.pm === pm)); });
+    subtabs.forEach(function (t) { t.setAttribute('aria-selected', String(t.dataset.sub === currentSub)); });
+    ctxRows.forEach(function (r) { r.hidden = r.dataset.pm !== pm; });
+
+    items.forEach(function (el) { el.style.display = matches(el, pm) ? '' : 'none'; });
+
+    var totals = {}, ownTotals = {}, visibleAny = 0, globalCount = 0;
+    sections.forEach(function (sec) {
+      var own = sec.querySelectorAll('[data-owner]');
+      var vis = 0, mine = 0;
+      for (var i = 0; i < own.length; i++) {
+        if (own[i].style.display === 'none') continue;
+        vis++;
+        if (owners(own[i]).indexOf('all') > -1 && pm !== 'all') globalCount++; else mine++;
+      }
+      var isAppendix = !!sec.querySelector('.appendix');
+      var empt = sec.querySelector('.empty');
+      if (empt) empt.style.display = (pm === 'all') ? '' : 'none';
+      sec.style.display = (pm === 'all' || vis > 0) ? '' : 'none';
+      var c = sec.querySelector('.count');
+      if (c) c.textContent = String(vis);
+      if (!isAppendix) { totals[sectionTitle(sec)] = vis; ownTotals[sectionTitle(sec)] = mine; visibleAny += vis; }
+      if (isAppendix) {
+        var ah = sec.querySelector('.appendix h2');
+        if (ah) ah.textContent = (pm === 'all')
+          ? 'Coverage Appendix — ' + own.length + ' partner pages searched'
+          : 'Coverage Appendix — ' + vis + ' partners in this portfolio';
+      }
+    });
+
+    chips.forEach(function (chip) {
+      var label = chip.textContent.replace(/^\s*\d+\s*/, '').trim();
+      var b = chip.querySelector('b');
+      if (!b) return;
+      var n = null;
+      for (var key in totals) {
+        var k = key.toLowerCase();
+        if (k.indexOf(label.toLowerCase()) === 0 || label.toLowerCase().indexOf(k.split(' &')[0]) === 0) { n = totals[key]; break; }
+      }
+      if (n === null) {
+        var sel = /pipeline/i.test(label) ? '.tag--pipeline' : (/client/i.test(label) ? '.tag--client' : null);
+        if (sel) {
+          n = 0;
+          document.querySelectorAll(sel).forEach(function (t) {
+            var host = t.closest('[data-owner]');
+            if (host && host.style.display !== 'none') n++;
+          });
+        }
+      }
+      if (n !== null) { b.textContent = String(n); }
+      var jumpable = n > 0 && (chip._sec ? chip._sec.style.display !== 'none' : !!chip._flagSel);
+      chip.setAttribute('data-nojump', jumpable ? '0' : '1');
+    });
+
+    if (noneMsg) noneMsg.style.display = (pm !== 'all' && visibleAny === 0 && currentSub === 'stories') ? 'block' : 'none';
+
+    if (pm !== 'all') {
+      var row = ctxRows.filter(function (r) { return r.dataset.pm === pm; })[0];
+      if (row) {
+        var parts = [];
+        Object.keys(ownTotals).forEach(function (k) { if (ownTotals[k] > 0) parts.push(ownTotals[k] + ' ' + k); });
+        var t = parts.length ? 'In your portfolio: ' + parts.join(' · ') : 'Nothing in your portfolio this week.';
+        if (globalCount > 0) t += '   —   plus ' + globalCount + ' market-context items shown to everyone';
+        row.querySelector('.pm-summary').textContent = t;
+      }
+      if (currentSub === 'outbound') buildOutbound(pm);
+    }
+    try {
+      history.replaceState(null, '', pm === 'all' ? location.pathname
+        : '#pm=' + pm + (currentSub === 'outbound' ? '&view=outbound' : ''));
+    } catch (e) {}
+  }
+
+  /* snapshot chips double as jump links */
+  function chipLabel(chip) { return chip.textContent.replace(/^\s*\d+\s*/, '').trim().toLowerCase(); }
+  chips.forEach(function (chip) {
+    var label = chipLabel(chip);
+    chip._sec = sections.filter(function (sec) {
+      var k = sectionTitle(sec).toLowerCase();
+      return k.indexOf(label) === 0 || label.indexOf(k.split(' &')[0]) === 0;
+    })[0] || null;
+    if (!chip._sec) {
+      if (/pipeline/.test(label)) chip._flagSel = '.tag--pipeline';
+      else if (/client/.test(label)) chip._flagSel = '.tag--client';
+    }
+    chip.setAttribute('role', 'button');
+    chip.setAttribute('tabindex', '0');
+    function jump() {
+      if (chip.getAttribute('data-nojump') === '1') return;
+      var target = chip._sec;
+      if (!target && chip._flagSel) {
+        var tags = Array.prototype.slice.call(document.querySelectorAll(chip._flagSel));
+        for (var i = 0; i < tags.length; i++) {
+          var host = tags[i].closest('[data-owner]');
+          if (host && host.style.display !== 'none') { target = host; break; }
+        }
+      }
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    chip.addEventListener('click', jump);
+    chip.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); jump(); }
+    });
+  });
+
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () { apply(t.dataset.pm, currentSub); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    var n = countFor(t.dataset.pm);
+    t.querySelector('.pm-n').textContent = String(n);
+    if (n === 0) t.dataset.empty = '1';
+  });
+  subtabs.forEach(function (t) {
+    t.addEventListener('click', function () { apply(current, t.dataset.sub); });
+  });
+
+  var hm = location.hash.match(/pm=([a-z0-9\-]+)/i);
+  var vm = /view=outbound/i.test(location.hash);
+  apply(hm && tabs.some(function (t) { return t.dataset.pm === hm[1]; }) ? hm[1] : 'all', vm ? 'outbound' : 'stories');
+})();
+</script>
+
+</body>
+</html>
