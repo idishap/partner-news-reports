@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<title>Frontify Partnerships — Weekly Reports</title>
+<link rel="preconnect" href="https://weare.frontify.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  /* ---- Die echten Frontify-Hausschriften, direkt aus dem Brand Portal.
+     URLs am 02.09.26 aus dem Frontify-Konnektor gelesen und live geprüft:
+     beide liefern HTTP 200 als font/otf, ohne Anmeldung. Damit sieht der Report
+     in derselben Schrift aus wie das Design, ohne dass Dateien beiliegen müssen.
+     Fällt das CDN aus, greift der Fallback im Stack weiter unten. ---- */
+  @font-face {
+    font-family: "ABC Diatype";
+    src: url("https://weare.frontify.com/api/brand-essentials-font-file/bRz2actmHrah2fHf1YrE") format("opentype");
+    font-weight: 400; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: "Cranny";
+    src: url("https://weare.frontify.com/api/brand-essentials-font-file/rwPW3r84BHwXA1owaCEz") format("opentype");
+    font-weight: 300; font-style: normal; font-display: swap;
+  }
+  :root {
+    color-scheme: light only;
+
+    /* ---- Frontify Design System, echte Tokens ---- */
+    --base-white:  #f0f0eb;
+    --base-black:  #111110;
+    --marker-purple: #b60ae3;
+
+    /* Warm-neutrale Base-Skala */
+    --base-00: #ffffff;
+    --base-05: #f7f7f4;
+    --base-20: #e4e4de;
+    --base-35: #cbcbc5;
+    --base-50: #a3a39c;
+    --base-65: #75756e;
+    --base-80: #3d3d39;
+    --base-90: #24241f;
+
+    /* Marker-purple-Tints, nur für Flächen und Tints */
+    --mp-10: #fbeafe;
+    --mp-20: #f4d0fb;
+    --mp-40: #e389f5;
+    --mp-70: #8f08b3;
+
+    /* Semantisch, nur Produkt und UI */
+    --error-60:   #de2417;
+    --success-60: #168500;
+    --success-90: #e8f4e4;
+
+    /* Semantische Zuweisungen */
+    --bg:            var(--base-white);
+    --bg-elevated:   var(--base-00);
+    --bg-subtle:     var(--base-05);
+    --fg:            var(--base-black);
+    --fg-muted:      var(--base-65);
+    --fg-subtle:     var(--base-50);
+    --border:        var(--base-35);
+    --border-strong: var(--base-50);
+    --accent:        var(--marker-purple);
+    --accent-soft:   var(--mp-10);
+    --accent-border: var(--mp-20);
+    /* Links sind grau statt violett (Joël, 03.09.26). #6a6a63 ist das hellste
+       Grau, das auf #f0f0eb noch 4.77:1 erreicht und damit AA hält. base-65
+       (#75756e) sah richtig aus, kam aber nur auf 4.06:1. Nicht weiter aufhellen. */
+    --link: #6a6a63;
+
+    /* Typografie */
+    --font-display: "Cranny", "Instrument Serif", Georgia, "Times New Roman", serif;
+    --font-sans: "ABC Diatype", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --font-mono: "Fragment Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    /* Radius und Abstände */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-pill: 999px;
+
+    /* Bewegung */
+    --dur-fast: 150ms;
+    --dur-med: 280ms;
+    --ease-out: cubic-bezier(.2,.7,.2,1);
+
+    --shadow-sm: 0 1px 2px rgba(17,17,16,.04);
+    --shadow-md: 0 4px 16px rgba(17,17,16,.08);
+    --shadow-lg: 0 12px 32px rgba(17,17,16,.12);
+  }
+
+  * { box-sizing: border-box; }
+  html { background: var(--bg); color-scheme: light only; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--fg);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--link); text-decoration-color: var(--base-35); text-underline-offset: 2px; }
+  a:hover { color: var(--fg); text-decoration-color: var(--fg); opacity: 1;
+            transition: color var(--dur-fast) var(--ease-out); }
+
+  /* ======================================================= Layout
+     Linke Leiste klebt, Inhalt rechts. Die Leiste vereint Kategorien-Zähler
+     und PM-Filter: die Zahlen, nach denen gefiltert wird, sind zugleich das
+     Inhaltsverzeichnis. */
+  .layout { display: flex; align-items: flex-start; gap: 0; max-width: 1520px; margin: 0 auto; }
+  .rail {
+    position: sticky; top: 0; align-self: flex-start;
+    width: 268px; flex-shrink: 0; height: 100vh; overflow-y: auto;
+    padding: 26px 18px 40px 26px;
+    border-right: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .rail::-webkit-scrollbar { width: 6px; }
+  .rail::-webkit-scrollbar-thumb { background: var(--base-20); border-radius: 3px; }
+  .main { flex: 1; min-width: 0; padding: 34px 40px 90px; max-width: 1240px; }
+
+  /* ---- Wortmarke ---- */
+  .wordmark { display: flex; align-items: center; gap: 9px; margin-bottom: 22px; }
+  /* Echtes Frontify-Nook-Logo, inline als SVG aus dem Brand Portal geholt.
+     Inline statt <img>, damit es offline funktioniert und keine Anfrage kostet. */
+  .wordmark svg { width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0; display: block; }
+  .wordmark span { font-size: 13px; font-weight: 600; letter-spacing: -.01em; }
+
+  /* ---- Leisten-Abschnitte ---- */
+  .rail-label {
+    font-size: 10.5px; text-transform: uppercase; letter-spacing: .09em;
+    color: var(--fg-subtle); margin: 0 0 9px 2px; font-weight: 600;
+  }
+  .rail-section + .rail-section { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--border); }
+
+  /* Kategorien-Navigation mit Zähler */
+  .cat-nav { display: flex; flex-direction: column; gap: 1px; }
+  .cat-nav a {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    padding: 6px 9px; border-radius: var(--radius-sm);
+    text-decoration: none; color: var(--fg); font-size: 13px; line-height: 1.3;
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+  .cat-nav a:hover { background: var(--base-20); opacity: 1; }
+  .cat-nav a .n {
+    font-size: 11.5px; font-weight: 700; font-variant-numeric: tabular-nums;
+    color: var(--fg-subtle); background: var(--base-05);
+    border: 1px solid var(--base-20);
+    border-radius: var(--radius-pill); padding: 0 8px; flex-shrink: 0; min-width: 26px; text-align: center;
+  }
+  .cat-nav a.hit .n { background: var(--base-35); color: var(--base-90); }
+  .cat-nav a .lbl { display: flex; align-items: center; gap: 5px; min-width: 0; }
+  .cat-nav a .lbl span.t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* PM-Filter, alle exakt gleich gross */
+  .pm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .pm-tab {
+    display: flex; align-items: center; justify-content: center;
+    height: 34px; padding: 0 6px;
+    border: 1px solid var(--border); border-radius: var(--radius-pill);
+    background: var(--bg-elevated); color: var(--fg);
+    font-family: inherit; font-size: 12.5px; font-weight: 600; letter-spacing: -.005em;
+    cursor: pointer; text-align: center; white-space: nowrap;
+    transition: all var(--dur-fast) var(--ease-out);
+  }
+  .pm-tab:hover { border-color: var(--base-black); }
+  .pm-tab:active { transform: scale(.98); }
+  .pm-tab.active { background: var(--base-black); border-color: var(--base-black); color: var(--base-white); }
+  .pm-tab.pdr { grid-column: 1 / -1; }
+  /* Out-specifies body.has-report .rail-collapsible, which reveals the block. */
+  .rail .rail-section.no-filter { display: none; }
+  .rail-hint { font-size: 11.5px; color: var(--fg-subtle); margin-top: 10px; line-height: 1.45; }
+
+  /* ======================================================= Report-Umschalter
+     Drei Reports in einer Hülle. Bis einer gewählt ist, zeigt der Inhaltsbereich
+     die Auswahl und die Leiste nur die drei Knöpfe: Kategorien und Filter
+     gehören zu einem Report, also erscheinen sie erst mit ihm. */
+  .report-nav { display: flex; flex-direction: column; gap: 5px; }
+  .report-tab {
+    display: flex; align-items: center; gap: 9px; width: 100%;
+    padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-md);
+    background: var(--bg-elevated); color: var(--fg);
+    font-family: inherit; font-size: 13px; font-weight: 600; letter-spacing: -.005em;
+    cursor: pointer; text-align: left;
+    transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out),
+                border-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .report-tab .dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--base-35); flex-shrink: 0;
+    transition: all var(--dur-med) var(--ease-out);
+  }
+  .report-tab .cnt {
+    margin-left: auto; font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--fg-subtle); font-weight: 400; font-variant-numeric: tabular-nums;
+  }
+  .report-tab:hover { border-color: var(--base-black); transform: translateX(3px); }
+  .report-tab:active { transform: translateX(1px) scale(.99); }
+  .report-tab.active { background: var(--base-black); border-color: var(--base-black); color: var(--base-white); }
+  .report-tab.active .cnt { color: var(--base-50); }
+  .report-tab.active .dot { background: var(--marker-purple); box-shadow: 0 0 0 3px rgba(182,10,227,.22); }
+
+  .rail-collapsible { display: none; }
+  body.has-report .rail-collapsible { display: block; animation: railIn 340ms var(--ease-out) both; }
+  body.has-report .rail-collapsible:nth-of-type(3) { animation-delay: 60ms; }
+  @keyframes railIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+  .filter-group { display: none; }
+  .filter-group.on { display: block; }
+
+  .report { display: none; }
+  .report.active { display: block; animation: repIn 320ms var(--ease-out) both; }
+  body.has-report .landing { display: none; }
+
+  @keyframes repIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .report.active, body.has-report .rail-collapsible { animation: none; }
+    .report-tab:hover, .pick:hover { transform: none; }
+  }
+
+  /* ======================================================= Startauswahl */
+  .landing { padding-top: 26px; max-width: 720px; }
+  .landing .lead {
+    font-family: var(--font-display); font-weight: 300;
+    font-size: 40px; line-height: 1.08; letter-spacing: -.02em; margin: 0 0 14px;
+  }
+  .landing .sub { color: var(--fg-muted); font-size: 15px; margin: 0 0 34px; max-width: 52ch; }
+  .picker { display: grid; gap: 12px; }
+  .pick {
+    position: relative; width: 100%; display: block; overflow: hidden;
+    padding: 22px 26px 20px; cursor: pointer; text-align: left;
+    font-family: inherit; color: inherit;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    transition: transform var(--dur-med) var(--ease-out), border-color var(--dur-med) var(--ease-out),
+                box-shadow var(--dur-med) var(--ease-out);
+  }
+  /* Geisterziffer, rein dekorativ */
+  .pick .ord {
+    position: absolute; right: 18px; bottom: -20px; pointer-events: none;
+    font-family: var(--font-display); font-weight: 300; font-size: 108px; line-height: 1;
+    color: var(--base-black); opacity: .05;
+    transition: opacity var(--dur-med) var(--ease-out), transform var(--dur-med) var(--ease-out);
+  }
+  /* Haarlinie, die beim Hover durchläuft */
+  .pick::after {
+    content: ""; position: absolute; left: 0; top: 0; height: 2px; width: 100%;
+    background: linear-gradient(90deg, var(--marker-purple), var(--mp-40), transparent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 520ms var(--ease-out);
+  }
+  .pick:hover { transform: translateY(-3px); border-color: var(--base-black); box-shadow: var(--shadow-md); }
+  .pick:hover::after { transform: scaleX(1); }
+  .pick:hover .ord { opacity: .1; transform: translateY(-4px); }
+  .pick:hover .go { gap: 12px; }
+  .pick:active { transform: translateY(-1px); }
+  .pick:focus-visible { outline: 2px solid var(--marker-purple); outline-offset: 3px; }
+  .pick h3 {
+    font-family: var(--font-display); font-weight: 300; font-size: 26px;
+    letter-spacing: -.015em; margin: 0 0 5px; position: relative;
+  }
+  .pick p { margin: 0 0 16px; color: var(--fg-muted); font-size: 13.5px; max-width: 46ch; position: relative; }
+  .pick .meta {
+    display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
+    margin-bottom: 15px; position: relative;
+  }
+  .pick .chip {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .02em;
+    border: 1px solid var(--border); border-radius: var(--radius-pill);
+    padding: 2px 9px; color: var(--fg-muted); background: var(--bg);
+  }
+  .pick .chip.live { border-color: var(--base-black); color: var(--fg); }
+  .pick .go {
+    display: inline-flex; align-items: center; gap: 7px; position: relative;
+    font-size: 12.5px; font-weight: 600; color: var(--fg);
+    transition: gap var(--dur-med) var(--ease-out);
+  }
+  .pick .go .arr { font-family: var(--font-mono); }
+  .pick.soon { opacity: .72; }
+  .pick.soon:hover { transform: none; border-color: var(--border); box-shadow: none; }
+  .pick.soon:hover::after { transform: scaleX(0); }
+  .pick.soon .go { color: var(--fg-subtle); }
+  .landing-foot { margin-top: 28px; font-size: 12px; color: var(--fg-subtle); }
+
+  .back-to-picker {
+    display: inline-flex; align-items: center; gap: 6px; margin-bottom: 18px;
+    background: none; border: none; padding: 0; cursor: pointer;
+    font-family: inherit; font-size: 12px; font-weight: 600; color: var(--fg-subtle);
+  }
+  .back-to-picker:hover { color: var(--fg); }
+
+  /* ======================================================= Masthead */
+  .eyebrow {
+    font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
+    color: var(--fg-muted); font-weight: 600; margin-bottom: 12px;
+  }
+  h1.masthead-title {
+    font-family: var(--font-display); font-weight: 300;
+    font-size: 46px; line-height: 1.05; letter-spacing: -.015em;
+    margin: 0 0 10px;
+  }
+  .daterange { font-size: 15px; color: var(--fg-muted); margin-bottom: 20px; }
+
+  /* Ausklappbare Notizen: Pipeline, Run scope, Abdeckung.
+     Regel von Joël 02.09.26 — Notizen sind standardmässig zu. */
+  .notes { display: flex; flex-direction: column; gap: 8px; margin-bottom: 34px; }
+  details.note {
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    background: var(--bg-elevated); overflow: hidden;
+  }
+  details.note > summary {
+    cursor: pointer; list-style: none; padding: 11px 16px;
+    font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 9px;
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+  details.note > summary::-webkit-details-marker { display: none; }
+  details.note > summary:hover { background: var(--bg-subtle); }
+  details.note > summary::before {
+    content: "+"; font-family: var(--font-mono); font-size: 14px;
+    color: var(--fg-subtle); width: 12px; flex-shrink: 0;
+  }
+  details.note[open] > summary::before { content: "–"; }
+  details.note > summary .tag {
+    margin-left: auto; font-size: 11px; font-weight: 600; color: var(--fg-muted);
+    background: var(--bg-subtle); border: 1px solid var(--border);
+    border-radius: var(--radius-pill); padding: 1px 9px;
+  }
+  details.note > summary .tag.accent { background: var(--accent-soft); border-color: var(--accent-border); color: var(--mp-70); }
+  details.note .body { padding: 2px 16px 16px; font-size: 13.5px; color: var(--fg); line-height: 1.6; }
+  details.note .body p { margin: 0 0 10px; }
+  details.note .body p:last-child { margin-bottom: 0; }
+
+  .report-footer {
+    margin-top: 60px; padding-top: 22px; border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--fg-subtle); line-height: 1.6;
+  }
+  hr.rule { border: none; border-top: 1px solid var(--border); margin: 44px 0; }
+
+  @media (max-width: 900px) {
+    .layout { flex-direction: column; }
+    .rail { position: static; width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+    .pm-grid { grid-template-columns: repeat(4, 1fr); }
+    .main { padding: 24px 20px 60px; }
+    h1.masthead-title { font-size: 34px; }
+  }
+  @media print {
+    .rail { display: none; }
+    details { open: true; }
+    .card { break-inside: avoid; }
+    section.category { display: block; }
+    .card { margin-bottom: 12px; }
+  }
+
+  /* ---- the two stylesheets meet here ---- */
+  .notes { max-width: 74ch; }
+  #partner-report { color: var(--ink); }
+  #partner-report section.cat:first-of-type { margin-top: 34px; }
+  .filter-group, .cat-group { display: none; }
+  .filter-group.on, .cat-group.on { display: block; }
+  .active-filter {
+    display: none; align-items: center; gap: 8px; margin: 0 0 26px;
+    font-size: 12.5px; color: var(--fg-muted);
+  }
+  body.is-filtered .report.active .active-filter { display: flex; }
+  .active-filter .who { display: inline-flex; flex-wrap: wrap; gap: 5px; }
+  .active-filter .who b {
+    font-weight: 700; color: var(--fg); background: var(--bg-elevated);
+    border: 1px solid var(--border); border-radius: var(--radius-pill); padding: 2px 11px;
+  }
+  .active-filter button {
+    font: inherit; font-size: 12px; color: var(--fg-muted); background: none;
+    border: none; cursor: pointer; text-decoration: underline; padding: 0;
+  }
+  .active-filter button:hover { color: var(--fg); }
+  .scaffold-note { font-size: 13.5px; color: var(--fg-muted); max-width: 60ch; }
+
+
+  /* ============================================================
+     THE REPORT ITSELF — unchanged.
+     Every rule below is the current weekly report's own stylesheet,
+     scoped to #partner-report. Cards, flags, accordions, the 3-up
+     grid and the Other Activity 4-up grid all behave as they do today.
+     ============================================================ */
+#partner-report{--ink:#141419; --muted:#6b6b76; --line:#e7e7ec; --bg:#f6f6f4; --card:#ffffff;
+    --purple:#6b4de6; --purple-bg:#f2eefe;
+    --amber:#c77700; --amber-bg:#fff6e8;
+    --red:#d23b30; --red-bg:#fdecea;
+    --teal:#0a7d68; --teal-bg:#e7f6f2;
+    --accent:#141419;}
+#partner-report{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    line-height:1.5;-webkit-font-smoothing:antialiased}
+#partner-report .intro{font-size:13.5px;color:var(--muted);margin:6px 0 26px;padding:12px 14px;
+    background:#fff;border:1px solid var(--line);border-radius:10px}
+#partner-report section.cat{margin:30px 0}
+#partner-report h2.cat-title{font-size:19px;margin:0 0 4px;padding-bottom:8px;border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:8px}
+#partner-report .count{font-size:12px;font-weight:600;color:var(--muted);background:var(--bg);
+    border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+#partner-report .cat-info{position:relative;display:inline-flex;align-items:center;justify-content:center;
+    width:16px;height:16px;border-radius:50%;background:var(--muted);color:#fff;font-size:11px;
+    cursor:help;font-style:normal;font-weight:700}
+#partner-report .cat-info::after{content:attr(data-tip);position:absolute;left:50%;top:140%;transform:translateX(-50%);
+    background:#141419;color:#fff;padding:9px 11px;border-radius:8px;font-size:12px;font-weight:400;
+    line-height:1.4;width:max-content;max-width:280px;opacity:0;visibility:hidden;transition:.15s;z-index:20;
+    box-shadow:0 6px 20px rgba(0,0,0,.18)}
+#partner-report .cat-info:hover::after{opacity:1;visibility:visible}
+#partner-report .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 18px 6px;
+    margin:14px 0;box-shadow:0 1px 2px rgba(20,20,25,.03)}
+#partner-report .card h3{font-size:17px;margin:0 0 8px;line-height:1.3}
+#partner-report .meta{font-size:12.5px;color:var(--muted);margin-bottom:10px;display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+#partner-report .meta .dot{opacity:.5}
+#partner-report .tag{font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;letter-spacing:.2px}
+#partner-report .tag--pipeline{background:var(--red);color:#fff}
+#partner-report .tag--client{background:var(--teal);color:#fff}
+#partner-report .card p.summary{font-size:14.5px;margin:0 0 12px}
+#partner-report .src{font-size:12.5px;margin:0 0 12px}
+#partner-report .src a{color:var(--purple);text-decoration:none;border-bottom:1px solid #d8ccfb}
+#partner-report .src a:hover{border-bottom-color:var(--purple)}
+#partner-report .connects{font-size:12.5px;color:var(--muted);margin:-4px 0 12px;padding-left:10px;border-left:2px solid var(--line)}
+#partner-report details.outreach{border-top:1px dashed var(--line);margin:0 -18px;padding:10px 18px 4px}
+#partner-report details.outreach>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--purple);
+    list-style:none;display:flex;align-items:center;gap:6px;padding:4px 0}
+#partner-report details.outreach>summary::-webkit-details-marker{display:none}
+#partner-report details.outreach>summary::before{content:"▸";font-size:11px;transition:.15s}
+#partner-report details.outreach[open]>summary::before{transform:rotate(90deg)}
+#partner-report .outreach-body{font-size:13.5px;padding:8px 0 12px}
+#partner-report .outreach-body h4{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);
+    margin:14px 0 5px}
+#partner-report .outreach-body ul{margin:4px 0 4px;padding-left:20px}
+#partner-report .outreach-body li{margin:3px 0}
+#partner-report .draft{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-top:6px;
+    font-size:13.5px;white-space:pre-wrap}
+#partner-report .draft .subj{font-weight:700;margin-bottom:6px;display:block}
+#partner-report details.flag,#partner-report details.pipeline-flag{border:1px solid var(--red);border-left:4px solid var(--red);background:var(--red-bg);
+    border-radius:8px;margin:12px 0 4px;padding:8px 12px}
+#partner-report details.flag>summary,#partner-report details.pipeline-flag>summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--red);list-style:none}
+#partner-report details.flag>summary::-webkit-details-marker,#partner-report details.pipeline-flag>summary::-webkit-details-marker{display:none}
+#partner-report details.flag .flag-body,#partner-report details.pipeline-flag .flag-body{font-size:13px;padding:8px 2px 2px}
+#partner-report .client-note{background:var(--teal-bg);border:1px solid #bfe6dc;border-radius:8px;padding:10px 12px;
+    font-size:13px;margin:2px 0 10px}
+#partner-report details.prospect,#partner-report details.prospect-flag{border:1px solid var(--amber);border-left:4px solid var(--amber);background:var(--amber-bg);
+    border-radius:8px;margin:0 -18px;padding:10px 18px 4px}
+#partner-report details.prospect>summary,#partner-report details.prospect-flag>summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--amber);list-style:none}
+#partner-report details.prospect>summary::-webkit-details-marker,#partner-report details.prospect-flag>summary::-webkit-details-marker{display:none}
+#partner-report .radar-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0}
+#partner-report .radar-card .why{font-size:13px;color:var(--ink);background:var(--bg);border-radius:8px;padding:9px 11px;margin-top:8px}
+#partner-report .empty{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:18px;
+    color:var(--muted);font-size:13.5px;text-align:center}
+#partner-report .other-list{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 18px}
+#partner-report .other-item{padding:12px 0;border-bottom:1px solid var(--line)}
+#partner-report .other-item:last-child{border-bottom:none}
+#partner-report .other-item .oi-head{font-size:14px;font-weight:600;margin-bottom:3px}
+#partner-report .other-item .oi-meta{font-size:12px;color:var(--muted);margin-bottom:3px}
+#partner-report .other-item a{color:var(--purple);text-decoration:none}
+#partner-report .events-list{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 18px}
+#partner-report .event-item{padding:11px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+#partner-report .event-item:last-child{border-bottom:none}
+#partner-report .event-item a{color:var(--purple);text-decoration:none}
+#partner-report .event-item .ev-sep{color:var(--muted);opacity:.6;padding:0 4px}
+#partner-report .appendix{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;font-size:13px}
+#partner-report .appendix h2{border:none;font-size:16px;margin:0 0 10px;padding:0}
+#partner-report .appendix .grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+#partner-report .appendix .grid div{padding:3px 0;border-bottom:1px solid #f0f0f3;color:var(--muted)}
+#partner-report .appendix .grid b{color:var(--ink);font-weight:600}
+@font-face{font-family:"Cranny";
+    src:url("https://brand.frontify.com/api/brand-essentials-font-file/rwPW3r84BHwXA1owaCEz") format("opentype");
+    font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:"ABC Diatype";
+    src:url("https://brand.frontify.com/api/brand-essentials-font-file/bRz2actmHrah2fHf1YrE") format("opentype");
+    font-weight:400;font-style:normal;font-display:swap}
+#partner-report{--ink:#111110;
+    --muted:#676763;
+    --line:#E1E1DB;
+    --bg:#F0F0EB;
+    --card:#FFFFFF;
+    --accent:#111110;
+
+    --purple:#880AAB;
+    --purple-fill:#B60AE3;
+    --purple-bg:#FAE8FF;
+
+    --red:#B60AE3;
+    --red-bg:#FAE8FF;
+
+    --teal:#111110;
+    --teal-bg:#F8F8F5;
+
+    --amber:#575753;
+    --amber-bg:#F8F8F5;}
+#partner-report{font-family:"ABC Diatype",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+    letter-spacing:normal;line-height:1.5}
+#partner-report h2.cat-title,#partner-report .appendix h2{font-family:"Cranny","Times New Roman",Times,serif;
+    font-weight:300;line-height:1.12;letter-spacing:0}
+#partner-report h2.cat-title{font-size:22px}
+#partner-report .appendix h2{font-size:19px}
+#partner-report .card h3,#partner-report .radar-card h3{letter-spacing:0}
+#partner-report .src a,#partner-report .other-item a,#partner-report .event-item a,#partner-report details.outreach>summary{color:var(--purple)}
+#partner-report .src a{border-bottom-color:#ECA1FE}
+#partner-report .tag--pipeline{background:var(--purple-fill);color:#fff}
+#partner-report .tag--client{background:var(--ink);color:#fff}
+#partner-report .client-note{background:var(--teal-bg);border:1px solid var(--line);border-left:3px solid var(--ink)}
+#partner-report details.flag,#partner-report details.pipeline-flag{border:1px solid #ECA1FE;border-left:4px solid var(--purple-fill);background:var(--red-bg)}
+#partner-report details.flag>summary,#partner-report details.pipeline-flag>summary{color:var(--purple)}
+#partner-report details.prospect,#partner-report details.prospect-flag{border:1px solid var(--line);border-left:4px solid var(--amber);background:var(--amber-bg)}
+#partner-report details.prospect>summary,#partner-report details.prospect-flag>summary{color:var(--amber)}
+#partner-report section.cat{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch;
+    scroll-margin-top:118px}
+#partner-report section.cat>h2.cat-title,#partner-report section.cat>.empty,#partner-report section.cat>.other-list,#partner-report section.cat>.events-list,#partner-report section.cat>.appendix{grid-column:1 / -1}
+#partner-report section.cat>h2.cat-title{margin-bottom:0}
+#partner-report .card,#partner-report .radar-card{margin:0;display:flex;flex-direction:column}
+#partner-report .card p.summary,#partner-report .radar-card p.summary{flex:0 1 auto}
+#partner-report .card .src,#partner-report .radar-card .src{margin-top:auto}
+#partner-report .card .connects{margin-top:8px}
+#partner-report .card details.outreach,#partner-report .card details.prospect-flag{margin-top:0}
+#partner-report .radar-card .why{margin-top:10px}
+@media(max-width:1040px){#partner-report section.cat{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){#partner-report section.cat{grid-template-columns:1fr}}
+#partner-report{--teal:#168500;
+    --teal-bg:#ECF5EB;
+    --teal-line:#A5EB99;
+    --teal-ink:#032C10;
+    --red:#DE2417;
+    --red-bg:#FCEDED;
+    --red-line:#F9B1AE;
+    --red-ink:#460A00;}
+#partner-report .tag--client{background:var(--teal);color:#fff}
+#partner-report .tag--pipeline{background:var(--red);color:#fff}
+#partner-report .client-note{background:var(--teal-bg);border:1px solid var(--teal-line);border-left:3px solid var(--teal)}
+#partner-report details.flag,#partner-report details.pipeline-flag{border:1px solid var(--red-line);border-left:4px solid var(--red);background:var(--red-bg)}
+#partner-report details.flag>summary,#partner-report details.pipeline-flag>summary{color:var(--red-ink)}
+#partner-report .tag--target{background:var(--purple-fill);color:#fff}
+#partner-report details.target-flag{border:1px solid #ECA1FE;border-left:4px solid var(--purple-fill);
+    background:var(--purple-bg);border-radius:8px;margin:12px 0 4px;padding:8px 12px}
+#partner-report details.target-flag>summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--purple);list-style:none}
+#partner-report details.target-flag>summary::-webkit-details-marker{display:none}
+#partner-report details.target-flag .flag-body{font-size:13px;padding:8px 2px 2px}
+#partner-report .other-item details.outreach{margin:10px 0 2px;padding:8px 0 0;border-top:1px dashed var(--line)}
+#partner-report .other-item details.outreach>summary{font-size:12.5px}
+#partner-report .other-item .outreach-body{font-size:13px;padding:6px 0 8px}
+#partner-report .other-item details.target-flag{margin:10px 0 2px}
+#partner-report .target-note{background:var(--purple-bg);border:1px solid #ECA1FE;border-left:3px solid var(--purple-fill);
+    border-radius:8px;padding:9px 11px;font-size:13px;margin:2px 0 10px}
+#partner-report .other-item details.target-flag{display:none}
+#partner-report #sec-other-activity{grid-template-columns:repeat(4,1fr)}
+#partner-report #sec-other-activity>.other-item{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 15px;margin:0;display:flex;flex-direction:column;font-size:13px;line-height:1.45;
+    box-shadow:0 1px 2px rgba(20,20,25,.03)}
+#partner-report #sec-other-activity>.other-item:last-child{border-bottom:1px solid var(--line)}
+#partner-report #sec-other-activity .oi-head{font-size:13.5px;font-weight:650;line-height:1.35;margin-bottom:5px}
+#partner-report #sec-other-activity .oi-meta{font-size:11.5px;margin-bottom:8px;display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+#partner-report #sec-other-activity .tag{font-size:10px;padding:1px 7px}
+#partner-report #sec-other-activity .target-note,#partner-report #sec-other-activity .client-note{font-size:12px;padding:8px 10px}
+#partner-report #sec-other-activity details.outreach{margin-top:auto}
+#partner-report #sec-other-activity .outreach-body{font-size:12.5px}
+#partner-report #sec-other-activity .draft{font-size:12.5px}
+@media(max-width:1240px){#partner-report #sec-other-activity{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:1040px){#partner-report #sec-other-activity{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){#partner-report #sec-other-activity{grid-template-columns:1fr}}
+#partner-report .tag--target-rel{background:transparent;color:var(--purple);border:1px solid #ECA1FE;font-weight:600}
+#partner-report .tag--risk{background:transparent;color:var(--muted);border:1px solid var(--line);font-weight:600}
+#partner-report .rel-note{background:transparent;border:1px dashed #ECA1FE;border-radius:8px;padding:8px 11px;
+    font-size:12.5px;color:var(--muted);margin:2px 0 10px}
+#partner-report .rel-note b{color:var(--ink)}
+
+  /* ---- View transitions for the card accordions. These pseudo-elements sit
+     on the document root, so unlike everything a report brings with it they
+     cannot be scoped to one report. ---- */
+  ::view-transition-old(*), ::view-transition-new(*) { animation-duration: .22s; }
+  ::view-transition-group(*) { animation-duration: .22s; }
+  @media (prefers-reduced-motion: reduce) {
+    ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*)
+      { animation-duration: 1ms; }
+  }
+
+  /* ---- partners, styling that came with the report, scoped so it
+     cannot reach the other tabs. Injected by combine.py. ---- */
+  #partner-report * {box-sizing:border-box}
+  #partner-report .wrap {max-width:860px;margin:0 auto;padding:32px 20px 80px}
+  #partner-report header.masthead {border-bottom:3px solid var(--ink);padding-bottom:18px;margin-bottom:8px}
+  #partner-report header.masthead h1 {font-size:30px;line-height:1.15;margin:0 0 6px;letter-spacing:-0.5px}
+  #partner-report header.masthead .dates {font-size:15px;color:var(--muted);font-weight:500}
+  #partner-report .snapshot {display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 8px}
+  #partner-report .snapshot .chip {background:var(--card);border:1px solid var(--line);border-radius:999px;
+    padding:5px 12px;font-size:12.5px;color:var(--muted)}
+  #partner-report .snapshot .chip b {color:var(--ink)}
+  #partner-report footer {margin-top:40px;font-size:12px;color:var(--muted);text-align:center;border-top:1px solid var(--line);padding-top:16px}
+  #partner-report .pm-tabbar {position:sticky;top:0;z-index:50;background:var(--bg);
+    margin:0 -20px 4px;padding:10px 20px 0;border-bottom:1px solid var(--line)}
+  #partner-report .pm-tabbar .pm-label {font-size:11px;text-transform:uppercase;letter-spacing:.6px;
+    color:var(--muted);font-weight:700;margin-bottom:7px}
+  #partner-report .pm-tabs {display:flex;flex-wrap:wrap;gap:6px}
+  #partner-report .pm-tab {appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);
+    font:inherit;font-size:13px;font-weight:600;padding:7px 14px;border-radius:999px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:7px;transition:.12s;line-height:1.2}
+  #partner-report .pm-tab:hover {border-color:#c9c9d4}
+  #partner-report .pm-tab .pm-n {font-size:11px;font-weight:700;color:var(--muted);background:var(--bg);
+    border-radius:999px;padding:1px 7px;min-width:20px;text-align:center}
+  #partner-report .pm-tab[aria-pressed="true"] {background:var(--ink);color:#fff;border-color:var(--ink)}
+  #partner-report .pm-tab[aria-pressed="true"] .pm-n {background:rgba(255,255,255,.18);color:#fff}
+  #partner-report .pm-tab[data-empty="1"] {opacity:.5}
+  #partner-report .pm-subtabs {display:none;gap:4px;margin:9px 0 0;padding-bottom:9px}
+  #partner-report .pm-subtab {appearance:none;background:none;border:none;border-bottom:2px solid transparent;
+    font:inherit;font-size:13px;font-weight:600;color:var(--muted);padding:3px 2px 6px;margin-right:16px;cursor:pointer}
+  #partner-report .pm-subtab[aria-selected="true"] {color:var(--ink);border-bottom-color:var(--purple)}
+  #partner-report .pm-context {display:none;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--purple);
+    border-radius:10px;padding:11px 14px;font-size:13px;margin:14px 0 4px}
+  #partner-report .pm-context .pm-market {color:var(--muted)}
+  #partner-report .pm-context-row + .pm-context-row:not([hidden]) {margin-top:9px;padding-top:9px;border-top:1px solid var(--line)}
+  #partner-report .pm-hint {display:none;font-size:11.5px;color:var(--muted);margin-top:7px}
+  #partner-report .pm-outbound {display:none;margin-top:22px}
+  #partner-report .pm-none {display:none;background:var(--card);border:1px dashed var(--line);border-radius:12px;
+    padding:26px 18px;color:var(--muted);font-size:13.5px;text-align:center;margin:24px 0}
+  #partner-report .ob-nav {display:flex;flex-wrap:wrap;gap:6px;margin:0 0 22px}
+  #partner-report .ob-navlink {font-size:12.5px;font-weight:600;text-decoration:none;color:var(--ink);
+    background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 11px;
+    display:inline-flex;align-items:center;gap:6px}
+  #partner-report .ob-navlink:hover {border-color:#c9c9d4}
+  #partner-report .ob-navn {font-size:11px;color:var(--muted);font-weight:700}
+  #partner-report .ob-group {margin:0 0 34px;scroll-margin-top:120px}
+  #partner-report .ob-gtitle {font-size:15px;margin:0 0 12px;padding-bottom:7px;border-bottom:2px solid var(--ink);
+    display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+  #partner-report .ob-gnote {font-size:12px;font-weight:400;color:var(--muted)}
+  #partner-report .ob-partner {margin:0 0 16px}
+  #partner-report .ob-pname {font-size:13px;font-weight:700;letter-spacing:.2px;text-transform:uppercase;
+    color:var(--muted);margin:18px 0 8px;display:flex;align-items:center;gap:7px}
+  #partner-report .ob-pn {background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:0 7px;
+    font-size:11px;color:var(--muted)}
+  #partner-report .ob-item {background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 10px}
+  #partner-report .ob-title {font-size:14.5px;font-weight:650;line-height:1.35;display:block}
+  #partner-report .ob-meta {font-size:11.5px;color:var(--muted);margin:5px 0 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  #partner-report .ob-lbl {font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700;margin-bottom:3px}
+  #partner-report .ob-contacts ul {margin:2px 0 10px;padding-left:18px;font-size:13px}
+  #partner-report .ob-contacts li {margin:2px 0}
+  #partner-report .ob-alert {font-size:12.5px;border-radius:8px;padding:8px 11px;margin:0 0 10px}
+  #partner-report .ob-alert--client {background:var(--teal-bg);border:1px solid #bfe6dc}
+  #partner-report .ob-alert--pipeline {background:var(--red-bg);border:1px solid #f5c4bf}
+  #partner-report .ob-draft-row {display:flex;align-items:flex-start;gap:8px}
+  #partner-report .ob-draft {flex:1;min-width:0;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 11px}
+  #partner-report .ob-draft>summary {cursor:pointer;list-style:none;font-size:12.5px;font-weight:600;color:var(--purple);
+    display:flex;align-items:center;gap:6px}
+  #partner-report .ob-draft>summary::-webkit-details-marker {display:none}
+  #partner-report .ob-draft>summary::before {content:"▸";font-size:10px;transition:.15s}
+  #partner-report .ob-draft[open]>summary::before {transform:rotate(90deg)}
+  #partner-report .ob-draft-body .draft {background:transparent;border:none;padding:8px 0 0;margin:0;font-size:13px}
+  #partner-report .ob-copy {appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);
+    font:inherit;font-size:11.5px;font-weight:600;padding:7px 11px;border-radius:8px;cursor:pointer;white-space:nowrap}
+  #partner-report .ob-copy:hover {border-color:#c9c9d4}
+  #partner-report .ob-copy.is-done {background:var(--teal);border-color:var(--teal);color:#fff}
+  #partner-report .ob-src {font-size:11.5px;color:var(--muted);margin-top:9px}
+  #partner-report .ob-src a {color:var(--purple);text-decoration:none}
+  #partner-report .ob-also {background:var(--bg);border-radius:8px;padding:9px 12px;margin:0 0 10px}
+  #partner-report .ob-also ul {margin:2px 0 0;padding-left:18px;font-size:12.5px;color:var(--muted)}
+  #partner-report .ob-also li {margin:3px 0}
+  #partner-report .ob-also b {color:var(--ink);font-weight:600}
+  #partner-report .ob-also a {color:var(--purple);text-decoration:none}
+  #partner-report .ob-event {background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:11px 14px;margin:0 0 8px;font-size:13px}
+  #partner-report .ob-event a {color:var(--purple);text-decoration:none}
+  #partner-report .ob-event .ev-sep {color:var(--muted);opacity:.6;padding:0 4px}
+  #partner-report .ob-points {list-style:none;margin:0;padding:0}
+  #partner-report .ob-points li {background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:11px 14px;margin:0 0 8px;font-size:13px}
+  #partner-report .ob-points b {display:block;font-weight:650;margin-bottom:4px}
+  #partner-report .ob-why {display:block;font-size:12.5px;color:var(--muted)}
+  #partner-report .ob-why b {display:inline;color:var(--ink)}
+  #partner-report .ob-srclink {font-size:11.5px;color:var(--purple);text-decoration:none}
+  #partner-report .pm-empty-note {background:var(--card);border:1px dashed var(--line);border-radius:12px;
+    padding:26px;text-align:center;color:var(--muted);font-size:13.5px}
+  #partner-report header.masthead h1,  #partner-report .ob-gtitle {
+    font-family:"Cranny","Times New Roman",Times,serif;
+    font-weight:300;line-height:1.12;letter-spacing:0}
+  #partner-report header.masthead h1 {font-size:34px}
+  #partner-report .ob-gtitle {font-size:19px}
+   #partner-report .ob-title {letter-spacing:0}
+   #partner-report .ob-src a,  #partner-report .ob-also a,  #partner-report .ob-srclink,  #partner-report .ob-draft>summary {color:var(--purple)}
+  #partner-report .pm-context {border-left-color:var(--purple-fill)}
+  #partner-report .pm-subtab[aria-selected="true"] {border-bottom-color:var(--purple-fill)}
+  #partner-report .ob-gtitle {border-bottom-color:var(--ink)}
+  #partner-report .ob-alert--client {background:var(--teal-bg);border:1px solid var(--line);border-left:3px solid var(--ink)}
+  #partner-report .ob-alert--pipeline {background:var(--red-bg);border:1px solid #ECA1FE;border-left:3px solid var(--purple-fill)}
+  #partner-report .wrap {max-width:1240px}
+  #partner-report .pm-outbound {max-width:840px}
+  #partner-report .snapshot .chip {cursor:pointer;transition:.12s;border-color:var(--line)}
+  #partner-report .snapshot .chip:hover {border-color:var(--ink);background:var(--card)}
+  #partner-report .snapshot .chip:focus-visible {outline:2px solid var(--purple-fill);outline-offset:2px}
+  #partner-report .snapshot .chip[data-nojump="1"] {cursor:default;opacity:.45}
+  #partner-report .snapshot .chip[data-nojump="1"]:hover {border-color:var(--line)}
+  #partner-report .ob-alert--client {background:var(--teal-bg);border:1px solid var(--teal-line);border-left:3px solid var(--teal)}
+  #partner-report .ob-alert--pipeline {background:var(--red-bg);border:1px solid var(--red-line);border-left:3px solid var(--red)}
+  #partner-report .ob-extra {display:none}
+  #partner-report .ob-item .ob-event {background:transparent;border:none;padding:0;margin:0 0 10px;font-size:13.5px;line-height:1.45}
+  #partner-report .ob-alert--target {background:var(--purple-bg);border:1px solid #ECA1FE;border-left:3px solid var(--purple-fill)}
+@media (max-width:640px) {
+  #partner-report .appendix .grid {grid-template-columns:1fr}
+}
+@media print {
+  #partner-report .pm-tabbar {display:none}
+}
+  /* ---- outbound, styling that came with the report, scoped so it
+     cannot reach the other tabs. Injected by combine.py. ---- */
+  #outbound-report section.category {
+    margin: 0 0 52px; scroll-margin-top: 24px;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px; align-items: stretch;}
+  #outbound-report section.category > *:not(.card) { grid-column: 1 / -1;}
+  #outbound-report .cat-intro,  #outbound-report .notes,  #outbound-report .axis-legend,  #outbound-report .report-footer,  #outbound-report .landing-foot { max-width: 74ch;}
+  #outbound-report h2.cathead {
+    font-family: var(--font-display); font-weight: 300;
+    font-size: 27px; line-height: 1.15; letter-spacing: -.01em;
+    margin: 0 0 6px; padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: baseline; gap: 9px;}
+  #outbound-report h2.cathead .count {
+    font-family: var(--font-sans); font-size: 12px; font-weight: 700;
+    color: var(--fg-muted); font-variant-numeric: tabular-nums;}
+  #outbound-report .cat-info {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 17px; height: 17px; flex-shrink: 0;
+    border: 1px solid var(--border-strong); border-radius: 50%;
+    font-family: var(--font-sans); font-size: 10.5px; font-weight: 700;
+    color: var(--fg-muted); cursor: help;
+    position: relative; z-index: 40; vertical-align: middle;
+    transition: all var(--dur-fast) var(--ease-out);}
+  #outbound-report .cat-info:hover { border-color: var(--base-black); color: var(--base-black);}
+  #outbound-report .cat-info::after {
+    content: attr(data-tip);
+    position: absolute; left: 50%; top: calc(100% + 9px); transform: translateX(-50%);
+    width: max-content; max-width: 300px;
+    background: var(--base-black); color: var(--base-white);
+    font-family: var(--font-sans); font-size: 12px; font-weight: 400; line-height: 1.45;
+    letter-spacing: 0; text-align: left; text-transform: none;
+    padding: 9px 12px; border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-lg);
+    opacity: 0; visibility: hidden; pointer-events: none; z-index: 50;
+    transition: opacity var(--dur-fast) var(--ease-out), visibility var(--dur-fast);}
+  #outbound-report .cat-info::before {
+    content: ""; position: absolute; left: 50%; top: calc(100% + 3px);
+    transform: translateX(-50%);
+    border: 6px solid transparent; border-bottom-color: var(--base-black);
+    opacity: 0; visibility: hidden; z-index: 51;
+    transition: opacity var(--dur-fast) var(--ease-out), visibility var(--dur-fast);}
+  #outbound-report .cat-info:hover::after,  #outbound-report .cat-info:hover::before { opacity: 1; visibility: visible;}
+  #outbound-report section.category,  #outbound-report h2.cathead { overflow: visible;}
+  #outbound-report .cat-intro { font-size: 13.5px; color: var(--fg-muted); margin: 12px 0 18px; line-height: 1.6;}
+  #outbound-report .empty-placeholder { font-size: 13.5px; color: var(--fg-muted); font-style: italic; padding: 14px 0;}
+  #outbound-report .card {
+    display: flex; flex-direction: column;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 18px 20px;
+    margin-bottom: 0;
+    transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);}
+  #outbound-report .card:hover { border-color: var(--base-50); box-shadow: var(--shadow-md);}
+  #outbound-report .card.is-tl { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent-border);}
+  #outbound-report .card.is-tl:hover { border-color: var(--mp-70); box-shadow: var(--shadow-md), inset 0 0 0 1px var(--accent-border);}
+  #outbound-report .card.is-gong { border-color: var(--base-black);}
+  #outbound-report .card.is-gong:hover { border-color: var(--base-black); box-shadow: var(--shadow-md);}
+  #outbound-report .card.is-new { border-color: var(--border);}
+  #outbound-report .card h3 {
+    font-size: 15.5px; font-weight: 650; line-height: 1.34; letter-spacing: -.011em;
+    margin: 0 0 8px;}
+  #outbound-report .fitline { font-size: 12px; color: var(--fg-muted); margin-bottom: 6px;}
+  #outbound-report .meta { font-size: 12px; color: var(--fg-subtle); margin-bottom: 9px;}
+  #outbound-report .summary { font-size: 13.5px; margin-bottom: 11px; line-height: 1.58;}
+  #outbound-report .note-line { font-size: 13px; color: var(--fg-muted); margin: 8px 0 0;}
+  #outbound-report .note-line b { color: var(--fg);}
+  #outbound-report .source-link { font-size: 12px; margin: 10px 0 12px; min-width: 0;}
+  #outbound-report .source-link a,  #outbound-report .meta a,  #outbound-report .card h3 a {
+    display: inline-block; max-width: 100%; vertical-align: bottom;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+  #outbound-report .card,  #outbound-report .card * { overflow-wrap: anywhere;}
+  #outbound-report .card .summary,  #outbound-report .card h3 { overflow-wrap: normal; word-break: normal;}
+  #outbound-report .tier {
+    display: inline-block; font-family: var(--font-mono);
+    font-size: 10px; font-weight: 400; letter-spacing: .04em;
+    padding: 2px 8px; border-radius: var(--radius-pill);
+    margin-left: 6px; vertical-align: middle; white-space: nowrap;}
+  #outbound-report .tier.A { background: var(--base-black); color: var(--base-white);}
+  #outbound-report .tier.B { background: var(--base-20); color: var(--base-80);}
+  #outbound-report .tier.C { background: transparent; color: var(--fg-subtle); border: 1px solid var(--border);}
+  #outbound-report .tier.flag { background: var(--bg-subtle); color: var(--fg-muted); border: 1px solid var(--border);}
+  #outbound-report .tier.warn { background: transparent; color: var(--error-60); border: 1px solid var(--error-60);}
+  #outbound-report .origin {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
+    padding: 2px 9px; border-radius: var(--radius-pill);
+    margin-left: 6px; vertical-align: middle; white-space: nowrap;}
+  #outbound-report .origin.tl { background: var(--accent); color: var(--base-white);}
+  #outbound-report .origin.gong { background: var(--accent-soft); color: var(--mp-70); border: 1px solid var(--accent-border);}
+  #outbound-report .origin.new { background: transparent; color: var(--fg-subtle); border: 1px solid var(--border);}
+  #outbound-report .axis-legend {
+    font-size: 12.5px; color: var(--fg-muted); margin: 14px 0 20px;
+    padding: 14px 16px; border: 1px solid var(--border);
+    border-radius: var(--radius-md); background: var(--bg-subtle); line-height: 1.7;}
+  #outbound-report .axis-legend .origin,  #outbound-report .axis-legend .tier { margin-left: 0; margin-right: 3px;}
+  #outbound-report .axis-legend b { color: var(--fg);}
+  #outbound-report .accordion-row {
+    display: grid;
+    grid-template-columns: repeat(var(--acc-n, 3), minmax(0, 1fr));
+    gap: 6px; align-content: start; align-items: start;
+    margin-top: auto; padding-top: 12px; min-height: 76px;}
+  #outbound-report .accordion-row > details { min-width: 0; margin-bottom: 0;}
+  #outbound-report .accordion-row > details[open] { grid-column: 1 / -1; order: -1;}
+  #outbound-report .accordion-row.has-open > details:not([open]) { opacity: .8;}
+  #outbound-report .accordion-row.has-open > details:not([open]):hover { opacity: 1;}
+  #outbound-report .accordion-row > details:not([open]) { overflow: visible;}
+  #outbound-report .accordion-row > details {
+    transition: border-color var(--dur-fast) var(--ease-out),
+                background var(--dur-fast) var(--ease-out),
+                opacity var(--dur-fast) var(--ease-out);}
+  #outbound-report .accordion-row > details > summary { position: relative; border-radius: 11px;}
+  #outbound-report .accordion-row > details[open] > summary { border-radius: 11px 11px 0 0;}
+  #outbound-report .accordion-row > details:not([open]) > summary:not([data-full])::after { content: none;}
+  #outbound-report .accordion-row > details:not([open]) > summary::after {
+    content: attr(data-full);
+    position: absolute; left: 50%; bottom: calc(100% + 8px); z-index: 6;
+    transform: translateX(-50%) translateY(4px);
+    white-space: nowrap; pointer-events: none;
+    background: var(--base-black); color: var(--base-white);
+    font-size: 11px; font-weight: 600; letter-spacing: -.004em; line-height: 1.4;
+    padding: 5px 10px; border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    transition: opacity 130ms var(--ease-out), transform 130ms var(--ease-out);}
+  #outbound-report .accordion-row > details:not([open]) > summary:hover::after,  #outbound-report .accordion-row > details:not([open]) > summary:focus-visible::after {
+    opacity: 1; transform: translateX(-50%) translateY(0);
+    transition-delay: 200ms;}
+  #outbound-report .accordion-row > details:not([open]):hover { border-color: var(--base-black);}
+  #outbound-report .accordion-row > details:not([open]) > summary:hover { background: var(--base-20);}
+  #outbound-report .accordion-row > details.outreach:not([open]) > summary:hover { background: var(--mp-20);}
+  #outbound-report .accordion-row > details > summary > .s-l,  #outbound-report .accordion-row > details > summary > .s-s {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;}
+  #outbound-report .accordion-row > details:not([open]) > summary > .s-l { display: none;}
+  #outbound-report .accordion-row > details[open] > summary > .s-s { display: none;}
+  #outbound-report .accordion-row > details:not([open]) > summary > .lang-tag { display: none;}
+  #outbound-report .accordion-row > details > .inner { transform-origin: top;}
+  #outbound-report details.acc,  #outbound-report details.qualdrop {
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    background: var(--bg-subtle); overflow: hidden; margin-bottom: 9px;}
+  #outbound-report details.acc > summary,  #outbound-report details.qualdrop > summary {
+    cursor: pointer; list-style: none; padding: 8px 11px;
+    font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px;
+    transition: background var(--dur-fast) var(--ease-out);}
+  #outbound-report details.acc > summary::-webkit-details-marker,  #outbound-report details.qualdrop > summary::-webkit-details-marker { display: none;}
+  #outbound-report details.acc > summary::before,  #outbound-report details.qualdrop > summary::before {
+    content: "+"; font-family: var(--font-mono); font-size: 13px;
+    color: var(--fg-subtle); width: 10px; flex-shrink: 0;}
+  #outbound-report details.acc[open] > summary::before,  #outbound-report details.qualdrop[open] > summary::before { content: "–";}
+  #outbound-report details.acc > summary:hover,  #outbound-report details.qualdrop > summary:hover { background: var(--base-20);}
+  #outbound-report details.acc .inner,  #outbound-report details.qualdrop .inner {
+    padding: 4px 13px 14px; font-size: 13px; line-height: 1.6;
+    border-top: 1px solid var(--border);}
+  #outbound-report details.acc.outreach { border-color: var(--accent-border); background: var(--accent-soft);}
+  #outbound-report details.acc.outreach > summary:hover { background: var(--mp-20);}
+  #outbound-report details.acc.pflag { border-color: var(--base-50);}
+  #outbound-report details.acc.pipeline-flag { border-color: var(--error-60); background: var(--bg-subtle);}
+  #outbound-report .accordion-row > details.pipeline-flag:not([open]):hover { border-color: var(--error-60);}
+  #outbound-report details.acc.pipeline-flag > summary { color: var(--error-60);}
+  #outbound-report details.acc.pipeline-flag > summary::before { color: var(--error-60);}
+  #outbound-report .accordion-row > details.pipeline-flag:not([open]) > summary:hover { background: #fdecea;}
+  #outbound-report details.acc.pipeline-flag .inner { color: var(--fg);}
+  #outbound-report details.qualdrop { background: var(--bg-elevated);}
+  #outbound-report .f { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start;}
+  #outbound-report .f > b { flex: 0 0 96px; font-size: 12px; font-weight: 650; color: var(--fg-muted); line-height: 1.5;}
+  #outbound-report .f .fval { flex: 1; min-width: 0; font-size: 13px;}
+  #outbound-report .f .fval ul { margin: 0; padding-left: 17px;}
+  #outbound-report p.msg { margin: 9px 0; font-size: 13px; line-height: 1.65;}
+  #outbound-report .gongflow {
+    margin-top: 11px; padding-top: 10px; font-size: 12px; color: var(--fg-muted);
+    border-top: 1px dashed var(--border);}
+  #outbound-report .gongflow b { color: var(--fg);}
+  #outbound-report .gongflow a { color: var(--link); font-weight: 600; text-decoration: none;}
+  #outbound-report .gongflow a:hover { text-decoration: underline;}
+  #outbound-report .lang-tag {
+    margin-left: auto; flex-shrink: 0; font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .06em;
+    background: var(--bg-elevated); color: var(--fg-muted);
+    border: 1px solid var(--border); padding: 1px 7px; border-radius: var(--radius-pill);}
+  #outbound-report .compose-actions { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 12px;}
+  #outbound-report .compose-actions a,  #outbound-report .compose-actions button {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: inherit; font-size: 12px; font-weight: 600;
+    padding: 6px 13px; border-radius: var(--radius-pill);
+    text-decoration: none; cursor: pointer; white-space: nowrap;
+    border: 1px solid var(--base-black); background: var(--base-black); color: var(--base-white);
+    transition: all var(--dur-fast) var(--ease-out);}
+  #outbound-report .compose-actions a:hover,  #outbound-report .compose-actions button:hover { background: var(--base-80); opacity: 1;}
+  #outbound-report .compose-actions a:active,  #outbound-report .compose-actions button:active { transform: scale(.98);}
+  #outbound-report .compose-actions a.webmail-btn,  #outbound-report .compose-actions button.copy-btn {
+    background: var(--bg-elevated); color: var(--fg); border-color: var(--border);}
+  #outbound-report .compose-actions a.webmail-btn:hover,  #outbound-report .compose-actions button.copy-btn:hover {
+    background: var(--bg-subtle); border-color: var(--base-black);}
+  #outbound-report .compose-actions .hint { font-size: 11.5px; color: var(--fg-subtle); margin-left: 2px;}
+  #outbound-report .competitor-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 22px;}
+  #outbound-report .competitor-box {
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    background: var(--bg-elevated); padding: 9px 14px;
+    font-size: 12.5px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px;}
+  #outbound-report details.competitor-box { display: block; cursor: pointer;}
+  #outbound-report details.competitor-box > summary {
+    list-style: none; display: flex; align-items: center; gap: 8px; font-weight: 600;}
+  #outbound-report details.competitor-box > summary::-webkit-details-marker { display: none;}
+  #outbound-report .competitor-box .dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--base-35); flex-shrink: 0;}
+  #outbound-report details.competitor-box.has-news { border-color: var(--accent); background: var(--accent-soft);}
+  #outbound-report details.competitor-box.has-news .dot { background: var(--accent);}
+  #outbound-report details.competitor-box .detail {
+    margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--accent-border);
+    font-size: 12.5px; font-weight: 400; line-height: 1.6; max-width: 620px;}
+  #outbound-report .oa-group {
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    background: var(--bg-elevated); margin-bottom: 12px; overflow: hidden;}
+  #outbound-report .oa-group > summary {
+    cursor: pointer; list-style: none; padding: 13px 18px;
+    display: flex; align-items: center; gap: 10px;
+    transition: background var(--dur-fast) var(--ease-out);}
+  #outbound-report .oa-group > summary::-webkit-details-marker { display: none;}
+  #outbound-report .oa-group > summary:hover { background: var(--bg-subtle);}
+  #outbound-report .oa-group > summary::before {
+    content: "+"; font-family: var(--font-mono); font-size: 14px; color: var(--fg-subtle);
+    width: 12px; flex-shrink: 0;}
+  #outbound-report .oa-group[open] > summary::before { content: "–";}
+  #outbound-report .oa-group > summary .t { font-size: 13.5px; font-weight: 650;}
+  #outbound-report .oa-group > summary .n {
+    margin-left: auto; font-size: 11.5px; font-weight: 700; font-variant-numeric: tabular-nums;
+    background: var(--base-20); color: var(--base-80);
+    border-radius: var(--radius-pill); padding: 1px 9px;}
+  #outbound-report .oa-group .oa-body { padding: 0 18px 16px; border-top: 1px solid var(--border);}
+  #outbound-report .oa-group .oa-blurb { font-size: 12.5px; color: var(--fg-muted); margin: 12px 0 12px; line-height: 1.6;}
+  #outbound-report ul.other-list { list-style: none; margin: 0; padding: 0;}
+  #outbound-report ul.other-list li {
+    font-size: 13px; line-height: 1.6; padding: 10px 0;
+    border-top: 1px solid var(--base-20);}
+  #outbound-report ul.other-list li:first-child { border-top: none;}
+  #outbound-report .appendix-wrap {
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    background: var(--bg-elevated); overflow: hidden;}
+  #outbound-report table.appendix { width: 100%; border-collapse: collapse; font-size: 12.5px;}
+  #outbound-report table.appendix th {
+    text-align: left; padding: 11px 16px; font-size: 10.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .07em; color: var(--fg-muted);
+    background: var(--bg-subtle); border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 5;}
+  #outbound-report table.appendix td { padding: 10px 16px; border-top: 1px solid var(--base-20); vertical-align: top; line-height: 1.5;}
+  #outbound-report table.appendix tr:hover td { background: var(--bg-subtle);}
+  #outbound-report table.appendix td:first-child { font-weight: 600; white-space: nowrap;}
+  #outbound-report .verdict {
+    display: inline-block; font-family: var(--font-mono); font-size: 10px;
+    padding: 2px 8px; border-radius: var(--radius-pill); white-space: nowrap;}
+  #outbound-report .verdict.q { background: var(--success-90); color: var(--success-60);}
+  #outbound-report .verdict.d { background: transparent; color: var(--error-60); border: 1px solid var(--error-60);}
+  #outbound-report .verdict.h { background: var(--base-20); color: var(--base-80);}
+  #outbound-report .pm-footer { margin-top: 46px;}
+  #outbound-report .pm-footer-block { display: none;}
+  #outbound-report .pm-footer-block.active { display: block;}
+  #outbound-report .pm-footer-block h4 {
+    font-family: var(--font-display); font-weight: 300; font-size: 24px;
+    margin: 0 0 4px; letter-spacing: -.01em;}
+  #outbound-report .pm-footer-block .sub { font-size: 13px; color: var(--fg-muted); margin-bottom: 16px;}
+  #outbound-report ul.todo { list-style: none; margin: 0; padding: 0;}
+  #outbound-report ul.todo li {
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    background: var(--bg-elevated); padding: 13px 16px; margin-bottom: 8px;
+    font-size: 13.5px; line-height: 1.6;
+    display: flex; gap: 12px; align-items: flex-start;
+    transition: border-color var(--dur-fast) var(--ease-out);}
+  #outbound-report ul.todo li:hover { border-color: var(--base-50);}
+  #outbound-report ul.todo li .txt { flex: 1; min-width: 0;}
+  #outbound-report ul.todo li .jump {
+    flex-shrink: 0; font-size: 11.5px; font-weight: 600; text-decoration: none;
+    color: var(--fg); background: var(--bg-subtle);
+    border: 1px solid var(--border); border-radius: var(--radius-pill);
+    padding: 3px 11px; white-space: nowrap;
+    transition: all var(--dur-fast) var(--ease-out);}
+  #outbound-report ul.todo li .jump:hover { background: var(--base-black); color: var(--base-white); border-color: var(--base-black); opacity: 1;}
+  #outbound-report .card:target { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft);}
+  #outbound-report ul.watchlist { list-style: none; margin: 0 0 6px; padding: 0;}
+  #outbound-report ul.watchlist li {
+    font-size: 13px; line-height: 1.6; padding: 9px 0;
+    border-top: 1px solid var(--base-20);}
+  #outbound-report ul.watchlist li:first-child { border-top: none;}
+  #outbound-report .sub-head { font-size: 13px; font-weight: 650; margin: 20px 0 6px;}
+@media (max-width: 980px) {
+  #outbound-report section.category { grid-template-columns: 1fr;}
+}
+
+  /* ---- campaignlive, mirrored content. Each source report's own rules repeated
+     against this tab so a copied card keeps the look it had where it was
+     written. The first source takes the tab scope; later ones are wrapped
+     in .mirror-<tab> so their rules out-specify it and the two generations
+     do not blend. Injected by combine.py. ---- */
+  #campaignlive-report { color: var(--ink);}
+  #campaignlive-report section.cat:first-of-type { margin-top: 34px;}
+#campaignlive-report{--ink:#141419; --muted:#6b6b76; --line:#e7e7ec; --bg:#f6f6f4; --card:#ffffff;
+    --purple:#6b4de6; --purple-bg:#f2eefe;
+    --amber:#c77700; --amber-bg:#fff6e8;
+    --red:#d23b30; --red-bg:#fdecea;
+    --teal:#0a7d68; --teal-bg:#e7f6f2;
+    --accent:#141419;}
+#campaignlive-report{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    line-height:1.5;-webkit-font-smoothing:antialiased}
+#campaignlive-report .intro{font-size:13.5px;color:var(--muted);margin:6px 0 26px;padding:12px 14px;
+    background:#fff;border:1px solid var(--line);border-radius:10px}
+#campaignlive-report section.cat{margin:30px 0}
+#campaignlive-report h2.cat-title{font-size:19px;margin:0 0 4px;padding-bottom:8px;border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:8px}
+#campaignlive-report .count{font-size:12px;font-weight:600;color:var(--muted);background:var(--bg);
+    border:1px solid var(--line);border-radius:999px;padding:1px 9px}
+#campaignlive-report .cat-info{position:relative;display:inline-flex;align-items:center;justify-content:center;
+    width:16px;height:16px;border-radius:50%;background:var(--muted);color:#fff;font-size:11px;
+    cursor:help;font-style:normal;font-weight:700}
+#campaignlive-report .cat-info::after{content:attr(data-tip);position:absolute;left:50%;top:140%;transform:translateX(-50%);
+    background:#141419;color:#fff;padding:9px 11px;border-radius:8px;font-size:12px;font-weight:400;
+    line-height:1.4;width:max-content;max-width:280px;opacity:0;visibility:hidden;transition:.15s;z-index:20;
+    box-shadow:0 6px 20px rgba(0,0,0,.18)}
+#campaignlive-report .cat-info:hover::after{opacity:1;visibility:visible}
+#campaignlive-report .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 18px 6px;
+    margin:14px 0;box-shadow:0 1px 2px rgba(20,20,25,.03)}
+#campaignlive-report .card h3{font-size:17px;margin:0 0 8px;line-height:1.3}
+#campaignlive-report .meta{font-size:12.5px;color:var(--muted);margin-bottom:10px;display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+#campaignlive-report .meta .dot{opacity:.5}
+#campaignlive-report .tag{font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;letter-spacing:.2px}
+#campaignlive-report .tag--pipeline{background:var(--red);color:#fff}
+#campaignlive-report .tag--client{background:var(--teal);color:#fff}
+#campaignlive-report .card p.summary{font-size:14.5px;margin:0 0 12px}
+#campaignlive-report .src{font-size:12.5px;margin:0 0 12px}
+#campaignlive-report .src a{color:var(--purple);text-decoration:none;border-bottom:1px solid #d8ccfb}
+#campaignlive-report .src a:hover{border-bottom-color:var(--purple)}
+#campaignlive-report .connects{font-size:12.5px;color:var(--muted);margin:-4px 0 12px;padding-left:10px;border-left:2px solid var(--line)}
+#campaignlive-report details.outreach{border-top:1px dashed var(--line);margin:0 -18px;padding:10px 18px 4px}
+#campaignlive-report details.outreach>summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--purple);
+    list-style:none;display:flex;align-items:center;gap:6px;padding:4px 0}
+#campaignlive-report details.outreach>summary::-webkit-details-marker{display:none}
+#campaignlive-report details.outreach>summary::before{content:"▸";font-size:11px;transition:.15s}
+#campaignlive-report details.outreach[open]>summary::before{transform:rotate(90deg)}
+#campaignlive-report .outreach-body{font-size:13.5px;padding:8px 0 12px}
+#campaignlive-report .outreach-body h4{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);
+    margin:14px 0 5px}
+#campaignlive-report .outreach-body ul{margin:4px 0 4px;padding-left:20px}
+#campaignlive-report .outreach-body li{margin:3px 0}
+#campaignlive-report .draft{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-top:6px;
+    font-size:13.5px;white-space:pre-wrap}
+#campaignlive-report .draft .subj{font-weight:700;margin-bottom:6px;display:block}
+#campaignlive-report details.flag,#campaignlive-report details.pipeline-flag{border:1px solid var(--red);border-left:4px solid var(--red);background:var(--red-bg);
+    border-radius:8px;margin:12px 0 4px;padding:8px 12px}
+#campaignlive-report details.flag>summary,#campaignlive-report details.pipeline-flag>summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--red);list-style:none}
+#campaignlive-report details.flag>summary::-webkit-details-marker,#campaignlive-report details.pipeline-flag>summary::-webkit-details-marker{display:none}
+#campaignlive-report details.flag .flag-body,#campaignlive-report details.pipeline-flag .flag-body{font-size:13px;padding:8px 2px 2px}
+#campaignlive-report .client-note{background:var(--teal-bg);border:1px solid #bfe6dc;border-radius:8px;padding:10px 12px;
+    font-size:13px;margin:2px 0 10px}
+#campaignlive-report details.prospect,#campaignlive-report details.prospect-flag{border:1px solid var(--amber);border-left:4px solid var(--amber);background:var(--amber-bg);
+    border-radius:8px;margin:0 -18px;padding:10px 18px 4px}
+#campaignlive-report details.prospect>summary,#campaignlive-report details.prospect-flag>summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--amber);list-style:none}
+#campaignlive-report details.prospect>summary::-webkit-details-marker,#campaignlive-report details.prospect-flag>summary::-webkit-details-marker{display:none}
+#campaignlive-report .radar-card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0}
+#campaignlive-report .radar-card .why{font-size:13px;color:var(--ink);background:var(--bg);border-radius:8px;padding:9px 11px;margin-top:8px}
+#campaignlive-report .empty{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:18px;
+    color:var(--muted);font-size:13.5px;text-align:center}
+#campaignlive-report .other-list{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 18px}
+#campaignlive-report .other-item{padding:12px 0;border-bottom:1px solid var(--line)}
+#campaignlive-report .other-item:last-child{border-bottom:none}
+#campaignlive-report .other-item .oi-head{font-size:14px;font-weight:600;margin-bottom:3px}
+#campaignlive-report .other-item .oi-meta{font-size:12px;color:var(--muted);margin-bottom:3px}
+#campaignlive-report .other-item a{color:var(--purple);text-decoration:none}
+#campaignlive-report .events-list{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 18px}
+#campaignlive-report .event-item{padding:11px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+#campaignlive-report .event-item:last-child{border-bottom:none}
+#campaignlive-report .event-item a{color:var(--purple);text-decoration:none}
+#campaignlive-report .event-item .ev-sep{color:var(--muted);opacity:.6;padding:0 4px}
+#campaignlive-report .appendix{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;font-size:13px}
+#campaignlive-report .appendix h2{border:none;font-size:16px;margin:0 0 10px;padding:0}
+#campaignlive-report .appendix .grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+#campaignlive-report .appendix .grid div{padding:3px 0;border-bottom:1px solid #f0f0f3;color:var(--muted)}
+#campaignlive-report .appendix .grid b{color:var(--ink);font-weight:600}
+#campaignlive-report{--ink:#111110;
+    --muted:#676763;
+    --line:#E1E1DB;
+    --bg:#F0F0EB;
+    --card:#FFFFFF;
+    --accent:#111110;
+
+    --purple:#880AAB;
+    --purple-fill:#B60AE3;
+    --purple-bg:#FAE8FF;
+
+    --red:#B60AE3;
+    --red-bg:#FAE8FF;
+
+    --teal:#111110;
+    --teal-bg:#F8F8F5;
+
+    --amber:#575753;
+    --amber-bg:#F8F8F5;}
+#campaignlive-report{font-family:"ABC Diatype",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+    letter-spacing:normal;line-height:1.5}
+#campaignlive-report h2.cat-title,#campaignlive-report .appendix h2{font-family:"Cranny","Times New Roman",Times,serif;
+    font-weight:300;line-height:1.12;letter-spacing:0}
+#campaignlive-report h2.cat-title{font-size:22px}
+#campaignlive-report .appendix h2{font-size:19px}
+#campaignlive-report .card h3,#campaignlive-report .radar-card h3{letter-spacing:0}
+#campaignlive-report .src a,#campaignlive-report .other-item a,#campaignlive-report .event-item a,#campaignlive-report details.outreach>summary{color:var(--purple)}
+#campaignlive-report .src a{border-bottom-color:#ECA1FE}
+#campaignlive-report .tag--pipeline{background:var(--purple-fill);color:#fff}
+#campaignlive-report .tag--client{background:var(--ink);color:#fff}
+#campaignlive-report .client-note{background:var(--teal-bg);border:1px solid var(--line);border-left:3px solid var(--ink)}
+#campaignlive-report details.flag,#campaignlive-report details.pipeline-flag{border:1px solid #ECA1FE;border-left:4px solid var(--purple-fill);background:var(--red-bg)}
+#campaignlive-report details.flag>summary,#campaignlive-report details.pipeline-flag>summary{color:var(--purple)}
+#campaignlive-report details.prospect,#campaignlive-report details.prospect-flag{border:1px solid var(--line);border-left:4px solid var(--amber);background:var(--amber-bg)}
+#campaignlive-report details.prospect>summary,#campaignlive-report details.prospect-flag>summary{color:var(--amber)}
+#campaignlive-report section.cat{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch;
+    scroll-margin-top:118px}
+#campaignlive-report section.cat>h2.cat-title,#campaignlive-report section.cat>.empty,#campaignlive-report section.cat>.other-list,#campaignlive-report section.cat>.events-list,#campaignlive-report section.cat>.appendix{grid-column:1 / -1}
+#campaignlive-report section.cat>h2.cat-title{margin-bottom:0}
+#campaignlive-report .card,#campaignlive-report .radar-card{margin:0;display:flex;flex-direction:column}
+#campaignlive-report .card p.summary,#campaignlive-report .radar-card p.summary{flex:0 1 auto}
+#campaignlive-report .card .src,#campaignlive-report .radar-card .src{margin-top:auto}
+#campaignlive-report .card .connects{margin-top:8px}
+#campaignlive-report .card details.outreach,#campaignlive-report .card details.prospect-flag{margin-top:0}
+#campaignlive-report .radar-card .why{margin-top:10px}
+@media(max-width:1040px){#campaignlive-report section.cat{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){#campaignlive-report section.cat{grid-template-columns:1fr}}
+#campaignlive-report{--teal:#168500;
+    --teal-bg:#ECF5EB;
+    --teal-line:#A5EB99;
+    --teal-ink:#032C10;
+    --red:#DE2417;
+    --red-bg:#FCEDED;
+    --red-line:#F9B1AE;
+    --red-ink:#460A00;}
+#campaignlive-report .tag--client{background:var(--teal);color:#fff}
+#campaignlive-report .tag--pipeline{background:var(--red);color:#fff}
+#campaignlive-report .client-note{background:var(--teal-bg);border:1px solid var(--teal-line);border-left:3px solid var(--teal)}
+#campaignlive-report details.flag,#campaignlive-report details.pipeline-flag{border:1px solid var(--red-line);border-left:4px solid var(--red);background:var(--red-bg)}
+#campaignlive-report details.flag>summary,#campaignlive-report details.pipeline-flag>summary{color:var(--red-ink)}
+#campaignlive-report .tag--target{background:var(--purple-fill);color:#fff}
+#campaignlive-report details.target-flag{border:1px solid #ECA1FE;border-left:4px solid var(--purple-fill);
+    background:var(--purple-bg);border-radius:8px;margin:12px 0 4px;padding:8px 12px}
+#campaignlive-report details.target-flag>summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--purple);list-style:none}
+#campaignlive-report details.target-flag>summary::-webkit-details-marker{display:none}
+#campaignlive-report details.target-flag .flag-body{font-size:13px;padding:8px 2px 2px}
+#campaignlive-report .other-item details.outreach{margin:10px 0 2px;padding:8px 0 0;border-top:1px dashed var(--line)}
+#campaignlive-report .other-item details.outreach>summary{font-size:12.5px}
+#campaignlive-report .other-item .outreach-body{font-size:13px;padding:6px 0 8px}
+#campaignlive-report .other-item details.target-flag{margin:10px 0 2px}
+#campaignlive-report .target-note{background:var(--purple-bg);border:1px solid #ECA1FE;border-left:3px solid var(--purple-fill);
+    border-radius:8px;padding:9px 11px;font-size:13px;margin:2px 0 10px}
+#campaignlive-report .other-item details.target-flag{display:none}
+#campaignlive-report #sec-other-activity{grid-template-columns:repeat(4,1fr)}
+#campaignlive-report #sec-other-activity>.other-item{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 15px;margin:0;display:flex;flex-direction:column;font-size:13px;line-height:1.45;
+    box-shadow:0 1px 2px rgba(20,20,25,.03)}
+#campaignlive-report #sec-other-activity>.other-item:last-child{border-bottom:1px solid var(--line)}
+#campaignlive-report #sec-other-activity .oi-head{font-size:13.5px;font-weight:650;line-height:1.35;margin-bottom:5px}
+#campaignlive-report #sec-other-activity .oi-meta{font-size:11.5px;margin-bottom:8px;display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+#campaignlive-report #sec-other-activity .tag{font-size:10px;padding:1px 7px}
+#campaignlive-report #sec-other-activity .target-note,#campaignlive-report #sec-other-activity .client-note{font-size:12px;padding:8px 10px}
+#campaignlive-report #sec-other-activity details.outreach{margin-top:auto}
+#campaignlive-report #sec-other-activity .outreach-body{font-size:12.5px}
+#campaignlive-report #sec-other-activity .draft{font-size:12.5px}
+@media(max-width:1240px){#campaignlive-report #sec-other-activity{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:1040px){#campaignlive-report #sec-other-activity{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){#campaignlive-report #sec-other-activity{grid-template-columns:1fr}}
+#campaignlive-report .tag--target-rel{background:transparent;color:var(--purple);border:1px solid #ECA1FE;font-weight:600}
+#campaignlive-report .tag--risk{background:transparent;color:var(--muted);border:1px solid var(--line);font-weight:600}
+#campaignlive-report .rel-note{background:transparent;border:1px dashed #ECA1FE;border-radius:8px;padding:8px 11px;
+    font-size:12.5px;color:var(--muted);margin:2px 0 10px}
+#campaignlive-report .rel-note b{color:var(--ink)}
+
+  #campaignlive-report * {box-sizing:border-box}
+  #campaignlive-report .wrap {max-width:860px;margin:0 auto;padding:32px 20px 80px}
+  #campaignlive-report header.masthead {border-bottom:3px solid var(--ink);padding-bottom:18px;margin-bottom:8px}
+  #campaignlive-report header.masthead h1 {font-size:30px;line-height:1.15;margin:0 0 6px;letter-spacing:-0.5px}
+  #campaignlive-report header.masthead .dates {font-size:15px;color:var(--muted);font-weight:500}
+  #campaignlive-report .snapshot {display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 8px}
+  #campaignlive-report .snapshot .chip {background:var(--card);border:1px solid var(--line);border-radius:999px;
+    padding:5px 12px;font-size:12.5px;color:var(--muted)}
+  #campaignlive-report .snapshot .chip b {color:var(--ink)}
+  #campaignlive-report footer {margin-top:40px;font-size:12px;color:var(--muted);text-align:center;border-top:1px solid var(--line);padding-top:16px}
+  #campaignlive-report .pm-tabbar {position:sticky;top:0;z-index:50;background:var(--bg);
+    margin:0 -20px 4px;padding:10px 20px 0;border-bottom:1px solid var(--line)}
+  #campaignlive-report .pm-tabbar .pm-label {font-size:11px;text-transform:uppercase;letter-spacing:.6px;
+    color:var(--muted);font-weight:700;margin-bottom:7px}
+  #campaignlive-report .pm-tabs {display:flex;flex-wrap:wrap;gap:6px}
+  #campaignlive-report .pm-tab {appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);
+    font:inherit;font-size:13px;font-weight:600;padding:7px 14px;border-radius:999px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:7px;transition:.12s;line-height:1.2}
+  #campaignlive-report .pm-tab:hover {border-color:#c9c9d4}
+  #campaignlive-report .pm-tab .pm-n {font-size:11px;font-weight:700;color:var(--muted);background:var(--bg);
+    border-radius:999px;padding:1px 7px;min-width:20px;text-align:center}
+  #campaignlive-report .pm-tab[aria-pressed="true"] {background:var(--ink);color:#fff;border-color:var(--ink)}
+  #campaignlive-report .pm-tab[aria-pressed="true"] .pm-n {background:rgba(255,255,255,.18);color:#fff}
+  #campaignlive-report .pm-tab[data-empty="1"] {opacity:.5}
+  #campaignlive-report .pm-subtabs {display:none;gap:4px;margin:9px 0 0;padding-bottom:9px}
+  #campaignlive-report .pm-subtab {appearance:none;background:none;border:none;border-bottom:2px solid transparent;
+    font:inherit;font-size:13px;font-weight:600;color:var(--muted);padding:3px 2px 6px;margin-right:16px;cursor:pointer}
+  #campaignlive-report .pm-subtab[aria-selected="true"] {color:var(--ink);border-bottom-color:var(--purple)}
+  #campaignlive-report .pm-context {display:none;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--purple);
+    border-radius:10px;padding:11px 14px;font-size:13px;margin:14px 0 4px}
+  #campaignlive-report .pm-context .pm-market {color:var(--muted)}
+  #campaignlive-report .pm-context-row + .pm-context-row:not([hidden]) {margin-top:9px;padding-top:9px;border-top:1px solid var(--line)}
+  #campaignlive-report .pm-hint {display:none;font-size:11.5px;color:var(--muted);margin-top:7px}
+  #campaignlive-report .pm-outbound {display:none;margin-top:22px}
+  #campaignlive-report .pm-none {display:none;background:var(--card);border:1px dashed var(--line);border-radius:12px;
+    padding:26px 18px;color:var(--muted);font-size:13.5px;text-align:center;margin:24px 0}
+  #campaignlive-report .ob-nav {display:flex;flex-wrap:wrap;gap:6px;margin:0 0 22px}
+  #campaignlive-report .ob-navlink {font-size:12.5px;font-weight:600;text-decoration:none;color:var(--ink);
+    background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 11px;
+    display:inline-flex;align-items:center;gap:6px}
+  #campaignlive-report .ob-navlink:hover {border-color:#c9c9d4}
+  #campaignlive-report .ob-navn {font-size:11px;color:var(--muted);font-weight:700}
+  #campaignlive-report .ob-group {margin:0 0 34px;scroll-margin-top:120px}
+  #campaignlive-report .ob-gtitle {font-size:15px;margin:0 0 12px;padding-bottom:7px;border-bottom:2px solid var(--ink);
+    display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+  #campaignlive-report .ob-gnote {font-size:12px;font-weight:400;color:var(--muted)}
+  #campaignlive-report .ob-partner {margin:0 0 16px}
+  #campaignlive-report .ob-pname {font-size:13px;font-weight:700;letter-spacing:.2px;text-transform:uppercase;
+    color:var(--muted);margin:18px 0 8px;display:flex;align-items:center;gap:7px}
+  #campaignlive-report .ob-pn {background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:0 7px;
+    font-size:11px;color:var(--muted)}
+  #campaignlive-report .ob-item {background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 10px}
+  #campaignlive-report .ob-title {font-size:14.5px;font-weight:650;line-height:1.35;display:block}
+  #campaignlive-report .ob-meta {font-size:11.5px;color:var(--muted);margin:5px 0 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  #campaignlive-report .ob-lbl {font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700;margin-bottom:3px}
+  #campaignlive-report .ob-contacts ul {margin:2px 0 10px;padding-left:18px;font-size:13px}
+  #campaignlive-report .ob-contacts li {margin:2px 0}
+  #campaignlive-report .ob-alert {font-size:12.5px;border-radius:8px;padding:8px 11px;margin:0 0 10px}
+  #campaignlive-report .ob-alert--client {background:var(--teal-bg);border:1px solid #bfe6dc}
+  #campaignlive-report .ob-alert--pipeline {background:var(--red-bg);border:1px solid #f5c4bf}
+  #campaignlive-report .ob-draft-row {display:flex;align-items:flex-start;gap:8px}
+  #campaignlive-report .ob-draft {flex:1;min-width:0;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 11px}
+  #campaignlive-report .ob-draft>summary {cursor:pointer;list-style:none;font-size:12.5px;font-weight:600;color:var(--purple);
+    display:flex;align-items:center;gap:6px}
+  #campaignlive-report .ob-draft>summary::-webkit-details-marker {display:none}
+  #campaignlive-report .ob-draft>summary::before {content:"▸";font-size:10px;transition:.15s}
+  #campaignlive-report .ob-draft[open]>summary::before {transform:rotate(90deg)}
+  #campaignlive-report .ob-draft-body .draft {background:transparent;border:none;padding:8px 0 0;margin:0;font-size:13px}
+  #campaignlive-report .ob-copy {appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);
+    font:inherit;font-size:11.5px;font-weight:600;padding:7px 11px;border-radius:8px;cursor:pointer;white-space:nowrap}
+  #campaignlive-report .ob-copy:hover {border-color:#c9c9d4}
+  #campaignlive-report .ob-copy.is-done {background:var(--teal);border-color:var(--teal);color:#fff}
+  #campaignlive-report .ob-src {font-size:11.5px;color:var(--muted);margin-top:9px}
+  #campaignlive-report .ob-src a {color:var(--purple);text-decoration:none}
+  #campaignlive-report .ob-also {background:var(--bg);border-radius:8px;padding:9px 12px;margin:0 0 10px}
+  #campaignlive-report .ob-also ul {margin:2px 0 0;padding-left:18px;font-size:12.5px;color:var(--muted)}
+  #campaignlive-report .ob-also li {margin:3px 0}
+  #campaignlive-report .ob-also b {color:var(--ink);font-weight:600}
+  #campaignlive-report .ob-also a {color:var(--purple);text-decoration:none}
+  #campaignlive-report .ob-event {background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:11px 14px;margin:0 0 8px;font-size:13px}
+  #campaignlive-report .ob-event a {color:var(--purple);text-decoration:none}
+  #campaignlive-report .ob-event .ev-sep {color:var(--muted);opacity:.6;padding:0 4px}
+  #campaignlive-report .ob-points {list-style:none;margin:0;padding:0}
+  #campaignlive-report .ob-points li {background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:11px 14px;margin:0 0 8px;font-size:13px}
+  #campaignlive-report .ob-points b {display:block;font-weight:650;margin-bottom:4px}
+  #campaignlive-report .ob-why {display:block;font-size:12.5px;color:var(--muted)}
+  #campaignlive-report .ob-why b {display:inline;color:var(--ink)}
+  #campaignlive-report .ob-srclink {font-size:11.5px;color:var(--purple);text-decoration:none}
+  #campaignlive-report .pm-empty-note {background:var(--card);border:1px dashed var(--line);border-radius:12px;
+    padding:26px;text-align:center;color:var(--muted);font-size:13.5px}
+  #campaignlive-report header.masthead h1,  #campaignlive-report .ob-gtitle {
+    font-family:"Cranny","Times New Roman",Times,serif;
+    font-weight:300;line-height:1.12;letter-spacing:0}
+  #campaignlive-report header.masthead h1 {font-size:34px}
+  #campaignlive-report .ob-gtitle {font-size:19px}
+   #campaignlive-report .ob-title {letter-spacing:0}
+   #campaignlive-report .ob-src a,  #campaignlive-report .ob-also a,  #campaignlive-report .ob-srclink,  #campaignlive-report .ob-draft>summary {color:var(--purple)}
+  #campaignlive-report .pm-context {border-left-color:var(--purple-fill)}
+  #campaignlive-report .pm-subtab[aria-selected="true"] {border-bottom-color:var(--purple-fill)}
+  #campaignlive-report .ob-gtitle {border-bottom-color:var(--ink)}
+  #campaignlive-report .ob-alert--client {background:var(--teal-bg);border:1px solid var(--line);border-left:3px solid var(--ink)}
+  #campaignlive-report .ob-alert--pipeline {background:var(--red-bg);border:1px solid #ECA1FE;border-left:3px solid var(--purple-fill)}
+  #campaignlive-report .wrap {max-width:1240px}
+  #campaignlive-report .pm-outbound {max-width:840px}
+  #campaignlive-report .snapshot .chip {cursor:pointer;transition:.12s;border-color:var(--line)}
+  #campaignlive-report .snapshot .chip:hover {border-color:var(--ink);background:var(--card)}
+  #campaignlive-report .snapshot .chip:focus-visible {outline:2px solid var(--purple-fill);outline-offset:2px}
+  #campaignlive-report .snapshot .chip[data-nojump="1"] {cursor:default;opacity:.45}
+  #campaignlive-report .snapshot .chip[data-nojump="1"]:hover {border-color:var(--line)}
+  #campaignlive-report .ob-alert--client {background:var(--teal-bg);border:1px solid var(--teal-line);border-left:3px solid var(--teal)}
+  #campaignlive-report .ob-alert--pipeline {background:var(--red-bg);border:1px solid var(--red-line);border-left:3px solid var(--red)}
+  #campaignlive-report .ob-extra {display:none}
+  #campaignlive-report .ob-item .ob-event {background:transparent;border:none;padding:0;margin:0 0 10px;font-size:13.5px;line-height:1.45}
+  #campaignlive-report .ob-alert--target {background:var(--purple-bg);border:1px solid #ECA1FE;border-left:3px solid var(--purple-fill)}
+@media (max-width:640px) {
+  #campaignlive-report .appendix .grid {grid-template-columns:1fr}
+}
+@media print {
+  #campaignlive-report .pm-tabbar {display:none}
+}
+  #campaignlive-report .card .summary { font-size:14.5px;margin:0 0 12px; flex:0 1 auto }
+  #campaignlive-report .card .fitline { font-size:12.5px;color:var(--muted);margin-bottom:10px;display:flex;flex-wrap:wrap;gap:7px;align-items:center }
+  #campaignlive-report .card .source-link { font-size:12.5px;margin:0 0 12px; margin-top:auto }
+  #campaignlive-report .card .source-link a { color:var(--purple);text-decoration:none;border-bottom:1px solid #d8ccfb; color:var(--purple); border-bottom-color:#ECA1FE }
+  #campaignlive-report .card .source-link a:hover { border-bottom-color:var(--purple) }
+  #campaignlive-report .card h3 .origin { font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;letter-spacing:.2px; background:transparent;color:var(--purple);border:1px solid #ECA1FE;font-weight:600 }
+  #campaignlive-report .card h3 .tier { font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;letter-spacing:.2px; background:transparent;color:var(--muted);border:1px solid var(--line);font-weight:600 }
+  #campaignlive-report .card h3 .origin, #campaignlive-report .card h3 .tier { margin-left: 6px; vertical-align: 2px; white-space: nowrap; }
+  #campaignlive-report .card .meta i { font-style: italic; }
+  #campaignlive-report .mirror-cat { margin: 0 0 34px; }
+  #campaignlive-report .mirror-cat > section, #campaignlive-report .mirror-cat > div > section { margin-top: 0; }
+
+  /* ---- SDR people block, 28.09.26: account owner from the account list and the
+     contacts the story names, added beside the story on mirrored cards only. ---- */
+  #campaignlive-report .sdr-people { margin: 0 0 12px; padding: 10px 12px; font-size: 12.5px; line-height: 1.45;
+    background: var(--bg); border: 1px solid var(--line); border-radius: 8px;
+    display: flex; flex-direction: column; gap: 8px; }
+  #campaignlive-report .sdr-row { display: flex; gap: 10px; align-items: flex-start; }
+  #campaignlive-report .sdr-lbl { flex: 0 0 96px; font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .5px; color: var(--muted); padding-top: 1px; }
+  #campaignlive-report .sdr-val { flex: 1; min-width: 0; margin: 0; padding: 0; list-style: none; color: var(--ink); }
+  #campaignlive-report ul.sdr-val li + li { margin-top: 3px; }
+  #campaignlive-report .sdr-val .who { font-weight: 650; }
+  #campaignlive-report .sdr-val .acct { color: var(--muted); }
+  #campaignlive-report .sdr-val .acct::before { content: "\00b7\00a0"; }
+  .filter-group[data-for="campaignlive"] .pm-tab.is-empty { opacity: .5; }
+</style>
+<style>
+/* =========================================
+   Injected by combine.py: only what the container has no opinion about,
+   scoped onto the tab it belongs to.
+   ========================================= */
+/* ---- partners ---- */
+
+@media(max-width:640px){#partner-report .appendix .grid{grid-template-columns:1fr}}
+#partner-report .collision-note{font-size:12.5px;color:var(--muted);margin:2px 0 10px;padding-left:10px; border-left:2px solid var(--line)}
+#partner-report .collision-note b{color:var(--ink)}
+
+/* ---- mirrored tab, partners look ---- */
+@media(max-width:640px){#campaignlive-report .appendix .grid{grid-template-columns:1fr}}
+#campaignlive-report .collision-note{font-size:12.5px;color:var(--muted);margin:2px 0 10px;padding-left:10px; border-left:2px solid var(--line)}
+#campaignlive-report .collision-note b{color:var(--ink)}
+#campaignlive-report .fitline{font-size:12.5px;color:var(--muted);margin-bottom:10px;display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+#campaignlive-report .fitline .dot{opacity:.5}
+#campaignlive-report .origin{font-size:11px;font-weight:700;padding:2px 9px;border-radius:999px;letter-spacing:.2px}
+#campaignlive-report .source-link{font-size:12.5px;margin:0 0 12px}
+#campaignlive-report .source-link a{color:var(--purple);text-decoration:none;border-bottom:1px solid #d8ccfb}
+#campaignlive-report .source-link a:hover{border-bottom-color:var(--purple)}
+@media(max-width:640px){#campaignlive-report .appendix .grid{grid-template-columns:1fr}}
+#campaignlive-report .source-link a{color:var(--purple)}
+#campaignlive-report .source-link a{border-bottom-color:#ECA1FE}
+#campaignlive-report .radar-card .summary{flex:0 1 auto}
+#campaignlive-report .radar-card .source-link{margin-top:auto}
+#campaignlive-report #sec-other-activity .origin{font-size:10px;padding:1px 7px}
+#campaignlive-report .collision-note{font-size:12.5px;color:var(--muted);margin:2px 0 10px;padding-left:10px; border-left:2px solid var(--line)}
+#campaignlive-report .collision-note b{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <nav class="rail">
+    <div class="wordmark"><svg aria-label="Frontify" fill="none" role="img" viewbox="0 0 421 421" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#fa)"><path d="M0 0h420.508v420.508H0z" fill="#111110"></path><g clip-path="url(#fb)"><path d="m318.383 236.83-24.566-14.19a7.9 7.9 0 0 1-3.949-6.845v-28.701a16.87 16.87 0 0 0-8.433-14.612l-24.842-14.35a7.9 7.9 0 0 1-3.951-6.846v-28.378a16.88 16.88 0 0 0-8.431-14.612L209.696 88.36l-34.514 19.936a16.870 16.870 0 0 0-8.431 14.611v28.379a7.9 7.9 0 0 1-3.95 6.845l-24.844 14.351a16.87 16.87 0 0 0-8.431 14.611v28.7a7.9 7.9 0 0 1-3.951 6.846l-24.564 14.189a16.88 16.88 0 0 0-8.432 14.613v39.872l34.513 19.936a16.86 16.86 0 0 0 16.864 0l24.565-14.189a7.9 7.9 0 0 1 7.9 0l24.844 14.351a16.86 16.86 0 0 0 16.863 0l24.844-14.351a7.9 7.9 0 0 1 7.9 0l24.565 14.189a16.86 16.86 0 0 0 16.863 0l34.514-19.936v-39.872a16.870 16.870 0 0 0-8.431-14.611M215.407 104.86l23.027 13.302a5.55 5.55 0 0 1 2.771 4.803v28.314a19.36 19.36 0 0 0 9.672 16.759l24.787 14.318a5.55 5.55 0 0 1 2.771 4.803v28.636a19.36 19.36 0 0 0 9.67 16.759l24.509 14.157a5.550 5.550 0 0 1 2.773 4.803v26.601l-99.98-57.75zM104.006 251.512a5.55 5.55 0 0 1 2.772-4.803l24.508-14.156a19.35 19.35 0 0 0 9.671-16.76v-28.635a5.55 5.55 0 0 1 2.772-4.803l24.787-14.318a19.36 19.36 0 0 0 9.671-16.76v-28.313a5.550 5.550 0 0 1 2.771-4.803l23.027-13.301v115.503l-99.979 57.751zm182.642 49.8a5.54 5.54 0 0 1-5.543 0l-24.508-14.157a19.34 19.34 0 0 0-19.343 0l-24.786 14.319a5.54 5.54 0 0 1-5.543 0l-24.787-14.319a19.34 19.34 0 0 0-19.342 0l-24.509 14.157a5.54 5.54 0 0 1-5.543 0l-23.026-13.301 99.978-57.751 99.979 57.751z" fill="#f0f0eb"></path></g></g><defs><clippath id="fa"><path d="M0 0h420.508v420.508H0z" fill="#fff"></path></clippath><clippath id="fb"><path d="M92.579 88.36h234.235v225.312H92.579z" fill="#fff"></path></clippath></defs></svg><span>Frontify Partnerships</span></div>
+
+    <div class="rail-section">
+      <p class="rail-label">Reports</p>
+      <div class="report-nav">
+        <button class="report-tab" data-report="partners"><span class="dot"></span>Partner Agencies<span class="cnt"></span></button>
+        <button class="report-tab" data-report="outbound"><span class="dot"></span>Non-Partner Agencies<span class="cnt"></span></button>
+        <button class="report-tab" data-report="campaignlive"><span class="dot"></span>CampaignLive SDR<span class="cnt"></span></button>
+      </div>
+    </div>
+
+    <div class="rail-section rail-collapsible">
+      <p class="rail-label">Categories</p>
+      <div class="cat-group" data-for="partners">
+        <div class="cat-nav">
+          <a href="#sec-ai-and-brand-intelligence"><span class="lbl"><span class="t">AI &amp; Brand Intelligence</span></span><span class="n">0</span></a>
+          <a href="#sec-brand-and-identity-work"><span class="lbl"><span class="t">Brand &amp; Identity Work</span></span><span class="n">0</span></a>
+          <a href="#sec-new-business"><span class="lbl"><span class="t">New Business</span></span><span class="n">0</span></a>
+          <a href="#sec-pitches"><span class="lbl"><span class="t">Pitches</span></span><span class="n">0</span></a>
+          <a href="#sec-people-and-hires"><span class="lbl"><span class="t">People &amp; Hires</span></span><span class="n">0</span></a>
+          <a href="#sec-launches-and-capabilities"><span class="lbl"><span class="t">Launches &amp; Capabilities</span></span><span class="n">0</span></a>
+          <a href="#sec-competitor-watch"><span class="lbl"><span class="t">Competitor Watch</span></span><span class="n">0</span></a>
+          <a href="#sec-industry-radar"><span class="lbl"><span class="t">Industry Radar</span></span><span class="n">0</span></a>
+          <a href="#sec-other-activity"><span class="lbl"><span class="t">Other Activity</span></span><span class="n">0</span></a>
+          <a href="#sec-events-and-attendance"><span class="lbl"><span class="t">Events &amp; Attendance</span></span><span class="n">0</span></a>
+          <a href="#sec-appendix"><span class="lbl"><span class="t">Coverage Appendix</span></span><span class="n">0</span></a>
+        </div>
+      </div>
+      <div class="cat-group" data-for="outbound">
+</div>
+      <div class="cat-group" data-for="campaignlive">
+        <div class="cat-nav">
+          <a href="#ca-new-business"><span class="lbl"><span class="t">New Business</span></span><span class="n">0</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="rail-section rail-collapsible">
+      <div class="filter-group" data-for="partners">
+        <p class="rail-label">Filter by market</p>
+        <div class="pm-grid">
+          <button class="pm-tab" data-target="dach">DACH</button>
+          <button class="pm-tab" data-target="nordics">Nordics</button>
+          <button class="pm-tab" data-target="uki">UK &amp; Ireland</button>
+          <button class="pm-tab" data-target="amer">Americas</button>
+          <button class="pm-tab" data-target="global">Global</button>
+          <button class="pm-tab" data-target="row">ROW</button>
+          <button class="pm-tab pdr" data-target="" data-all>All</button>
+        </div>
+      </div>
+      
+      <div class="filter-group" data-for="campaignlive">
+        <p class="rail-label">Filter by market</p>
+        <div class="pm-grid">
+          <button class="pm-tab is-empty" data-target="us" data-fixed title="No story in this market this week">US</button>
+          <button class="pm-tab is-empty" data-target="uk" data-fixed title="No story in this market this week">UK</button>
+          <button class="pm-tab" data-target="dach" data-fixed>DACH</button>
+          <button class="pm-tab pdr" data-target="" data-all>All</button>
+        </div>
+      </div>
+      <p class="rail-hint">Filters combine: pick as many as you like and the report shows
+      all of them together. Click one again to drop it, or All to clear.</p>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <section class="landing" id="landing">
+      <p class="eyebrow">Frontify Partnerships &middot; Internal Reporting</p>
+      <h1 class="lead">Three reports,<br>one place</h1>
+      <p class="sub">Pick a report to open it. Categories and the filter appear in the left rail once you do,
+      scoped to whichever report you are reading.</p>
+
+      <div class="picker">
+        <button class="pick" data-open="partners">
+          <span class="ord">01</span>
+          <h3>Partner Agencies</h3>
+          <p>Frontify's strategic agency partners: what they shipped, won, hired and said this week,
+          with a suggested approach on every story worth acting on.</p>
+          <span class="meta"><span class="chip live">Live this week</span><span class="chip">Filter: Market</span><span class="chip" data-count="partners"></span></span>
+          <span class="go">Open report <span class="arr">&rarr;</span></span>
+        </button>
+
+        <button class="pick" data-open="outbound">
+          <span class="ord">02</span>
+          <h3>Non-Partner Agencies</h3>
+          <p>Target lists, referral pools and newly qualified prospects. Produced by a separate run
+          and dropped into this tab.</p>
+          <span class="meta"><span class="chip live">Live this week</span><span class="chip">Filter: Partner Manager</span><span class="chip" data-count="outbound"></span></span>
+          <span class="go">Open report <span class="arr">&rarr;</span></span>
+        </button>
+
+        <button class="pick" data-open="campaignlive">
+          <span class="ord">03</span>
+          <h3>CampaignLive SDR</h3>
+          <p>New Business stories from the partner and non-partner reports, mirrored here for teams outside partnerships: the story, the source, the account owner and the people named, and none of the outreach apparatus.</p>
+          <span class="meta"><span class="chip live">Mirrored</span><span class="chip">Filter: Market</span><span class="chip" data-count="campaignlive"></span></span>
+          <span class="go">Open report <span class="arr">&rarr;</span></span>
+        </button>
+      </div>
+
+      <p class="landing-foot">One shell, two runs and a mirror. The first two tabs keep their own
+      content and their own filter axis, exactly as their runs produced them; the third carries
+      copies of chosen categories out of both, trimmed to the story.</p>
+    </section>
+
+    <div class="report" data-report="partners" id="partner-report" data-filter="owner">
+      <p class="eyebrow">Frontify Partnerships &middot; Weekly Partner Report</p>
+      <h1 class="masthead-title">Partner Agencies</h1>
+      <div class="daterange">22–28 September 2026</div>
+<section class="cat" id="sec-ai-and-brand-intelligence"><h2 class="cat-title">AI &amp; Brand Intelligence <span class="count">1</span><span class="cat-info" data-tip="Partner activity around AI brand compliance, machine-readable brand guidelines, LLM-ready design systems, and AI-in-brand workflows.">?</span></h2><article class="card" data-owner="global" data-partners="global:Havas"><h3>Havas finds only 9% of AI-enabled brand experiences reach its top value score</h3><div class="meta">Havas · 22 Sep 2026 <span class="tag tag--target">Target Agency</span></div><p class="summary">Havas&#x27;s global study, &#x27;Avoiding the AI Efficiency Trap&#x27;, scored 21,000+ consumer evaluations across seven markets. Only 9% of AI brand experiences reached the top Valuable AI Experience Score; 50% of respondents said brands&#x27; AI use makes things look or sound the same, and 56% found it misleading.</p><div class="src"><a href="https://lbbonline.com/news/ai-is-making-brands-more-efficient-but-is-it-creating-value-for-consumers" target="_blank" rel="noopener">LBBOnline</a></div><details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><div class="target-note"><b>Target Agency — Havas.</b> Havas is on the CRM target list, not a partner. Seven rows: Chicago, DACH, Germany, London, Paris and one unqualified Havas row, so network-level research like this is on-target. Owners across the rows: Chantal Isarin, Marvick Fernandes, Nicolas Hürner, Russell Ellis — the file does not map owner to office, so confirm in CRM before contact and route the approach through a named office. Note: Havas Middle East is the actual partner entity.</div><h4>Named contacts</h4><ul><li>Mark Sinnock — Global Chief Strategy, Intelligence and Innovation Officer, Havas Creative Network</li><li>David Shulman — Global CEO, Havas CX</li></ul><h4>Frontify use cases</h4><ul><li><b>AI brand</b> — the finding that AI makes brands look and sound the same is the sameness problem Brand Checker and machine-readable guidelines are built to prevent.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Your 'AI Efficiency Trap' sameness finding</span>Hi Mark — I read the 'Avoiding the AI Efficiency Trap' research with interest. The number that stuck with me was half of consumers saying brands' use of AI makes things look or sound the same. That is the problem we spend most of our time on at Frontify: giving AI tools a governed, machine-readable version of a brand's guidelines so output stays distinct at scale. I would be curious whether the study looked at what the top 9% do differently on consistency, not just usefulness. Happy to share what we are seeing from brands on our side if useful.<br><br>[Your name]</div></div></details></article></section>
+<section class="cat" id="sec-brand-and-identity-work"><h2 class="cat-title">Brand &amp; Identity Work <span class="count">6</span><span class="cat-info" data-tip="New identities, rebrands, visual systems, logo work, and brand guidelines projects delivered by partners.">?</span></h2><article class="card" data-owner="amer" data-partners="amer:JKR"><h3>JKR unifies Intuit under one identity and one platform</h3><div class="meta">JKR · 24 Sep 2026</div><p class="summary">JKR has delivered a new identity for Intuit, bringing TurboTax, Credit Karma, QuickBooks and Mailchimp into one connected story. A new wordmark becomes a standalone symbol that activates into Intuit Intelligence, the company&#x27;s AI-and-human-expert layer, supported by a wider design system and a new website.</p><div class="src"><a href="https://www.linkedin.com/feed/update/urn:li:activity:7508888427346550784/" target="_blank" rel="noopener">JKR on LinkedIn</a></div><details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>No named contacts in source</li></ul><h4>Frontify use cases</h4><ul><li><b>Design system</b> — one symbol and system spanning four product brands needs shared components every product team pulls from.</li><li><b>AI brand</b> — an identity that literally 'activates into' an AI layer is a natural case for machine-readable brand rules.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Congratulations on the new Intuit</span>Hi [Partnerships team] — congratulations on the Intuit launch. Bringing TurboTax, Credit Karma, QuickBooks and Mailchimp into one connected identity, with a mark that activates into Intuit Intelligence, is a big systems problem as much as a design one. Keeping four product organisations on one system after launch is where we spend most of our time at Frontify, and increasingly that includes making guidelines readable by AI tools as well as people. If it would help to compare notes on how others have handled the rollout phase, I would be glad to.<br><br>[Your name]</div></div></details></article><article class="card" data-owner="amer" data-partners="amer:JKR"><h3>JKR rebrands Tropical Smoothie Cafe across 1,700 US locations</h3><div class="meta">JKR · 24 Sep 2026</div><p class="summary">JKR has overhauled the identity and guest experience of Tropical Smoothie Cafe, which has more than 1,700 US locations. A bolder wordmark and palm-tree &#x27;T&#x27; symbol, richer palette, Sway Display type, illustration and photography replace the old look; the CMO frames the goal as consistency across every touchpoint.</p><div class="src"><a href="https://www.creativereview.co.uk/jkr-tropical-smoothie-cafe-rebrand/" target="_blank" rel="noopener">Creative Review</a></div><details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>JB Hartford — Executive Creative Director, JKR</li></ul><h4>Frontify use cases</h4><ul><li><b>Brand portal</b> — 1,700 franchised locations adopting a new identity need one place to find the current standards.</li><li><b>Campaign toolkit</b> — templated local signage and menus keep franchisee output on the new system.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: The Tropical Smoothie rebrand</span>Hi JB — congratulations on the Tropical Smoothie Cafe work. Treating 'tropical' as a feeling rather than a place is a lovely idea, and the palm-tree T works hard across so many touchpoints. The CMO's point about a more consistent experience across every location is the part I kept thinking about: with 1,700+ sites and more opening, the rollout is where a system like this is won or lost. That is the problem we help brands with at Frontify. If it would be useful to compare notes on franchise rollouts, I would be glad to share what we see.<br><br>[Your name]</div></div></details></article><article class="card" data-owner="nordics" data-partners="nordics:Nord"><h3>NORD Stockholm launches &#x27;THAT FEELING&#x27; as Svenska Spel&#x27;s long-term brand platform</h3><div class="meta">Nord · 24 Sep 2026 <span class="tag tag--pipeline">Active Prospect</span></div><p class="summary">State-owned betting and lottery operator Svenska Spel has launched a new overarching communication concept with NORD Stockholm, uniting play, player care and giving back. Built as a long-term creative platform, it launches with six films sharing one visual identity across TV, cinema, OOH, display and radio.</p><div class="src"><a href="https://lbbonline.com/news/svenska-spel-captures-that-feeling-of" target="_blank" rel="noopener">LBBOnline</a></div><details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><details class="pipeline-flag"><summary>⚠️ Pipeline Flag</summary><div><b>Svenska Spel</b> is on the partnership-sourced prospect list. Slack shows the lead came from F&amp;B Happy (Forsman &amp; Bodenfors) in February 2025 via Rikard Norrbin, with Adam Persson as AE and a POC built that month; current stage not visible in Slack. Coordinate with Rikard and Adam before any outreach to NORD about this account. Sonic agency Plan8 also worked on the launch.</div></details><h4>Named contacts</h4><ul><li>Kalle dos Santos — Creative, NORD Stockholm</li></ul><h4>Frontify use cases</h4><ul><li><b>Brand portal</b> — a long-term platform meant to flex across sport, gaming and community content needs one governed home for its identity and tone.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: THAT FEELING for Svenska Spel</span>Hi Kalle — congratulations on THAT FEELING. Building Svenska Spel's platform around emotions people already recognise is a smart way to give it range, and the six films hold together well under one visual identity. Platforms designed to stretch across sport, gaming and community content are exactly where consistency gets hard over time, which is most of what we work on at Frontify. No agenda beyond saying well done, but if it ever helps to swap notes on keeping a platform coherent as it grows, I would be glad to.<br><br>[Your name]</div></div></details></article><article class="card" data-owner="nordics" data-partners="nordics:Bold Scandinavia"><h3>Bold Scandinavia builds Kleri, a new Nordic IT brand from two merged companies</h3><div class="meta">Bold Scandinavia · 25 Sep 2026</div><p class="summary">Bold Scandinavia created Kleri, the brand joining iteam in Norway and Avoki IT Services in Sweden: 500 colleagues, 53 offices and 11,000 customers under the ambition &#x27;End Complexity&#x27;. Over six months the agency delivered brand strategy and platform, name, identity and website.</p><div class="src"><a href="https://www.linkedin.com/feed/update/urn:li:activity:7509142436766666752/" target="_blank" rel="noopener">Bold Scandinavia / NoA on LinkedIn</a></div><details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>No named contacts in source</li></ul><h4>Frontify use cases</h4><ul><li><b>Brand portal</b> — 53 offices across two countries adopting a brand built from scratch need one source of truth from day one.</li><li><b>DAM</b> — a merger rebrand replaces two asset libraries at once.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Congratulations on Kleri</span>Hi [Partnerships team] — congratulations on the Kleri launch. Taking two companies in two countries to one name, platform, identity and website in six months is a serious piece of work. The phase after launch, when 53 offices start producing their own material, is the part we see brands struggle with most, and it is where a lot of our work at Frontify sits. If it would be useful to compare notes on rolling a merger brand out across offices, I am happy to share what has worked elsewhere.<br><br>[Your name]</div></div></details></article><article class="card" data-owner="global" data-partners="global:Siegel + Gale"><h3>Siegel+Gale builds Vertage, bringing 11 HeadFirst businesses under one brand</h3><div class="meta">Siegel + Gale · 25 Sep 2026</div><p class="summary">HeadFirst Global has become Vertage Global, combining 11 businesses under one brand. Siegel+Gale says it built the brand from the ground up, covering positioning, naming, brand architecture, migration, visual identity, tone of voice and leadership engagement.</p><div class="src"><a href="https://www.linkedin.com/feed/update/urn:li:activity:7509281498857070593/" target="_blank" rel="noopener">Siegel+Gale on LinkedIn</a></div><details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><p class="collision-note"><b>Target-list note.</b> Siegel + Gale's Los Angeles and San Francisco offices are on the CRM target list (owner Marvick Fernandes). No office is named in this source, so no flag.</p><h4>Named contacts</h4><ul><li>No named Siegel+Gale contacts in source</li></ul><h4>Frontify use cases</h4><ul><li><b>Brand portal</b> — migrating 11 businesses onto one brand is a multi-year governance job, not a launch.</li><li><b>DAM</b> — consolidating 11 legacy asset libraries is usually the first practical pain point.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Congratulations on Vertage</span>Hi [Partnerships team] — congratulations on the Vertage launch. Bringing 11 businesses under one brand, with migration and leadership engagement in scope rather than just identity, is the part of these projects that tends to decide whether the brand actually lands. Migration phases are where we spend a lot of time at Frontify, particularly around consolidating assets and guidelines from many legacy brands. If it would be useful to compare notes on how others have run that phase, I would be glad to.<br><br>[Your name]</div></div></details></article><article class="card" data-owner="row" data-partners="row:Interbrand"><h3>Interbrand creates Ampstar, JSW Greentech&#x27;s electric commercial vehicle brand</h3><div class="meta">Interbrand · 22 Sep 2026</div><p class="summary">Interbrand developed the strategy, positioning and identity for Ampstar, JSW Group&#x27;s entry into electric buses and trucks designed and built in India. The brand is positioned as &#x27;An all-in partner for the bold&#x27;, extending beyond vehicle making to an ecosystem for fleet operators.</p><div class="src"><a href="https://www.afaqs.com/news/mktg/interbrand-partners-with-jsw-greentech-to-build-ampstar-12563857" target="_blank" rel="noopener">afaqs!</a></div><details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Ashish Mishra — CEO, Interbrand India &amp; South Asia</li></ul><h4>Frontify use cases</h4><ul><li><b>Brand portal</b> — a new brand launching alongside a manufacturing and dealer ecosystem needs standards partners can access directly.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Congratulations on Ampstar</span>Hi Ashish — congratulations on Ampstar. Positioning an electric commercial vehicle brand as an all-in partner rather than a manufacturer is a sharp answer to how fleet buyers actually make the switch. A brand that has to live across vehicles, service, dealers and a new manufacturing ecosystem also has a lot of people applying it who never saw the strategy work. Helping brands keep that consistent is what we do at Frontify. If it would be useful to talk through how others have handled a launch like this, I would be glad to.<br><br>[Your name]</div></div></details></article></section>
+<section class="cat" id="sec-new-business"><h2 class="cat-title">New Business <span class="count">1</span><span class="cat-info" data-tip="Confirmed client wins by partner agencies.">?</span></h2><article class="card" data-owner="uki" data-partners="uki:Mother"><h3>FlixBus appoints Mother Berlin as global lead creative agency</h3><div class="meta">Mother · 24 Sep 2026</div><p class="summary">Mother Berlin becomes FlixBus&#x27;s global lead agency, handling creative strategy in 40+ markets from autumn, including Greyhound in the US and Kâmil Koç in Türkiye. Its first task is a new global brand platform to unify the brand&#x27;s appearance worldwide. It follows Lufthansa Group, Uber Eats and Canva wins.</p><div class="src"><a href="https://campaigngermany.de/news/beitrag/4231-pitch-update-flixbus-linkedin-omoda-jaecoo-amp-mehr.html" target="_blank" rel="noopener">Campaign Germany</a></div><details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>No named Mother contacts in source</li></ul><h4>Frontify use cases</h4><ul><li><b>Brand portal</b> — one platform across 40+ markets and three bus brands is a textbook case for a shared guidelines hub.</li><li><b>Campaign toolkit</b> — local markets adapting a global platform need templates, not PDFs.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Congratulations on FlixBus</span>Hi [Partnerships team] — congratulations on FlixBus. A global brand platform across 40+ markets, with Greyhound and Kâmil Koç in the mix, is a big first brief. The job of unifying how a brand looks everywhere usually becomes a question of how local teams get the new standards and templates, and that is where we spend our time at Frontify. If it would be useful to compare notes as the platform takes shape, I would be glad to share how other multi-market brands have handled it.<br><br>[Your name]</div></div></details></article></section>
+<section class="cat" id="sec-pitches"><h2 class="cat-title">Pitches <span class="count">0</span><span class="cat-info" data-tip="Pitch activity — won, lost, shortlisted, or in progress — for clients with 1,000+ employees.">?</span></h2><p class="empty">Nothing qualifying this week.</p></section>
+<section class="cat" id="sec-people-and-hires"><h2 class="cat-title">People &amp; Hires <span class="count">1</span><span class="cat-info" data-tip="Senior hires at partner agencies relevant to Frontify conversations: brand systems, design ops, DAM, brand tech, AI + brand, or senior creative/strategic leadership.">?</span></h2><article class="card" data-owner="uki" data-partners="uki:Interbrand"><h3>Estelle Wackermann joins Interbrand as Managing Partner to lead the UK hub</h3><div class="meta">Interbrand · 22 Sep 2026</div><p class="summary">Interbrand has appointed Estelle Wackermann as a Managing Partner leading its UK hub and driving growth across the business. She brings more than two decades in brand consulting and leadership roles. Global CEO Gonzalo Brujó described it as the UK business&#x27;s next chapter.</p><div class="src"><a href="https://www.linkedin.com/feed/update/urn:li:activity:7508278605005770752/" target="_blank" rel="noopener">Interbrand on LinkedIn</a></div><details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Estelle Wackermann — Managing Partner, Interbrand UK</li><li>Gonzalo Brujó — Global CEO, Interbrand</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Congratulations on the Interbrand UK role</span>Hi Estelle — congratulations on joining Interbrand to lead the UK hub. It is a big moment to take on the business, with so many clients rethinking how their brands show up in AI-mediated channels as well as traditional ones. We work alongside Interbrand teams in several markets at Frontify, mostly on the phase after a brand launches, when it has to be applied consistently by many hands. No agenda beyond saying welcome, but I would be glad to introduce myself properly once you have settled in.<br><br>[Your name]</div></div></details></article></section>
+<section class="cat" id="sec-launches-and-capabilities"><h2 class="cat-title">Launches &amp; Capabilities <span class="count">3</span><span class="cat-info" data-tip="New agency products, tools, service lines, or partnerships announced by partners.">?</span></h2><article class="card" data-owner="row" data-partners="row:R/GA"><h3>R/GA formally opens in Abu Dhabi to serve the MENA region</h3><div class="meta">R/GA · 23 Sep 2026</div><p class="summary">R/GA has established a MENA business in Abu Dhabi led by Bertrand Morin, formalising a decade of regional work for G42, Wio Bank, NBK, Banque Saudi Fransi, Emirates NBD and Bank Al Etihad. It pitches brand systems and training custom brand AI models, with further expansion planned from 2027.</p><div class="src"><a href="https://campaignme.com/r-ga-expands-into-the-mena-region-establishing-abu-dhabi-presence-to-serve-ai-infra-boom/" target="_blank" rel="noopener">Campaign Middle East</a></div><details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><p class="collision-note"><b>Target-list note.</b> Six R/GA offices are on the CRM target list (Berlin, Buenos Aires, London, Singapore, São Paulo, Tokyo). Abu Dhabi is not one of them, so no flag. Emirates NBD, named as a past R/GA client, is an existing Frontify customer.</p><h4>Named contacts</h4><ul><li>Bertrand Morin — Executive Director MENA, R/GA (Abu Dhabi)</li><li>Robin Forbes — Global CEO, R/GA</li></ul><h4>Frontify use cases</h4><ul><li><b>AI brand</b> — 'training custom brand AI models' needs a governed, machine-readable brand source to train from.</li><li><b>Brand portal</b> — regional banks and sovereign clients running brand systems across Arabic and English.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Congratulations on the Abu Dhabi opening</span>Hi Bertrand — congratulations on formally opening R/GA in Abu Dhabi. 'Newest oldest player' is a great line, and the client list shows it is earned. The part that caught my eye was training custom brand AI models: in our experience at Frontify, the hard part is less the model than giving it a clean, governed version of the brand to learn from. We work with a number of brands in the region on exactly that. If it would be useful to compare notes as the team grows, I would be glad to.<br><br>[Your name]</div></div></details></article><article class="card" data-owner="dach" data-partners="dach:Jung von Matt"><h3>Jung von Matt folds JvM Creators into Jung von Matt Tech</h3><div class="meta">Jung von Matt · 24 Sep 2026</div><p class="summary">The JvM Creators brand has been retired and its business consolidated into Jung von Matt Tech, a roughly 100-person unit led by CIO Max Lederer, Dirk Hibbeler and Verena Schmelzle. It is positioned as a technology partner for CMOs building brand management, customer experience and technical infrastructure together.</p><div class="src"><a href="https://campaigngermany.de/news/beitrag/4225-jung-von-matt-buendelt-tech-geschaeft.html" target="_blank" rel="noopener">Campaign Germany</a></div><details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><p class="collision-note"><b>Target-list note.</b> Jung von Matt London is on the CRM target list (owner Russell Ellis). This story concerns the German tech unit, so no flag.</p><h4>Named contacts</h4><ul><li>Max Lederer — CIO, Jung von Matt / Managing Director, Jung von Matt Tech</li><li>Dirk Hibbeler — Managing Partner, Jung von Matt NECKAR; co-lead, Jung von Matt Tech</li><li>Verena Schmelzle — co-lead, Jung von Matt Tech (previously Managing Director, JvM Creators)</li></ul><h4>Frontify use cases</h4><ul><li><b>DAM</b> — a tech unit selling brand-plus-infrastructure to CMOs will be asked where approved assets live and how they reach every channel.</li><li><b>AI brand</b> — Frontify's MCP and machine-readable guidelines slot into exactly the brand-to-tech stack JvM Tech describes.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Glückwunsch zu Jung von Matt Tech</span>Hallo Max — congratulations on the new setup at Jung von Matt Tech. Your point that technology now decides how people experience a brand, yet is still planned separately from it, is exactly the gap we see at Frontify. A lot of our work is connecting brand guidelines and assets to the systems that deliver them, increasingly including AI tools through MCP. If it would be interesting to compare notes on how CMOs are approaching that, I would be glad to set up a short exchange with our DACH team.<br><br>[Your name]</div></div></details></article><article class="card" data-owner="global" data-partners="global:Valtech"><h3>Valtech launches Agent Factory to govern enterprise AI agents</h3><div class="meta">Valtech · 23 Sep 2026</div><p class="summary">Launched at DMEXCO, Valtech Agent Factory is a common environment for building, orchestrating and governing specialised AI agents across marketing, commerce, product, service and operations, with human control built in. Valtech&#x27;s study of 1,003 professionals found 75% of organisations had not reached integrated AI-supported work.</p><div class="src"><a href="https://www.valtech.com/newsroom/valtech-agent-factory-launch-dmexco-2026/" target="_blank" rel="noopener">Valtech Newsroom</a></div><details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><p class="collision-note"><b>Target-list note.</b> Eleven Valtech offices are on the CRM target list (including London, Munich, Madrid, Manchester). No listed office is named in this announcement, so no flag.</p><h4>Named contacts</h4><ul><li>David Toma — VP Strategy &amp; Consulting DACH, Valtech</li><li>Carsten Riggelsen — Data &amp; AI executive, Valtech</li><li>Jannis Pilgrim — AI Consulting, Valtech (Agent Factory core team)</li></ul><h4>Frontify use cases</h4><ul><li><b>AI brand</b> — agents producing marketing and commerce content need a governed source of brand rules; Frontify's MCP is built to be that source.</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Agent Factory and brand governance</span>Hi David — congratulations on launching Agent Factory at DMEXCO. The framing of moving from a pile of copilots to one governed capability is exactly the shift we see clients asking for. One piece we keep running into is that marketing agents need a reliable, current version of the brand to work from — guidelines, assets, tone — and that is what we expose through Frontify's MCP. If it would be useful to explore how brand governance could plug into Agent Factory for shared clients, I would be glad to set up a short conversation.<br><br>[Your name]</div></div></details></article></section>
+<section class="cat" id="sec-competitor-watch"><h2 class="cat-title">Competitor Watch <span class="count">0</span><span class="cat-info" data-tip="Partner activity involving Frontify competitors — adoption, integration work, recommendation, or public endorsement.">?</span></h2><p class="empty">Nothing qualifying this week.</p></section>
+<section class="cat" id="sec-industry-radar"><h2 class="cat-title">Industry Radar <span class="count">3</span><span class="cat-info" data-tip="Significant industry developments in brand guidelines, machine-readable brand standards, and AI brand compliance — no partner agency required.">?</span></h2><article class="radar-card" data-owner="all" data-partners=""><h3>Typeface makes enterprise brand guidelines usable inside Claude and ChatGPT</h3><div class="meta">22 Sep 2026</div><p class="summary">Typeface made Arc Graph, Arc Fabric and Arc Loop available to enterprise customers as one system, letting a company&#x27;s codified brand guidelines be used inside Anthropic&#x27;s Claude and OpenAI&#x27;s ChatGPT. Campaign results from sources including Google Ads, HubSpot and BigQuery feed back into what its agents generate next.</p><p class="why"><b>Why it matters for Frontify:</b> A direct competitor-adjacent move into the space Frontify&#x27;s MCP, LLM-MD guidelines and Brand Graph occupy: brand rules delivered into the AI tools people already use. Useful framing for partner conversations about where governed brand knowledge should live.</p><div class="src"><a href="https://ppc.land/typeface-carries-enterprise-brand-rules-into-claude-and-chatgpt/" target="_blank" rel="noopener">PPC Land</a></div></article><article class="radar-card" data-owner="dach" data-partners=""><h3>IAB Austria guide puts AI-label duty on agencies, not clients</h3><div class="meta">27 Sep 2026</div><p class="summary">IAB Austria and law firm act legal Austria published a five-page guide on when AI-produced advertising needs visible disclosure under the EU AI Act, whose transparency rules apply from 2 August 2026. It concludes the agency operating the AI tool is normally the responsible party.</p><p class="why"><b>Why it matters for Frontify:</b> If agencies carry the labelling liability, partner agencies need provenance and AI-labelling metadata to travel with assets. That is the case for Frontify&#x27;s AI Labeling and C2PA work on the H2 roadmap, and a concrete reason to raise it with DACH partners.</p><div class="src"><a href="https://ppc.land/agencies-not-clients-usually-carry-ai-label-duty-iab-austria-guide-says/" target="_blank" rel="noopener">PPC Land</a></div></article><article class="radar-card" data-owner="row" data-partners=""><h3>Nestlé builds an integrated AI content model with WPP in Greater China</h3><div class="meta">22 Sep 2026 <span class="tag tag--client">Existing Frontify Client</span></div><p class="summary">WPP will build and run an integrated content model for all Nestlé brands in mainland China, Hong Kong and Taiwan, producing over 35,000 pieces a year from a Wuxi hub on WPP Open China. Nestlé calls it its first fully integrated end-to-end content operating model globally.</p><p class="why"><b>Why it matters for Frontify:</b> Nestlé is an existing Frontify customer. A 35,000-asset-a-year AI production engine is a volume test for brand governance and asset distribution, and a reference point for the account team.</p><div class="src"><a href="https://www.campaignasia.com/article/wpp-wins-nestle-s-integrated-content-account-in-greater-china/42sxktbhy12f60bfaatpyq6p47" target="_blank" rel="noopener">Campaign Asia</a></div></article></section>
+<section class="cat" id="sec-other-activity"><h2 class="cat-title">Other Activity <span class="count">17</span><span class="cat-info" data-tip="Qualifying but lower-priority items that didn&#x27;t make the featured story cut this week.">?</span></h2><div class="other-item" data-owner="uki global" data-partners="uki:Uncommon|global:Ogilvy"><div class="oi-head">D&amp;AD 2026: Uncommon is Agency of the Year, Ogilvy Network of the Year</div><div class="oi-meta">Uncommon · Ogilvy · 24 Sep 2026 · <a href="https://www.campaignlive.co.uk/article/d-ad-uncommon-creative-studio-wins-agency-of-the-year/41e7y43nk9b9ttnwkf06skam4a" target="_blank" rel="noopener">Campaign UK</a></div><div class="ob-extra" hidden><ul class="ob-x-contacts"><li>Lisa Smith — Global Chief Design Officer, Uncommon; D&amp;AD President</li><li>Liz Taylor — Global Chief Creative Officer, Ogilvy</li></ul><div class="draft"><span class="subj">Opening line: Congratulations on D&amp;AD</span>Hi Lisa — congratulations to Uncommon on Agency of the Year, and on a D&amp;AD presidency year that ended so well. Your point about caring deeply about making something specific, at a moment when the industry is obsessed with speed and automation, really resonated. That tension is one we think about a lot at Frontify, where our job is making sure the specific thing survives once it is scaled. No agenda, just congratulations — and I would be glad to catch up whenever it is useful.<br><br>[Your name]</div></div><p>Uncommon won Advertising Agency of the Year with a black and three yellow Pencils for The Ordinary. Ogilvy was Network of the Year and its global CCO Liz Taylor CCO of the Year. Campaign work.</p><details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>Lisa Smith — Global Chief Design Officer, Uncommon; D&amp;AD President</li><li>Liz Taylor — Global Chief Creative Officer, Ogilvy</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Congratulations on D&amp;AD</span>Hi Lisa — congratulations to Uncommon on Agency of the Year, and on a D&amp;AD presidency year that ended so well. Your point about caring deeply about making something specific, at a moment when the industry is obsessed with speed and automation, really resonated. That tension is one we think about a lot at Frontify, where our job is making sure the specific thing survives once it is scaled. No agenda, just congratulations — and I would be glad to catch up whenever it is useful.<br><br>[Your name]</div></div></details></div><div class="other-item" data-owner="uki dach" data-partners="uki:Design Bridge and Partners|uki:JKR|dach:Peter Schmidt Group"><div class="oi-head">Brand Impact Awards 2026 winners include Design Bridge, JKR and Peter Schmidt Group</div><div class="oi-meta">Design Bridge and Partners · JKR · Peter Schmidt Group · 23 Sep 2026 · <a href="https://www.creativebloq.com/design/branding/the-brand-impact-award-winners-2026-have-been-revealed" target="_blank" rel="noopener">Creative Bloq</a></div><div class="ob-extra" hidden><ul class="ob-x-contacts"><li>No named contacts in source</li></ul><div class="ob-x-note">Craft-award recognition across three partners. Worth a congratulatory line in any existing conversation rather than a standalone approach.</div></div><p>Design Bridge&#x27;s Rail Clock won Gold and Best of Show runner-up; JKR won for New York Philharmonic, KFC and others; PSG for Kiko Martins. Design-craft awards, not featured.</p><details class="outreach"><summary>Context — no approach recommended</summary><div class="outreach-body"><p class="collision-note">Craft-award recognition across three partners. Worth a congratulatory line in any existing conversation rather than a standalone approach.</p><h4>Named contacts</h4><ul><li>No named contacts in source</li></ul></div></details></div><div class="other-item" data-owner="uki" data-partners="uki:Ogilvy"><div class="oi-head">Ogilvy UK promotes James Derrick to MD, integrated creative</div><div class="oi-meta">Ogilvy · 25 Sep 2026 · <a href="https://www.campaignlive.co.uk/article/ogilvy-names-james-derrick-as-managing-director-of-integrated-creative/4v4q7fwc6nxjd1a2ea5h0fwadq" target="_blank" rel="noopener">Campaign UK</a></div><div class="ob-extra" hidden><ul class="ob-x-contacts"><li>James Derrick — Managing Director, Integrated Creative, Ogilvy UK</li></ul><div class="draft"><span class="subj">Opening line: Congratulations on the new Ogilvy role</span>Hi James — congratulations on the move to managing director of integrated creative at Ogilvy UK. Pulling cross-disciplinary teams around one big idea is getting harder as the number of channels and production tools grows, and much of our work at Frontify is keeping brand standards consistent across exactly those handoffs. No agenda beyond congratulations, but if it is ever useful to compare notes on how integrated teams keep work on-brand at speed, I would be glad to.<br><br>[Your name]</div></div><p>Derrick, previously managing partner at Ogilvy UK and head of client service at New Commercial Arts, will lead the main creative agency, reporting to UK group CEO James Murphy.</p><details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>James Derrick — Managing Director, Integrated Creative, Ogilvy UK</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Congratulations on the new Ogilvy role</span>Hi James — congratulations on the move to managing director of integrated creative at Ogilvy UK. Pulling cross-disciplinary teams around one big idea is getting harder as the number of channels and production tools grows, and much of our work at Frontify is keeping brand standards consistent across exactly those handoffs. No agenda beyond congratulations, but if it is ever useful to compare notes on how integrated teams keep work on-brand at speed, I would be glad to.<br><br>[Your name]</div></div></details></div><div class="other-item" data-owner="amer" data-partners="amer:Pentagram"><div class="oi-head">Pentagram designs the identity for 520 Fifth Avenue in Manhattan</div><div class="oi-meta">Pentagram · 22 Sep 2026 <span class="tag tag--target-rel">Related: target agency</span> · <a href="https://www.linkedin.com/feed/update/urn:li:activity:7508188218463313920/" target="_blank" rel="noopener">Pentagram on LinkedIn</a></div><div class="ob-extra" hidden><ul class="ob-x-contacts"><li>Emily Oberman — Partner, Pentagram (New York)</li><li>Luke Hayman — Partner, Pentagram (New York)</li></ul><div class="ob-x-note">Context only — the New York office is not on the target list.</div></div><p>Emily Oberman and Luke Hayman&#x27;s teams created the identity for 520 Fifth Avenue, Rabina&#x27;s 1,000-foot mixed-use tower, drawing on the arches of its KPF-designed facade.</p><details class="outreach"><summary>Context — no approach recommended</summary><div class="outreach-body"><div class="rel-note"><b>Related: target agency.</b> Pentagram is a Target, but only Pentagram HQ London (Russell Ellis) and Pentagram Austin (Marvick Fernandes) are listed. This is New York work, so it is not a way in to a listed office — no first contact.</div><p class="collision-note">Context only — the New York office is not on the target list.</p><h4>Named contacts</h4><ul><li>Emily Oberman — Partner, Pentagram (New York)</li><li>Luke Hayman — Partner, Pentagram (New York)</li></ul></div></details></div><div class="other-item" data-owner="amer" data-partners="amer:Havas"><div class="oi-head">Havas Chicago names Larry Gies Chief Strategy Officer</div><div class="oi-meta">Havas · 24 Sep 2026 <span class="tag tag--target">Target Agency</span> · <a href="https://reelchicago.com/article/havas-names-bbdo-vet-larry-gies-chief-strategy-officer/" target="_blank" rel="noopener">Reel Chicago</a></div><div class="ob-extra" hidden><ul class="ob-x-contacts"><li>Larry Gies — Chief Strategy Officer, Havas Chicago</li></ul><div class="draft"><span class="subj">Opening line: Congratulations on the Havas Chicago role</span>Hi Larry — congratulations on joining Havas Chicago as Chief Strategy Officer. Your line about strategy starting with what people care about, and giving creative teams freedom, is a good summary of why brand consistency matters more than it looks: the freedom only works if the brand foundations are clear to everyone making the work. That is the part we help with at Frontify. No agenda beyond welcome back to the network, but I would be glad to introduce myself properly once you are settled.<br><br>[Your name]</div></div><p>Gies joins from 17 years at Energy BBDO, where he built its strategy discipline and worked on Extra Gum, Old Forester and Champion.</p><details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><div class="target-note"><b>Target Agency — Havas Chicago.</b> Chicago is one of the seven Havas CRM target rows. Owners across Havas rows: Chantal Isarin, Marvick Fernandes, Nicolas Hürner, Russell Ellis — confirm which owns Chicago in CRM before contact. A new CSO is a natural first-contact moment.</div><h4>Named contacts</h4><ul><li>Larry Gies — Chief Strategy Officer, Havas Chicago</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: Congratulations on the Havas Chicago role</span>Hi Larry — congratulations on joining Havas Chicago as Chief Strategy Officer. Your line about strategy starting with what people care about, and giving creative teams freedom, is a good summary of why brand consistency matters more than it looks: the freedom only works if the brand foundations are clear to everyone making the work. That is the part we help with at Frontify. No agenda beyond welcome back to the network, but I would be glad to introduce myself properly once you are settled.<br><br>[Your name]</div></div></details></div><div class="other-item" data-owner="row" data-partners="row:M+C Saatchi" data-risk="1"><div class="oi-head">M+C Saatchi closes its Australian business after the $1 buyout collapses</div><div class="oi-meta">M+C Saatchi · 23 Sep 2026 <span class="tag tag--risk">Risk context</span> · <a href="https://www.mi-3.com.au/23-09-2026/mc-saatchis-failed-australian-buyout-carried-a1-price-tag-revenue-sank-32" target="_blank" rel="noopener">Mi3</a></div><p>Half-year accounts show the ANZ buyout was agreed at $1 before it failed, prompting closure after 30+ years, a £1.8m impairment and client transitions. Context only — no approach.</p></div><div class="other-item" data-owner="uki" data-partners="uki:M+C Saatchi"><div class="oi-head">M+C Saatchi Sport &amp; Entertainment global CEO Robin Clarke departs</div><div class="oi-meta">M+C Saatchi · 23 Sep 2026 · <a href="https://www.campaignlive.co.uk/article/m-c-saatchi-sport-entertainment-shakes-up-leadership-as-global-ceo-departs/4m27hjyjf4qr43jskqnbp5xcdj" target="_blank" rel="noopener">Campaign UK</a></div><div class="ob-extra" hidden><ul class="ob-x-contacts"><li>Richard Thompson — Chair, M+C Saatchi Sport &amp; Entertainment and Talent</li><li>Laura Coller — Global COO and UK CEO, M+C Saatchi Sport &amp; Entertainment</li></ul><div class="ob-x-note">Leadership reshuffle. Useful context for existing M+C Saatchi conversations; no standalone approach recommended.</div></div><p>The role will not be replaced; chair Richard Thompson takes a broader operational remit alongside global COO and UK CEO Laura Coller.</p><details class="outreach"><summary>Context — no approach recommended</summary><div class="outreach-body"><p class="collision-note">Leadership reshuffle. Useful context for existing M+C Saatchi conversations; no standalone approach recommended.</p><h4>Named contacts</h4><ul><li>Richard Thompson — Chair, M+C Saatchi Sport &amp; Entertainment and Talent</li><li>Laura Coller — Global COO and UK CEO, M+C Saatchi Sport &amp; Entertainment</li></ul></div></details></div><div class="other-item" data-owner="row" data-partners="row:Ogilvy"><div class="oi-head">Ogilvy Australia hires Cleber de Almeida and rehires Shane Geffen</div><div class="oi-meta">Ogilvy · 21–25 Sep 2026 · <a href="https://www.campaignasia.com/article/move-and-win-roundup-week-of-september-21-2026/4kez0fs3te0fqwjpyah92aefxy" target="_blank" rel="noopener">Campaign Asia</a></div><div class="ob-extra" hidden><ul class="ob-x-contacts"><li>Cleber de Almeida — Social Strategy Director, Ogilvy Australia</li><li>Shane Geffen — Group Creative Director, Ogilvy Australia</li></ul><div class="ob-x-note">Routine senior creative hires. Note for any existing Ogilvy Australia relationship; no standalone approach.</div></div><p>De Almeida moves from Ogilvy Brazil to Sydney as social strategy director, leading Social@Ogilvy; Geffen returns from Hero as group creative director.</p><details class="outreach"><summary>Context — no approach recommended</summary><div class="outreach-body"><p class="collision-note">Routine senior creative hires. Note for any existing Ogilvy Australia relationship; no standalone approach.</p><h4>Named contacts</h4><ul><li>Cleber de Almeida — Social Strategy Director, Ogilvy Australia</li><li>Shane Geffen — Group Creative Director, Ogilvy Australia</li></ul></div></details></div><div class="other-item" data-owner="dach" data-partners="dach:Jung von Matt"><div class="oi-head">Jung von Matt Hamburg tackles digital misogyny for Deutsche Telekom</div><div class="oi-meta">Jung von Matt · 23 Sep 2026 <span class="tag tag--client">Existing Frontify Client</span> · <a href="https://shots.net/news/view/deutsche-telekom-takes-on-the-trolls" target="_blank" rel="noopener">shots</a></div><div class="ob-extra" hidden><ul class="ob-x-contacts"><li>No named Jung von Matt contacts in source</li></ul><div class="draft"><span class="subj">Opening line: The Telekom #GegenHassImNetz film</span>Hi [Partnerships team] — congratulations on 'Was sich liebt' for Telekom. Tracing one phrase from the playground into chats and gaming is a powerful way to make the point. As Telekom's brand team works with Frontify, we see how much of this initiative's reach depends on assets and messaging staying consistent across many channels and partners. If it would be useful to connect on how we support the Telekom brand day to day, I would be glad to.<br><br>[Your name]</div></div><p>&#x27;Was sich liebt&#x27;, an 89-second film for Telekom&#x27;s #GegenHassImNetz initiative directed by Zornitsa Dimitrova, shows how excusing everyday teasing normalises online violence against women.</p><details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><div class="client-note">Deutsche Telekom is an existing Frontify customer. Coordinate with the Telekom account team before referencing this work; relationship-led, not a new sale.</div><h4>Named contacts</h4><ul><li>No named Jung von Matt contacts in source</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: The Telekom #GegenHassImNetz film</span>Hi [Partnerships team] — congratulations on 'Was sich liebt' for Telekom. Tracing one phrase from the playground into chats and gaming is a powerful way to make the point. As Telekom's brand team works with Frontify, we see how much of this initiative's reach depends on assets and messaging staying consistent across many channels and partners. If it would be useful to connect on how we support the Telekom brand day to day, I would be glad to.<br><br>[Your name]</div></div></details></div><div class="other-item" data-owner="uki" data-partners="uki:Mother"><div class="oi-head">Mother launches &#x27;Don&#x27;t Crack&#x27;, a KFC UK &amp; Ireland YouTube game show</div><div class="oi-meta">Mother · 28 Sep 2026 <span class="tag tag--client">Existing Frontify Client</span> · <a href="https://www.linkedin.com/feed/update/urn:li:activity:7510257386603999232/" target="_blank" rel="noopener">Mother on LinkedIn</a></div><div class="ob-extra" hidden><ul class="ob-x-contacts"><li>No named contacts in source</li></ul><div class="ob-x-note">Campaign work for an existing client — useful account context rather than a standalone approach.</div></div><p>Mother is launching an original KFC UK &amp; Ireland game show, &#x27;Don&#x27;t Crack&#x27;, on YouTube from 30 September.</p><details class="outreach"><summary>Context — no approach recommended</summary><div class="outreach-body"><div class="client-note">KFC is an existing Frontify customer. Coordinate with the KFC account team first; campaign work, so a light congratulatory touch at most.</div><p class="collision-note">Campaign work for an existing client — useful account context rather than a standalone approach.</p><h4>Named contacts</h4><ul><li>No named contacts in source</li></ul></div></details></div><div class="other-item" data-owner="nordics" data-partners="nordics:Kurppa Hosk"><div class="oi-head">Kurppa Hosk and Umain design Scania&#x27;s new Experience Centre</div><div class="oi-meta">Kurppa Hosk · 23 Sep 2026 · <a href="https://www.linkedin.com/feed/update/urn:li:activity:7508425676169936896/" target="_blank" rel="noopener">Kurppa Hosk on LinkedIn</a></div><div class="ob-extra" hidden><ul class="ob-x-contacts"><li>No named contacts in source</li></ul><div class="draft"><span class="subj">Opening line: The Scania Experience Centre</span>Hi [Partnerships team] — congratulations on the Scania Experience Centre. Carrying one brand standard from trucks and services into a physical space is a great example of what Scania means by every interaction communicating precision. Keeping that consistent across products, digital and places is the kind of problem we help brands with at Frontify. If it would ever be useful to compare notes on large industrial brands, I would be glad to.<br><br>[Your name]</div></div><p>Scania has turned its old museum into an Experience Centre; Kurppa Hosk designed an interactive table so the space carries the same precision as Scania&#x27;s products and digital experiences.</p><details class="outreach"><summary>Suggested Outreach</summary><div class="outreach-body"><h4>Named contacts</h4><ul><li>No named contacts in source</li></ul><h4>Suggested draft — LinkedIn message</h4><div class="draft"><span class="subj">Opening line: The Scania Experience Centre</span>Hi [Partnerships team] — congratulations on the Scania Experience Centre. Carrying one brand standard from trucks and services into a physical space is a great example of what Scania means by every interaction communicating precision. Keeping that consistent across products, digital and places is the kind of problem we help brands with at Frontify. If it would ever be useful to compare notes on large industrial brands, I would be glad to.<br><br>[Your name]</div></div></details></div><div class="other-item" data-owner="row" data-partners="row:Design Bridge and Partners"><div class="oi-head">Design Bridge curates Pastiglie Leone&#x27;s &#x27;Happiness Factory&#x27; in Turin</div><div class="oi-meta">Design Bridge and Partners · 24 Sep 2026 · <a href="https://www.linkedin.com/feed/update/urn:li:activity:7508888905237131264/" target="_blank" rel="noopener">Design Bridge and Partners on LinkedIn</a></div><div class="ob-extra" hidden><ul class="ob-x-contacts"><li>No named contacts in source</li></ul><div class="ob-x-note">Brand-experience work; worth a mention in an existing Design Bridge conversation rather than a standalone approach.</div></div><p>Design Bridge&#x27;s London studio, with Luca Molinari Studio and Piuarch, curated the confectioner&#x27;s immersive physical space marking 170 years.</p><details class="outreach"><summary>Context — no approach recommended</summary><div class="outreach-body"><p class="collision-note">Brand-experience work; worth a mention in an existing Design Bridge conversation rather than a standalone approach.</p><h4>Named contacts</h4><ul><li>No named contacts in source</li></ul></div></details></div><div class="other-item" data-owner="amer" data-partners="amer:Sid Lee"><div class="oi-head">Sid Lee builds IGA&#x27;s new price communication platform</div><div class="oi-meta">Sid Lee · 25 Sep 2026 · <a href="https://www.grenier.qc.ca/actualites/58280/les-bouffeurs-de-prix-mettent-les-bouchees-quadruples-chez-iga" target="_blank" rel="noopener">Grenier aux nouvelles</a></div><div class="ob-extra" hidden><ul class="ob-x-contacts"><li>No named Sid Lee contacts in source</li></ul><div class="ob-x-note">Retail communication platform. Context for an existing Sid Lee conversation; no standalone approach.</div></div><p>Across Quebec and New Brunswick, the platform unites IGA&#x27;s four savings programmes under one creative territory, reviving the &#x27;p&#x27;tits bouffeurs de prix&#x27; characters from 2013.</p><details class="outreach"><summary>Context — no approach recommended</summary><div class="outreach-body"><p class="collision-note">Retail communication platform. Context for an existing Sid Lee conversation; no standalone approach.</p><h4>Named contacts</h4><ul><li>No named Sid Lee contacts in source</li></ul></div></details></div><div class="other-item" data-owner="uki" data-partners="uki:Uncommon"><div class="oi-head">Uncommon makes Ecover&#x27;s &#x27;The Unwashables&#x27; T-shirts</div><div class="oi-meta">Uncommon · 22 Sep 2026 · <a href="https://lbbonline.com/news/ecover-the-unwashables-uncommon" target="_blank" rel="noopener">LBBOnline</a></div><div class="ob-extra" hidden><ul class="ob-x-contacts"><li>No named contacts in source</li></ul><div class="ob-x-note">Campaign work; context only.</div></div><p>Ahead of Sustainable Fashion Week, Ecover and Uncommon released a range of T-shirts made with symbols of luck, framed as too lucky to wash. Campaign work.</p><details class="outreach"><summary>Context — no approach recommended</summary><div class="outreach-body"><p class="collision-note">Campaign work; context only.</p><h4>Named contacts</h4><ul><li>No named contacts in source</li></ul></div></details></div><div class="other-item" data-owner="row" data-partners="row:Dragon Rouge"><div class="oi-head">Dragon Rouge wins a Red Dot for mcr and Stratégies gold for Jean Martin</div><div class="oi-meta">Dragon Rouge · 25–28 Sep 2026 · <a href="https://www.linkedin.com/feed/update/urn:li:activity:7510328130235113472/" target="_blank" rel="noopener">Dragon Rouge on LinkedIn</a></div><div class="ob-extra" hidden><ul class="ob-x-contacts"><li>No named contacts in source</li></ul><div class="ob-x-note">Craft-award recognition; a congratulatory line in an existing conversation.</div></div><p>The mcr rebrand won a Red Dot Brands &amp; Communication Design award; Jean Martin de Provence took gold for branding and packaging at the Grand Prix Stratégies du Design. Craft awards.</p><details class="outreach"><summary>Context — no approach recommended</summary><div class="outreach-body"><p class="collision-note">Craft-award recognition; a congratulatory line in an existing conversation.</p><h4>Named contacts</h4><ul><li>No named contacts in source</li></ul></div></details></div><div class="other-item" data-owner="dach" data-partners="dach:Farner"><div class="oi-head">Farner and SBB win two golds at the Swiss Employer Branding Award</div><div class="oi-meta">Farner · 22 Sep 2026 · <a href="https://www.linkedin.com/feed/update/urn:li:activity:7508170070305529856/" target="_blank" rel="noopener">Farner on LinkedIn</a></div><div class="ob-extra" hidden><ul class="ob-x-contacts"><li>No named contacts in source</li></ul><div class="ob-x-note">Employer-branding award; context only.</div></div><p>Both golds came in recruiting campaigns: one for train-driver recruitment, one for the SBB Transport Police.</p><details class="outreach"><summary>Context — no approach recommended</summary><div class="outreach-body"><p class="collision-note">Employer-branding award; context only.</p><h4>Named contacts</h4><ul><li>No named contacts in source</li></ul></div></details></div><div class="other-item" data-owner="row" data-partners="row:Landor"><div class="oi-head">Landor Milan ranks top five in Italy in the European Design Agencies League</div><div class="oi-meta">Landor · 24 Sep 2026 · <a href="https://www.linkedin.com/feed/update/urn:li:activity:7508812988267728897/" target="_blank" rel="noopener">Landor on LinkedIn</a></div><div class="ob-extra" hidden><ul class="ob-x-contacts"><li>No named contacts in source</li></ul><div class="ob-x-note">Ranking; context only.</div></div><p>The five-year ranking, based on European Design Awards results, also places the Milan studio in Europe&#x27;s top 20 for branding.</p><details class="outreach"><summary>Context — no approach recommended</summary><div class="outreach-body"><p class="collision-note">Ranking; context only.</p><h4>Named contacts</h4><ul><li>No named contacts in source</li></ul></div></details></div></section>
+<section class="cat" id="sec-events-and-attendance"><h2 class="cat-title">Events &amp; Attendance <span class="count">6</span><span class="cat-info" data-tip="Named partner-side individuals confirmed as attending, speaking at, or judging an event in the next 60 days or past 7 days.">?</span></h2><div class="events-list"><div class="event-item" data-owner="dach" data-partners="dach:Mutabor"><b>Burkhard Müller</b><span class="ev-sep">·</span>Mutabor<span class="ev-sep">·</span>DMEXCO Creative Summit, Cologne — &#x27;No Humans in the Loop&#x27;<span class="ev-sep">·</span>23 September 2026<span class="ev-sep">·</span><a href="https://www.linkedin.com/feed/update/urn:li:activity:7508431276505411584/" target="_blank" rel="noopener">LinkedIn</a></div><div class="event-item" data-owner="dach" data-partners="dach:Valtech"><b>Kerstin Fels and Axel Hermes</b><span class="ev-sep">·</span>Valtech<span class="ev-sep">·</span>DMEXCO 2026, Cologne (Valtech booth)<span class="ev-sep">·</span>23–24 September 2026<span class="ev-sep">·</span><a href="https://www.linkedin.com/feed/update/urn:li:activity:7508869335646404609/" target="_blank" rel="noopener">LinkedIn</a></div><div class="event-item" data-owner="dach" data-partners="dach:Farner"><b>Patman (Lead AI)</b><span class="ev-sep">·</span>Farner<span class="ev-sep">·</span>Swico Late Afternoon Talk<span class="ev-sep">·</span>22 September 2026<span class="ev-sep">·</span><a href="https://www.linkedin.com/feed/update/urn:li:activity:7509250530058252288/" target="_blank" rel="noopener">LinkedIn</a></div><div class="event-item" data-owner="dach" data-partners="dach:Peter Schmidt Group"><b>Pedro Vilar</b><span class="ev-sep">·</span>Peter Schmidt Group (CCO, Lisbon)<span class="ev-sep">·</span>IPMARK Branding &amp; Packaging 2026 Colloquium, Madrid<span class="ev-sep">·</span>24 September 2026<span class="ev-sep">·</span><a href="https://www.linkedin.com/feed/update/urn:li:activity:7508169401284714496/" target="_blank" rel="noopener">LinkedIn</a></div><div class="event-item" data-owner="uki" data-partners="uki:Valtech"><b>Deborah Womack</b><span class="ev-sep">·</span>Valtech<span class="ev-sep">·</span>2026 Effie UK Awards — Final Round Judge<span class="ev-sep">·</span>Date not stated<span class="ev-sep">·</span><a href="https://www.linkedin.com/feed/update/urn:li:activity:7508628800193290241/" target="_blank" rel="noopener">LinkedIn</a></div><div class="event-item" data-owner="amer" data-partners="amer:Sid Lee"><b>Mike Grumbridge</b><span class="ev-sep">·</span>Sid Lee Sport (MD)<span class="ev-sep">·</span>2027 ESA Awards — judging panel (entries close 16 October)<span class="ev-sep">·</span>Judging date not stated<span class="ev-sep">·</span><a href="https://www.linkedin.com/feed/update/urn:li:activity:7509214714388955137/" target="_blank" rel="noopener">LinkedIn</a></div></div></section>
+<section class="cat" id="sec-appendix"><div class="appendix"><h2>Coverage Appendix</h2><div class="grid"><div data-owner="global" data-partners="global:Ogilvy"><b>Ogilvy</b> — Partner · D&amp;AD Network of the Year; Ogilvy UK Derrick; Ogilvy Australia hires</div><div data-owner="uki" data-partners="uki:Design Bridge and Partners"><b>Design Bridge and Partners</b> — Partner · Brand Impact Awards (Rail Clock Gold); Pastiglie Leone Happiness Factory</div><div data-owner="global" data-partners="global:Dragon Rouge"><b>Dragon Rouge</b> — Partner · Red Dot (mcr); Stratégies gold (Jean Martin); Poretti dated 21 Sep, outside window</div><div data-owner="global" data-partners="global:AKQA"><b>AKQA</b> — Partner · No notable activity — Google Pixel campaign only</div><div data-owner="amer" data-partners="amer:JKR"><b>JKR</b> — Partner · Intuit identity; Tropical Smoothie Cafe rebrand; Brand Impact Awards</div><div data-owner="global" data-partners="global:Landor"><b>Landor</b> — Partner · Milan EDA League ranking (SCANA Energy was covered 4 Aug)</div><div data-owner="amer" data-partners="amer:Critical Mass"><b>Critical Mass</b> — Partner · No notable activity</div><div data-owner="global" data-partners="global:Omnicom Production"><b>Omnicom Production</b> — Target · No notable activity — The Feed third edition</div><div data-owner="nordics" data-partners="nordics:Bold Scandinavia"><b>Bold Scandinavia</b> — Partner · Kleri brand launch</div><div data-owner="amer" data-partners="amer:Lippincott"><b>Lippincott</b> — Partner · No notable activity — CMO Outlook on CMO Confidential</div><div data-owner="uki" data-partners="uki:Mother"><b>Mother</b> — Partner · FlixBus global lead agency (Mother Berlin); KFC UK&amp;I game show</div><div data-owner="amer" data-partners="amer:Mother Design"><b>Mother Design</b> — Partner · No notable activity — LinkedIn silent since 15 Sep</div><div data-owner="amer" data-partners="amer:Pentagram"><b>Pentagram</b> — Target · 520 Fifth Avenue identity (NY — related only)</div><div data-owner="uki" data-partners="uki:Interbrand"><b>Interbrand</b> — Partner · Ampstar for JSW Greentech; Wackermann leads UK hub</div><div data-owner="global" data-partners="global:Siegel + Gale"><b>Siegel + Gale</b> — Partner · Vertage Global brand</div><div data-owner="row" data-partners="row:M+C Saatchi"><b>M+C Saatchi</b> — Partner · ANZ closure (risk); S&amp;E CEO exit; H1 results</div><div data-owner="amer" data-partners="amer:Sid Lee"><b>Sid Lee</b> — Partner · IGA price platform; Grumbridge on ESA jury</div><div data-owner="row" data-partners="row:R/GA"><b>R/GA</b> — Partner · MENA business opens in Abu Dhabi</div><div data-owner="row" data-partners="row:VIM Group"><b>VIM Group</b> — Partner · Waterschap AGV HQ signage (post URL unresolvable)</div><div data-owner="dach" data-partners="dach:Mutabor"><b>Mutabor</b> — Partner · Müller at DMEXCO Creative Summit</div><div data-owner="dach" data-partners="dach:Peter Schmidt Group"><b>Peter Schmidt Group</b> — Partner · Brand Impact Award (Kiko Martins); Future Playgrounds</div><div data-owner="dach" data-partners="dach:Farner"><b>Farner</b> — Partner · Swico talk; SBB employer-branding golds</div><div data-owner="dach" data-partners="dach:Sherpa Design"><b>Sherpa Design</b> — Partner · No notable activity — LinkedIn silent since 15 Sep</div><div data-owner="dach" data-partners="dach:Jung von Matt"><b>Jung von Matt</b> — Partner · Jung von Matt Tech; Telekom #GegenHassImNetz film</div><div data-owner="dach" data-partners="dach:Gate B"><b>Gate B</b> — Partner · No notable activity — LinkedIn silent since 8 Sep (20 days)</div><div data-owner="global" data-partners="global:Saffron Brand Consultants"><b>Saffron Brand Consultants</b> — Partner · No notable activity — POV Budapest recap</div><div data-owner="uki" data-partners="uki:Uncommon"><b>Uncommon</b> — Partner · D&amp;AD Agency of the Year; Ecover</div><div data-owner="nordics" data-partners="nordics:BBDO Nordics"><b>BBDO Nordics</b> — Partner · No notable activity — BRIO Kids Space Program; Cresta</div><div data-owner="nordics" data-partners="nordics:Kurppa Hosk"><b>Kurppa Hosk</b> — Watch · Scania Experience Centre; Marketing Brew quote</div><div data-owner="nordics" data-partners="nordics:Stockholm Design Lab"><b>Stockholm Design Lab</b> — Partner · No notable activity — LinkedIn silent since 9 Sep</div><div data-owner="nordics" data-partners="nordics:Nord"><b>Nord</b> — Partner · Svenska Spel &#x27;THAT FEELING&#x27; platform (Active Prospect)</div><div data-owner="nordics" data-partners="nordics:Forsman &amp; Bodenfors"><b>Forsman &amp; Bodenfors</b> — Target · No notable activity — Polestar campaign</div><div data-owner="nordics" data-partners="nordics:Kontrapunkt"><b>Kontrapunkt</b> — Partner · No in-window activity — Royal Copenhagen identity launched 15 Sep, missed last run</div><div data-owner="global" data-partners="global:Havas"><b>Havas</b> — Target · AI Efficiency Trap study; Havas Chicago CSO Larry Gies</div><div data-owner="global" data-partners="global:Valtech"><b>Valtech</b> — Partner · Agent Factory launch at DMEXCO; Womack Effie UK judge</div></div></div></section>
+    </div>
+
+    <div class="report" data-report="outbound" data-filter="pm" id="outbound-report">
+      <p class="eyebrow">Frontify Partnerships &middot; Internal Prospecting Report</p>
+</div>
+
+    <div class="report" data-report="campaignlive" data-filter="market" id="campaignlive-report">
+      <p class="eyebrow">Frontify Partnerships &middot; Mirrored Stories</p>
+      <h1 class="masthead-title">CampaignLive SDR</h1>
+      <div class="daterange">New Business, mirrored from the partner and non-partner reports &middot; 1 items &middot; story and source only</div>
+      <div class="mirror-cat" id="ca-new-business">
+        <h2 class="cat-title">New Business<span class="count">1</span></h2>
+        <section class="cat">
+<article data-market="dach" data-mirror="partners" class="card" data-owner="uki" data-partners="uki:Mother"><h3>FlixBus appoints Mother Berlin as global lead creative agency</h3><div class="meta">Mother · 24 Sep 2026</div><p class="summary">Mother Berlin becomes FlixBus&#x27;s global lead agency, handling creative strategy in 40+ markets from autumn, including Greyhound in the US and Kâmil Koç in Türkiye. Its first task is a new global brand platform to unify the brand&#x27;s appearance worldwide. It follows Lufthansa Group, Uber Eats and Canva wins.</p><div class="sdr-people"><div class="sdr-row"><span class="sdr-lbl">Account owner</span><span class="sdr-val"><span class="who">Edwin Alp</span> <span class="acct">Flix</span></span></div></div><div class="src"><a href="https://campaigngermany.de/news/beitrag/4231-pitch-update-flixbus-linkedin-omoda-jaecoo-amp-mehr.html" target="_blank" rel="noopener">Campaign Germany</a></div></article>
+        </section>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* Three reports in one document, at most one visible. Categories and the
+     filter belong to a report, not to the page, so both live in per-report
+     groups in the rail and are counted inside the active container only. */
+  /* Reports written by different runs name their category sections
+     differently: `section.cat` in the partner run, `section.category` in the
+     prospect run. Both are counted, so neither run has to be rewritten. */
+  var SECS = 'section.cat, section.category';
+  function secSel(attr) {
+    return 'section.cat [' + attr + '], section.category [' + attr + ']';
+  }
+
+  var reports = {}, activeReport = null, activeFilter = [];
+  document.querySelectorAll('.report').forEach(function (el) {
+    reports[el.getAttribute('data-report')] = {
+      el: el,
+      attr: 'data-' + (el.getAttribute('data-filter') || 'pm')
+    };
+  });
+
+  /* activeFilter is a LIST. Empty means the full report; several markets show
+     their content together, so this is a union and not a switch. */
+  function matches(el, r, sel) {
+    if (!sel.length) return true;
+    var v = (el.getAttribute(r.attr) || '').split(/\s+/);
+    if (v.indexOf('all') > -1) return true;
+    for (var i = 0; i < sel.length; i++) if (v.indexOf(sel[i]) > -1) return true;
+    return false;
+  }
+
+  function activeCatLinks() {
+    var g = document.querySelector('.cat-group.on');
+    return g ? Array.prototype.slice.call(g.querySelectorAll('a[href^="#"]')) : [];
+  }
+
+  function repaint() {
+    var r = reports[activeReport];
+    if (!r) return;
+    activeCatLinks().forEach(function (a) {
+      var sec = document.getElementById(a.getAttribute('href').slice(1));
+      if (!sec) return;
+      var n = 0;
+      sec.querySelectorAll('[' + r.attr + ']').forEach(function (el) {
+        if (matches(el, r, activeFilter)) n++;
+      });
+      a.querySelector('.n').textContent = n;
+      a.classList.toggle('hit', n > 0);
+      var c = sec.querySelector('.count');
+      if (c) c.textContent = /entr(y|ies)/.test(c.textContent)
+        ? (n === 1 ? '1 entry' : n + ' entries')
+        : n;
+      /* a category with nothing left in it steps out of the way while filtered */
+      sec.style.display = (activeFilter.length && n === 0) ? 'none' : '';
+    });
+  }
+
+  function applyFilter(sel) {
+    var r = reports[activeReport];
+    if (!r) return;
+    activeFilter = sel;
+    r.el.querySelectorAll('[' + r.attr + ']').forEach(function (el) {
+      var on = matches(el, r, sel);
+      el.style.display = on ? '' : 'none';
+      if (el.classList.contains('pm-footer-block')) {
+        el.classList.toggle('active', on && sel.length > 0);
+      }
+    });
+    var labels = [];
+    document.querySelectorAll('.filter-group.on .pm-tab').forEach(function (t) {
+      var v = t.getAttribute('data-target');
+      var on = !!v && sel.indexOf(v) > -1;
+      t.classList.toggle('active', on);
+      if (on) labels.push(t.textContent.trim());
+    });
+    document.body.classList.toggle('is-filtered', sel.length > 0);
+    var who = r.el.querySelector('.active-filter .who');
+    if (who) who.innerHTML = labels.map(function (l) { return '<b>' + l + '</b>'; }).join('');
+    repaint();
+  }
+
+  function openReport(name) {
+    activeReport = name;
+    activeFilter = [];
+    document.body.classList.add('has-report');
+    document.body.classList.remove('is-filtered');
+    Object.keys(reports).forEach(function (k) {
+      var r = reports[k];
+      r.el.classList.toggle('active', k === name);
+      r.el.querySelectorAll('[' + r.attr + ']').forEach(function (el) { el.style.display = ''; });
+      r.el.querySelectorAll(SECS).forEach(function (s) { s.style.display = ''; });
+    });
+    document.querySelectorAll('.report-tab').forEach(function (t) {
+      t.classList.toggle('active', t.getAttribute('data-report') === name);
+    });
+    document.querySelectorAll('.filter-group, .cat-group').forEach(function (g) {
+      g.classList.toggle('on', g.getAttribute('data-for') === name);
+    });
+    document.querySelectorAll('.pm-tab').forEach(function (t) { t.classList.remove('active'); });
+    var anyFilter = !!document.querySelector('.filter-group.on');
+    document.querySelectorAll('.rail-section').forEach(function (s) {
+      if (s.querySelector('.filter-group')) s.classList.toggle('no-filter', !anyFilter);
+    });
+    repaint();
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  function showPicker() {
+    activeReport = null; activeFilter = [];
+    document.body.classList.remove('has-report', 'is-filtered');
+    document.querySelectorAll('.report').forEach(function (e) { e.classList.remove('active'); });
+    document.querySelectorAll('.report-tab').forEach(function (t) { t.classList.remove('active'); });
+    document.querySelectorAll('.filter-group, .cat-group').forEach(function (g) { g.classList.remove('on'); });
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }
+
+  /* entry counts on the report buttons and the picker card */
+  Object.keys(reports).forEach(function (k) {
+    var n = reports[k].el.querySelectorAll(secSel(reports[k].attr)).length;
+    var t = document.querySelector('.report-tab[data-report="' + k + '"] .cnt');
+    if (t) t.textContent = n ? n : '';
+    var c = document.querySelector('.pick .chip[data-count="' + k + '"]');
+    if (c) c.textContent = n + ' entries';
+  });
+
+  document.querySelectorAll('.report-tab').forEach(function (t) {
+    t.addEventListener('click', function () {
+      var n = t.getAttribute('data-report');
+      if (activeReport === n) showPicker(); else openReport(n);
+    });
+  });
+  document.querySelectorAll('.pick[data-open]').forEach(function (b) {
+    b.addEventListener('click', function () { openReport(b.getAttribute('data-open')); });
+  });
+
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest && e.target.closest('.filter-group.on .pm-tab');
+    if (t) {
+      var v = t.getAttribute('data-target');
+      if (!v) { applyFilter([]); return; }          /* All markets resets */
+      var next = activeFilter.slice();
+      var i = next.indexOf(v);
+      if (i > -1) next.splice(i, 1); else next.push(v);
+      applyFilter(next);
+      return;
+    }
+    if (e.target.closest && e.target.closest('.active-filter [data-clear]')) applyFilter([]);
+  });
+
+  document.querySelectorAll('.cat-nav a').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var el = document.getElementById(a.getAttribute('href').slice(1));
+      if (!el) return;
+      e.preventDefault();
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+
+  /* ============================================================ Card rows
+
+     Cards from the prospect run carry a row of <details> that behaves as one
+     control: at most one panel open, and the switch is animated. The click is
+     intercepted because <details> has already toggled itself by the time a
+     toggle event arrives, and a view transition needs the state change to
+     happen inside the callback. */
+
+  /* Collapsed tabs are narrow, so each summary carries a short label beside its
+     full one and CSS picks. Done here rather than in the markup so reports
+     built before this shell get it too. */
+  var SHORT = { "Suggested Outreach": "Outreach", "Prospect Flag": "Prospect",
+                "Pipeline Flag": "Pipeline" };
+  document.querySelectorAll('.accordion-row > details > summary').forEach(function (sm) {
+    if (sm.querySelector('.s-l')) return;
+    var node = null;
+    for (var i = 0; i < sm.childNodes.length; i++) {
+      if (sm.childNodes[i].nodeType === 3 && sm.childNodes[i].nodeValue.trim()) {
+        node = sm.childNodes[i]; break;
+      }
+    }
+    if (!node) return;
+    var full = node.nodeValue.trim();
+    var lo = document.createElement('span'); lo.className = 's-l'; lo.textContent = full;
+    var sh = document.createElement('span'); sh.className = 's-s';
+    sh.textContent = SHORT[full] || full.split(' ')[0];
+    sm.replaceChild(lo, node);
+    sm.insertBefore(sh, lo.nextSibling);
+    sm.setAttribute('data-full', full);
+    sm.setAttribute('aria-label', full);
+  });
+
+  var canVT = typeof document.startViewTransition === 'function' &&
+              !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll('.accordion-row').forEach(function (row) {
+    var items = Array.prototype.slice.call(row.querySelectorAll(':scope > details'));
+    row.style.setProperty('--acc-n', items.length || 3);
+
+    function sync() {
+      row.classList.toggle('has-open', !!row.querySelector(':scope > details[open]'));
+    }
+    function setState(target) {
+      items.forEach(function (o) { o.open = (o === target); });
+      sync();
+    }
+
+    row.addEventListener('click', function (e) {
+      var sm = e.target.closest ? e.target.closest('summary') : null;
+      if (!sm) return;
+      var d = sm.parentElement;
+      if (items.indexOf(d) === -1) return;
+      e.preventDefault();
+      var target = d.open ? null : d;
+      if (!canVT) { setState(target); return; }
+      /* Names only within this row, or the browser photographs every card. */
+      items.forEach(function (el, i) { el.style.viewTransitionName = 'acc-' + i; });
+      var t = document.startViewTransition(function () { setState(target); });
+      t.finished.catch(function () {}).then(function () {
+        items.forEach(function (el) { el.style.viewTransitionName = ''; });
+      });
+    });
+
+    /* Keyboard or script can change the state without a click; follow it. */
+    items.forEach(function (d) { d.addEventListener('toggle', sync); });
+    sync();
+  });
+
+  /* A to-do jump link whose target is currently filtered out still has to land
+     on something, so the target is revealed on the way. */
+  document.addEventListener('click', function (e) {
+    var j = e.target.closest && e.target.closest('a.jump');
+    if (!j) return;
+    var el = document.getElementById(j.getAttribute('href').slice(1));
+    if (el && el.style.display === 'none') el.style.display = '';
+  });
+
+  /* Copy-to-clipboard sits on every outreach draft because mailto: only works
+     where a mail handler is registered. */
+  window.copyEmailDraft = function (btn) {
+    var subject = decodeURIComponent(btn.getAttribute('data-subject') || '');
+    var body    = decodeURIComponent(btn.getAttribute('data-body') || '');
+    var text    = (subject ? 'Subject: ' + subject + '\n\n' : '') + body;
+    var done = function () {
+      var old = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(function () { btn.textContent = old; }, 1600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () { fallback(text, done); });
+    } else { fallback(text, done); }
+  };
+  function fallback(text, done) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  /* "All reports" back link, inserted rather than repeated in the markup */
+  Object.keys(reports).forEach(function (k) {
+    var b = document.createElement('button');
+    b.className = 'back-to-picker';
+    b.innerHTML = '&larr; All reports';
+    b.addEventListener('click', showPicker);
+    reports[k].el.insertBefore(b, reports[k].el.firstChild);
+  });
+})();
+</script>
+</body>
+</html>
